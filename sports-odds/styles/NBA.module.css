@@ -1,0 +1,114 @@
+.games {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.3rem 0 0.5rem 0.5rem;
+  width: 200px;
+  height: 84px;
+  margin: 3px;
+  color: white;
+  text-decoration: none;
+  border-right: 1px solid #bbb;
+  border-left: 1px solid #bbb;
+}
+
+.teamContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 10px;
+}
+
+.logo {
+  width: 25px;
+  height: 25px;
+}
+
+.time,
+.date {
+  font-size: 10px;
+}
+
+.logoDiv {
+  display: flex;
+  align-items: center;
+}
+.teamName {
+  flex: 1;
+  margin-left: 8px;
+  margin-right: 8px;
+  font-size: 12px;
+}
+
+.record {
+  padding-right: 15px;
+}
+
+.scoreboard::-webkit-scrollbar {
+  height: 0.5rem;
+}
+
+.scoreboard::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+.scoreboard::-webkit-scrollbar-thumb {
+  background: rgb(69, 68, 68);
+}
+
+.scoreboard {
+  background-color: #333;
+  overflow: auto;
+  display: flex;
+  white-space: nowrap;
+  margin-top: 50px;
+}
+
+.news {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.newInfo {
+  /* background-color: white; */
+  background-color: #333;
+  height: auto;
+  color: white;
+  width: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  place-content: center space-between;
+  top: 0px;
+  min-height: 450px;
+  width: 670px;
+  border-radius: 12px;
+  padding: 24px;
+  /* box-shadow: rgb(0 0 0 / 12%) 2px 6px 16px; */
+  align-items: center;
+  /* border-style: solid; */
+  margin: 5px;
+  text-align: center;
+  overflow-wrap: break-word;
+  inline-size: 670px;
+}
+
+.Pic {
+  height: 325px;
+  width: 575px;
+}
+
+.newsHeader {
+  font-size: xx-large;
+}
+
+.offseason {
+  height: 50px;
+  color: antiquewhite;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
