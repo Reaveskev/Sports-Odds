@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 import { useRouter } from "next/router";
+import Papa from "papaparse";
+import Yahoo_Sports from "./Yahoo_Sports.csv";
+import { Table } from "@nextui-org/react";
 
 function NBA() {
   const [loading, setLoading] = useState(true);
@@ -11,7 +14,6 @@ function NBA() {
   const [upcoming, setUpcoming] = useState([]);
   const [NBANews, setNBANews] = useState([]);
   const [offseason, setoffseason] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     axios
@@ -51,6 +53,18 @@ function NBA() {
             setLoading(false);
           });
       });
+
+    // const fetchParseData = async (Yahoo_Sports) => {
+    //   Papa.parse(Yahoo_Sports),
+    //     {
+    //       header: true,
+    //       skipEmptyLines: true,
+    //       complete: (result) => {
+    //         console.log(result.data);
+    //       },
+    //     };
+    // };
+    // fetchParseData(Yahoo_Sports);
   }, []);
 
   const handleCopy = (numbers) => {
@@ -248,6 +262,72 @@ function NBA() {
             </div>
           );
         })}
+      </div>
+      <div className={styles.odds_div}>
+        <div className={styles.odds}>
+          <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
+          <Table
+            aria-label="Example table with static content"
+            css={{
+              color: "white",
+              height: "auto",
+              minWidth: "100%",
+              background: "lightgray",
+              text: "white",
+            }}
+          >
+            <Table.Header>
+              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
+                Team
+              </Table.Column>
+              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
+                Record
+              </Table.Column>
+              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
+                Money Line
+              </Table.Column>
+              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
+                Point Spread
+              </Table.Column>
+              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
+                Total Points
+              </Table.Column>
+            </Table.Header>
+            <Table.Body>
+              {Yahoo_Sports.map((game) => {
+                return (
+                  <Table.Row key={game.Team}>
+                    <Table.Cell>{game.Team}</Table.Cell>
+                    <Table.Cell>{game.Record}</Table.Cell>
+                    <Table.Cell>{game.Money_line}</Table.Cell>
+                    <Table.Cell>{game.Point_spread}</Table.Cell>
+                    <Table.Cell>{game.Total_points}</Table.Cell>
+                  </Table.Row>
+                );
+              })}
+            </Table.Body>
+          </Table>
+
+          {/* <h1 className={styles.upcoming}>Upcoming Game Odds</h1> */}
+          {/* <div className={styles.info_header}>
+            <span> Team </span>
+            <span>- Record </span>
+            <span>- Money Line </span>
+            <span>- Point Spread </span>
+            <span>- Total Points </span>
+          </div> */}
+          {/* {Yahoo_Sports.map((game) => {
+            return (
+              <div key={game.Team}>
+                <span className={styles.info}>{game.Team}</span>
+                <span className={styles.info}> {game.Record}</span>
+                <span className={styles.info}> {game.Money_line}</span>
+                <span className={styles.info}> {game.Point_spread}</span>
+                <span className={styles.info}> {game.Total_points}</span>
+              </div>
+            );
+          })} */}
+        </div>
       </div>
     </div>
   );

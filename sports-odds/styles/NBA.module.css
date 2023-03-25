@@ -112,3 +112,33 @@
   display: flex;
   align-items: center;
 }
+
+.odds {
+  /* background-color: #d1bbbb; */
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  border-radius: 12px;
+  color: white;
+}
+
+.odds_div {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+  color: lightgray;
+}
+
+.upcoming {
+  /* text-decoration: underline; */
+  margin: 20px 0 20px 0;
+}
+
+/* .info_header {
+  margin: 5px 5px 5px 5px;
+} */
