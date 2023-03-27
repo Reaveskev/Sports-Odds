@@ -1,42 +1,9 @@
-Team,Record,Money_line,Point_spread,Total_points
+Home_logo,Home_Team,Home_Record,Home_Money_line,Home_Point_spread,Home_Total_points,Away_logo,Away_Team,Away_Record,Away_Money_line,Away_Point_spread,Away_Total_points
 
-San Antonio Spurs,(19-54),SA +260,SA +8.5 (-110),O 228.5 (-110)
+https://s.yimg.com/iu/api/res/1.2/1foXU3LGSMvSONkJZqENGQ--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20181214/500x500/mavericks_wbg.png,Detroit Pistons,(16-58),DET +550,DET +13.5 (-115),U 227.5 (-105),https://s.yimg.com/iu/api/res/1.2/kA04ratcGGOpPqx4YNpMVg--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20181214/500x500/bucks_wbg.png,Milwaukee Bucks,(53-21),MIL -800,MIL -13.5 (-105),O 227.5 (-115)
 
-Washington Wizards,(32-41),WAS -350,WAS -8.5 (-110),U 228.5 (-110)
+https://s.yimg.com/iu/api/res/1.2/QeNHgYXLzTgzaX.nwFzW8A--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/mlb/20190318/500x500/suns_wbgs.png,Indiana Pacers,(33-42),IND +145,IND +4.5 (-115),U 238.5 (-110),https://s.yimg.com/iu/api/res/1.2/aiHwIwxOmv5IcDt2raWr3A--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20191021/500x500/rockets_wbgs.png,Dallas Mavericks,(36-39),DAL -175,DAL -4.5 (-105),O 238.5 (-110)
 
-Indiana Pacers,(33-40),IND +375,IND +10.5 (-115),O 236.5 (-110)
+https://s.yimg.com/iu/api/res/1.2/vOcBf4BrdvIqZnp9RSjpvw--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20181226/500x500/pelicans_wbg.png,New York Knicks,(42-33),NY -1000,NY -13.5 (-110),U 230.5 (-115),https://s.yimg.com/iu/api/res/1.2/8xtBYKInPjlVQu.PQrvV8g--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20181217/500x500/76ers_wbg.png,Houston Rockets,(18-57),HOU +650,HOU +13.5 (-110),O 230.5 (-105)
 
-Boston Celtics,(50-23),BOS -500,BOS -10.5 (-105),U 236.5 (-110)
-
-Detroit Pistons,(16-57),DET +650,DET +13.5 (-105),O 223.5 (-110)
-
-Toronto Raptors,(35-38),TOR -1000,TOR -13.5 (-115),U 223.5 (-110)
-
-Houston Rockets,(18-55),HOU +575,HOU +13.5 (-115),O 233.5 (-110)
-
-Memphis Grizzlies,(45-27),MEM -900,MEM -13.5 (-105),U 233.5 (-110)
-
-Charlotte Hornets,(23-51),CHA +900,CHA +15.5 (-110),O 226.5 (-115)
-
-Dallas Mavericks,(36-37),DAL -1600,DAL -15.5 (-110),U 226.5 (-105)
-
-Milwaukee Bucks,(52-20),MIL -400,MIL -8.5 (-115),O 236.5 (-105)
-
-Utah Jazz,(35-37),UTA +300,UTA +8.5 (-105),U 236.5 (-115)
-
-Philadelphia 76ers,(49-23),PHI +165,PHI +4.5 (-105),O 234.5 (-105)
-
-Golden State Warriors,(38-36),GS -200,GS -4.5 (-115),U 234.5 (-115)
-
-Chicago Bulls,(34-38),CHI -190,CHI -4.5 (-110),O 221.5 (-115)
-
-Portland Trail Blazers,(32-40),POR +155,POR +4.5 (-110),U 221.5 (-105)
-
-Phoenix Suns,(38-34),PHO +140,PHO +3.5 (-110),O 239.5 (-110)
-
-Sacramento Kings,(43-29),SAC -165,SAC -3.5 (-110),U 239.5 (-120)
-
-Oklahoma City Thunder,(36-37),OKC +180,OKC +5.5 (-110),O 230.5 (-110)
-
-Los Angeles Lakers,(36-37),LAL -225,LAL -5.5 (-110),U 230.5 (-110)
-
+https://s.yimg.com/iu/api/res/1.2/fiKPONlO.Ey4C94Ipr6kqQ--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20181212/500x500/bulls_wbgs.png,Utah Jazz,(35-39),UTA +220,UTA +6.5 (-105),U 233.5 (-105),https://s.yimg.com/iu/api/res/1.2/ibdsKVqJDiXWbIqrWYp4Ww--~B/YXBwaWQ9c2hhcmVkO2ZpPWZpbGw7cT0xMDA7aD02MDt3PTYw/https://s.yimg.com/cv/apiv2/default/nba/20181226/500x500/timberwolves_wbg.png,Phoenix Suns,(39-35),PHO -275,PHO -6.5 (-115),O 233.5 (-115)

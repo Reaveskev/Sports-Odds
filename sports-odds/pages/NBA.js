@@ -74,6 +74,10 @@ function NBA() {
     // router.push(url);
   };
 
+  const remove_characters = (str) => {
+    return parseFloat(str.replace(/[^\d.-]/g, ""));
+  };
+
   return (
     <div>
       <Header />
@@ -266,67 +270,53 @@ function NBA() {
       <div className={styles.odds_div}>
         <div className={styles.odds}>
           <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
-          <Table
-            aria-label="Example table with static content"
-            css={{
-              color: "white",
-              height: "auto",
-              minWidth: "100%",
-              background: "lightgray",
-              text: "white",
-            }}
-          >
-            <Table.Header>
-              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
-                Team
-              </Table.Column>
-              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
-                Record
-              </Table.Column>
-              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
-                Money Line
-              </Table.Column>
-              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
-                Point Spread
-              </Table.Column>
-              <Table.Column style={{ backgroundColor: "#333", color: "white" }}>
-                Total Points
-              </Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {Yahoo_Sports.map((game) => {
-                return (
-                  <Table.Row key={game.Team}>
-                    <Table.Cell>{game.Team}</Table.Cell>
-                    <Table.Cell>{game.Record}</Table.Cell>
-                    <Table.Cell>{game.Money_line}</Table.Cell>
-                    <Table.Cell>{game.Point_spread}</Table.Cell>
-                    <Table.Cell>{game.Total_points}</Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table>
 
-          {/* <h1 className={styles.upcoming}>Upcoming Game Odds</h1> */}
-          {/* <div className={styles.info_header}>
-            <span> Team </span>
-            <span>- Record </span>
-            <span>- Money Line </span>
-            <span>- Point Spread </span>
-            <span>- Total Points </span>
-          </div> */}
-          {/* {Yahoo_Sports.map((game) => {
+          {Yahoo_Sports.map((game) => {
             return (
-              <div key={game.Team}>
-                <span className={styles.info}>{game.Team}</span>
-                <span className={styles.info}> {game.Record}</span>
-                <span className={styles.info}> {game.Money_line}</span>
-                <span className={styles.info}> {game.Point_spread}</span>
-                <span className={styles.info}> {game.Total_points}</span>
-              </div>
+              <>
+                <div className={styles.team_info}>
+                  <div className={styles.team_header}>
+                    <p style={{ minWidth: 180 }}></p>
+                    <p style={{ minWidth: 72 }}>Money Line</p>
+                    <p style={{ minWidth: 120 }}>Point Spread</p>
+                    <p style={{ minWidth: 120 }}>Total Points</p>
+                  </div>
+                  <div className={styles.team_format}>
+                    <div className={styles.name_logo}>
+                      <img
+                        className={styles.odds_logo}
+                        src={game.Home_logo}
+                      ></img>
+                      <div className={styles.name_record}>
+                        <h4>{game.Away_Team}</h4>
+                        <span>{game.Away_Record}</span>
+                        <span style={{ paddingTop: 5 }}>@</span>
+                      </div>
+                    </div>
+                    <p>{game.Away_Money_line}</p>
+                    <p>{game.Away_Point_spread}</p>
+                    <p>{game.Away_Total_points}</p>
+                  </div>
+
+                  <div className={styles.team_format}>
+                    <div className={styles.name_logo}>
+                      <img
+                        className={styles.odds_logo}
+                        src={game.Away_logo}
+                      ></img>
+                      <div className={styles.name_record}>
+                        <h4>{game.Home_Team}</h4>
+                        <span>{game.Home_Record}</span>
+                      </div>
+                    </div>
+                    <p>{game.Home_Money_line}</p>
+                    <p>{game.Home_Point_spread}</p>
+                    <p>{game.Home_Total_points}</p>
+                  </div>
+                </div>
+              </>
             );
-          })} */}
+          })}
         </div>
       </div>
     </div>

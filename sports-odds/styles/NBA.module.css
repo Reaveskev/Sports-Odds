@@ -135,10 +135,83 @@
 }
 
 .upcoming {
-  /* text-decoration: underline; */
+  text-decoration: underline;
   margin: 20px 0 20px 0;
+  color: black;
 }
 
-/* .info_header {
-  margin: 5px 5px 5px 5px;
-} */
+.odds_table {
+  border-collapse: collapse;
+  font-family: sans-serif;
+  font-size: 14px;
+  margin: 0 auto;
+  width: 80%;
+}
+
+.odds_table th,
+.odds_table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.team_info {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  height: 165px;
+}
+
+.team_format {
+  margin-bottom: 10px;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team_header {
+  padding-top: 10px;
+  margin-bottom: 10px;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team_info h4 {
+  margin-top: 0;
+}
+
+.team_info p:first-of-type {
+  min-width: 72px;
+  padding: 0 0 10px;
+}
+
+.team_info p {
+  min-width: 120px;
+  padding: 0 0 10px;
+}
+
+.name_record {
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.odds_logo {
+  width: 30px;
+  height: 30px;
+}
+
+.name_logo {
+  display: flex;
+  width: 180px;
+  padding-left: 10px;
+}
