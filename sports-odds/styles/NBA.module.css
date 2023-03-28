@@ -149,8 +149,9 @@
   color: white;
   display: flex;
   flex-direction: column;
-  width: 600px;
-  height: 165px;
+  width: 620px;
+  height: 175px;
+  text-align: center;
 }
 
 .team_format {
@@ -194,6 +195,7 @@
 .odds_logo {
   width: 30px;
   height: 30px;
+  margin-right: 10px;
 }
 
 .name_logo {

@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 import { useRouter } from "next/router";
-import Papa from "papaparse";
 import Yahoo_Sports from "./Yahoo_Sports.csv";
-import { Table } from "@nextui-org/react";
 
 function NBA() {
   const [loading, setLoading] = useState(true);
@@ -14,8 +12,10 @@ function NBA() {
   const [upcoming, setUpcoming] = useState([]);
   const [NBANews, setNBANews] = useState([]);
   const [offseason, setoffseason] = useState(false);
+  const [sports_odds, setSports_Odds] = useState([]);
 
   useEffect(() => {
+    let temp = [];
     axios
       .get(
         "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
@@ -54,29 +54,20 @@ function NBA() {
           });
       });
 
-    // const fetchParseData = async (Yahoo_Sports) => {
-    //   Papa.parse(Yahoo_Sports),
-    //     {
-    //       header: true,
-    //       skipEmptyLines: true,
-    //       complete: (result) => {
-    //         console.log(result.data);
-    //       },
-    //     };
-    // };
-    // fetchParseData(Yahoo_Sports);
+    Yahoo_Sports.forEach((element) => {
+      if (element.League === "NBA") {
+        temp.push(element);
+      }
+    });
+    setSports_Odds(temp);
   }, []);
 
-  const handleCopy = (numbers) => {
-    let url = "http://localhost:3000/" + numbers;
-    navigator.clipboard.writeText(url);
-    console.log(url);
-    // router.push(url);
-  };
-
-  const remove_characters = (str) => {
-    return parseFloat(str.replace(/[^\d.-]/g, ""));
-  };
+  // const handleCopy = (numbers) => {
+  //   let url = "http://localhost:3000/" + numbers;
+  //   navigator.clipboard.writeText(url);
+  //   console.log(url);
+  //   // router.push(url);
+  // };
 
   return (
     <div>
@@ -271,7 +262,7 @@ function NBA() {
         <div className={styles.odds}>
           <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
 
-          {Yahoo_Sports.map((game) => {
+          {sports_odds.map((game) => {
             return (
               <>
                 <div className={styles.team_info}>
@@ -285,7 +276,7 @@ function NBA() {
                     <div className={styles.name_logo}>
                       <img
                         className={styles.odds_logo}
-                        src={game.Home_logo}
+                        src={game.Away_logo}
                       ></img>
                       <div className={styles.name_record}>
                         <h4>{game.Away_Team}</h4>
@@ -302,7 +293,7 @@ function NBA() {
                     <div className={styles.name_logo}>
                       <img
                         className={styles.odds_logo}
-                        src={game.Away_logo}
+                        src={game.Home_logo}
                       ></img>
                       <div className={styles.name_record}>
                         <h4>{game.Home_Team}</h4>

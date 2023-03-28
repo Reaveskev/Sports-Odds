@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
+import Yahoo_Sports from "./Yahoo_Sports.csv";
 
 function NHL() {
   const [loading, setLoading] = useState(true);
@@ -10,14 +11,15 @@ function NHL() {
   const [upcoming, setUpcoming] = useState([]);
   const [NHLNews, setNHLNews] = useState([]);
   const [offseason, setoffseason] = useState(false);
+  const [sports_odds, setSports_Odds] = useState([]);
 
   useEffect(() => {
+    let temp = [];
     axios
       .get(
         "https://statmilk.bleacherreport.com/api/scores/carousel?league=NHL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
       )
       .then((res) => {
-        console.log(res.data);
         if (res.data.game_groups[0] === undefined) {
           setoffseason(true);
         } else if (
@@ -48,6 +50,12 @@ function NHL() {
             setLoading(false);
           });
       });
+    Yahoo_Sports.forEach((element) => {
+      if (element.League === "NHL") {
+        temp.push(element);
+      }
+    });
+    setSports_Odds(temp);
   }, []);
 
   return (
@@ -226,6 +234,58 @@ function NHL() {
             </div>
           );
         })}
+      </div>
+      <div className={styles.odds_div}>
+        <div className={styles.odds}>
+          <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
+
+          {sports_odds.map((game) => {
+            return (
+              <>
+                <div className={styles.team_info}>
+                  <div className={styles.team_header}>
+                    <p style={{ minWidth: 180 }}></p>
+                    <p style={{ minWidth: 72 }}>Money Line</p>
+                    <p style={{ minWidth: 120 }}>Point Spread</p>
+                    <p style={{ minWidth: 120 }}>Total Points</p>
+                  </div>
+                  <div className={styles.team_format}>
+                    <div className={styles.name_logo}>
+                      <img
+                        className={styles.odds_logo}
+                        src={game.Away_logo}
+                      ></img>
+                      <div className={styles.name_record}>
+                        <h4>{game.Away_Team}</h4>
+                        <span>{game.Away_Record}</span>
+                        <span style={{ paddingTop: 5 }}>@</span>
+                      </div>
+                    </div>
+                    <p>{game.Away_Money_line}</p>
+                    <p>{game.Away_Point_spread}</p>
+                    <p>{game.Away_Total_points}</p>
+                  </div>
+
+                  <div className={styles.team_format}>
+                    <div className={styles.name_logo}>
+                      <img
+                        className={styles.odds_logo}
+                        src={game.Home_logo}
+                      ></img>
+                      <div className={styles.name_record}>
+                        <h4>{game.Home_Team}</h4>
+                        <span>{game.Home_Record}</span>
+                      </div>
+                    </div>
+                    <p>{game.Home_Money_line}</p>
+                    <p>{game.Home_Point_spread}</p>
+                    <p>{game.Home_Total_points}</p>
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
