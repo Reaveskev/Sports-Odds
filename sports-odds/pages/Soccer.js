@@ -4,44 +4,48 @@ import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 
 function Soccer() {
-  //   const [loading, setLoading] = useState(true);
-  //   const [completed, setCompleted] = useState([]);
-  //   const [inprogress, setInprogress] = useState([]);
-  //   const [upcoming, setUpcoming] = useState([]);
-  //   const [SoccerNews, setSoccerNews] = useState([]);
-  //   const [offseason, setoffseason] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [completed, setCompleted] = useState([]);
+  const [inprogress, setInprogress] = useState([]);
+  const [upcoming, setUpcoming] = useState([]);
+  const [SoccerNews, setSoccerNews] = useState([]);
+  const [offseason, setoffseason] = useState(false);
 
-  //   useEffect(() => {
-  //     axios
-  //       .get(
-  //         "https://statmilk.bleacherreport.com/api/scores/carousel?league=SOCCER&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-  //       )
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         if (res.data.game_groups[0] === undefined) {
-  //           setoffseason(true);
-  //         } else if (res.data.game_groups[0].name === "Friendlies") {
-  //           setInprogress(res.data.game_groups[0]);
-  //           setCompleted(res.data.game_groups[1]);
-  //           setUpcoming(res.data.game_groups[2]);
-  //         } else if (res.data.game_groups[0].name === "European Qualifiers") {
-  //           setCompleted(res.data.game_groups[0]);
-  //           setUpcoming(res.data.game_groups[1]);
-  //         } else {
-  //           setUpcoming(res.data.game_groups[0]);
-  //         }
-  //       })
-  //       .then(() => {
-  //         axios
-  //           .get(
-  //             "http://site.api.espn.com/apis/site/v2/sports/soccer/:league/news"
-  //           )
-  //           .then((res) => {
-  //             setSoccerNews(res.data.articles);
-  //             setLoading(false);
-  //           });
-  //       });
-  //   }, []);
+  //////
+  //  They need to be separated by league and then grouped by upcoming, inprogress and completed.
+  //////
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       "https://statmilk.bleacherreport.com/api/scores/carousel?league=SOCCER&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+  //     )
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       if (res.data.game_groups[0] === undefined) {
+  //         setoffseason(true);
+  //       } else if (res.data.game_groups[0].name === "Friendlies") {
+  //         setInprogress(res.data.game_groups[0]);
+  //         setCompleted(res.data.game_groups[1]);
+  //         setUpcoming(res.data.game_groups[2]);
+  //       } else if (res.data.game_groups[0].name === "European Qualifiers") {
+  //         setCompleted(res.data.game_groups[0]);
+  //         setUpcoming(res.data.game_groups[1]);
+  //       } else {
+  //         setUpcoming(res.data.game_groups[0]);
+  //       }
+  //     });
+  // .then(() => {
+  //   axios
+  //     .get(
+  //       "http://site.api.espn.com/apis/site/v2/sports/soccer/:league/news"
+  //     )
+  //     .then((res) => {
+  //       setSoccerNews(res.data.articles);
+  //       setLoading(false);
+  //     });
+  // });
+  // }, []);
 
   return (
     <div>
