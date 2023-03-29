@@ -10,7 +10,7 @@ os.chdir(path_to_repo)
 # execute Git command
 subprocess.run(['git', 'add', '.'])
 
-# execute a Git command that requires input from the user
+# execute a Git commit command 
 commit_msg = "Updated CSV"
 subprocess.run(['git', 'commit', '-m', commit_msg])
 
