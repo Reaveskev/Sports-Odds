@@ -7,7 +7,7 @@ import os
 path_to_repo = 'C:/Users/reave/OneDrive/Desktop/Sports-Odds'
 os.chdir(path_to_repo)
 
-# execute another Git command
+# execute Git command
 subprocess.run(['git', 'add', '.'])
 
 # execute a Git command that requires input from the user
