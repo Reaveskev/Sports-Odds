@@ -32,3 +32,30 @@
   top: 0;
   width: 100%;
 }
+
+.seeMore {
+  position: absolute;
+  vertical-align: top;
+  width: 150px;
+  height: 160px;
+  background-color: black;
+  border: 3px groove gray;
+  margin-top: 208px;
+  color: white;
+  box-shadow: inset;
+  box-shadow: 0 1px 1px 0 rgba(42, 42, 42, 0.3);
+}
+
+.seeMoreli {
+  margin: 0 10px 0 10px;
+  list-style: none;
+  color: white;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.seeMoreLink {
+  text-decoration: none;
+  color: white;
+}

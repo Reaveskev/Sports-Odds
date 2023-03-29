@@ -13,15 +13,6 @@ const inter = Inter({ subsets: ["latin"] });
 // Upcoming Games fetch("https://statmilk.bleacherreport.com/api/scores/schedules?date=2023-03-22&league=&appversion=500.0&context=", {
 //
 
-// College Football
-// Latest News: http://site.api.espn.com/apis/site/v2/sports/football/college-football/news
-
-//Men College Basketball
-// News: http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/news
-
-//Women College Basketball
-//News: http://site.api.espn.com/apis/site/v2/sports/basketball/womens-college-basketball/news
-
 export default function Home() {
   return (
     <div>
