@@ -19,5 +19,7 @@ subprocess.run(['git', 'push'])
 
 message = "Everything should be up to date now"
 
+##Test
+
 print(message)
 
