@@ -11,23 +11,6 @@ function NFL() {
   const [NFLNews, setNFLNews] = useState([]);
   const [offseason, setoffseason] = useState(false);
 
-  const config = {
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Methods": "GET",
-    },
-  };
-
-  const testURL =
-    "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news";
-  const myInit = {
-    method: "HEAD",
-    mode: "no-cors",
-  };
-
-  const myRequest = new Request(testURL, myInit);
-
   useEffect(() => {
     axios
       .get(
@@ -48,10 +31,14 @@ function NFL() {
         }
       })
       .then(() => {
-        fetch(myRequest).then((res) => {
-          setNFLNews(res.data.articles);
-          setLoading(false);
-        });
+        axios
+          .get(
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+          )
+          .then((res) => {
+            setNFLNews(res.data.articles);
+            setLoading(false);
+          });
       });
   }, []);
 
