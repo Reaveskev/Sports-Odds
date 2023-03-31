@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS, cross_origin
 from bs4 import BeautifulSoup
 import requests
+import os
 
 
 
@@ -33,6 +34,13 @@ else:
 @app.route("/")  
 def index():  
     return app.send_static_file('index.html')
+
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 @app.errorhandler(404)  
 def not_found(err):  
