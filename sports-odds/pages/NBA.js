@@ -54,6 +54,10 @@ function NBA() {
           });
       });
 
+    axios.get("http://127.0.0.1:5000").then((res) => {
+      console.log(res.data);
+    });
+
     Yahoo_Sports.forEach((element) => {
       if (element.League === "NBA") {
         temp.push(element);
@@ -93,7 +97,7 @@ function NBA() {
                     {inprogress.games.map((games) => {
                       return (
                         <div
-                          onClick={() => handleCopy(games.id)}
+                          // onClick={() => handleCopy(games.id)}
                           className={styles.games}
                           key={games.id}
                         >
@@ -189,7 +193,7 @@ function NBA() {
                     {upcoming.games.map((games) => {
                       return (
                         <div
-                          onClick={() => handleCopy(games.id)}
+                          // onClick={() => handleCopy(games.id)}
                           className={styles.games}
                           key={games.id}
                         >
