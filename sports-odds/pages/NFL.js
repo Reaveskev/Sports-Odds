@@ -19,6 +19,15 @@ function NFL() {
     },
   };
 
+  const testURL =
+    "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news";
+  const myInit = {
+    method: "HEAD",
+    mode: "no-cors",
+  };
+
+  const myRequest = new Request(testURL, myInit);
+
   useEffect(() => {
     axios
       .get(
@@ -39,15 +48,10 @@ function NFL() {
         }
       })
       .then(() => {
-        axios
-          .get(
-            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news",
-            config
-          )
-          .then((res) => {
-            setNFLNews(res.data.articles);
-            setLoading(false);
-          });
+        fetch(myRequest).then((res) => {
+          setNFLNews(res.data.articles);
+          setLoading(false);
+        });
       });
   }, []);
 
