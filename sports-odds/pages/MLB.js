@@ -45,7 +45,9 @@ function MLB() {
       })
       .then(() => {
         axios
-          .get("http://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news")
+          .get(
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"
+          )
           .then((res) => {
             setMLBNews(res.data.articles);
             setLoading(false);

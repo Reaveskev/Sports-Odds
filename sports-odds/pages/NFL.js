@@ -11,10 +11,18 @@ function NFL() {
   const [NFLNews, setNFLNews] = useState([]);
   const [offseason, setoffseason] = useState(false);
 
+  const config = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+  };
+
   useEffect(() => {
     axios
       .get(
-        "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+        "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0",
+        config
       )
       .then((res) => {
         if (res.data.game_groups[0] === undefined) {
