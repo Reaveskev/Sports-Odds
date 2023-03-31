@@ -9,6 +9,7 @@ function Soccer() {
   const [inprogress, setInprogress] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [SoccerNews, setSoccerNews] = useState([]);
+  const [SoccerNews2, setSoccerNews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
 
   //////
@@ -43,6 +44,15 @@ function Soccer() {
   //     .then((res) => {
   //       setSoccerNews(res.data.articles);
   //       setLoading(false);
+  //     });
+  // }).then(() => {
+  //     axios
+  //     .get(
+  //       // "https://sports-odds.herokuapp.com/SOCCER_NEWS" ||
+  //       "http://127.0.0.1:5000/SOCCER_NEWS"
+  //     )
+  //     .then((res) => {
+  //       setSoccerNews2(res.data);
   //     });
   // });
   // }, []);
@@ -225,6 +235,21 @@ function Soccer() {
     //             </div>
     //           );
     //         })}
+    // {SoccerNews2.map((news) => {
+    //   return (
+    //     <div className={styles.newInfo} key={news.headline}>
+    //       <header>{news.headline}</header>
+    //       <a href={news.links}>
+    //         <img
+    //           className={styles.Pic}
+    //           alt="randomnews"
+    //           src={news.image}
+    //         ></img>
+    //       </a>
+    //       <p>{news.description}</p>
+    //     </div>
+    //   );
+    // })}
     //       </div>
     // </div>
   );

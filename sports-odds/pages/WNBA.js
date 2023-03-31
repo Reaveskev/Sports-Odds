@@ -17,7 +17,6 @@ function WNBA() {
         "https://statmilk.bleacherreport.com/api/scores/carousel?league=WNBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
       )
       .then((res) => {
-        console.log(res.data);
         if (res.data.game_groups[0] === undefined) {
           setoffseason(true);
         } else if (

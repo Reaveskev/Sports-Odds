@@ -11,6 +11,7 @@ function NBA() {
   const [inprogress, setInprogress] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [NBANews, setNBANews] = useState([]);
+  const [NBANews2, setNBANews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
   const [sports_odds, setSports_Odds] = useState([]);
 
@@ -52,6 +53,17 @@ function NBA() {
             setNBANews(res.data.articles);
             setLoading(false);
           });
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/NBA_NEWS"
+            // ||
+            // "http://127.0.0.1:5000/NBA_NEWS"
+          )
+          .then((res) => {
+            setNBANews2(res.data);
+          });
       });
 
     Yahoo_Sports.forEach((element) => {
@@ -85,11 +97,7 @@ function NBA() {
                   <>
                     {inprogress.games.map((games) => {
                       return (
-                        <div
-                          // onClick={() => handleCopy(games.id)}
-                          className={styles.games}
-                          key={games.id}
-                        >
+                        <div className={styles.games} key={games.id}>
                           <div className={styles.date}>
                             {games.game_progress.primary}
                           </div>
@@ -181,11 +189,7 @@ function NBA() {
                   <>
                     {upcoming.games.map((games) => {
                       return (
-                        <div
-                          // onClick={() => handleCopy(games.id)}
-                          className={styles.games}
-                          key={games.id}
-                        >
+                        <div className={styles.games} key={games.id}>
                           <div className={styles.date}>
                             {games.game_progress.primary}
                           </div>
@@ -244,6 +248,21 @@ function NBA() {
                   className={styles.Pic}
                   alt="randomnews"
                   src={news.images[0].url}
+                ></img>
+              </a>
+              <p>{news.description}</p>
+            </div>
+          );
+        })}
+        {NBANews2.map((news) => {
+          return (
+            <div className={styles.newInfo} key={news.headline}>
+              <header>{news.headline}</header>
+              <a href={news.links}>
+                <img
+                  className={styles.Pic}
+                  alt="randomnews"
+                  src={news.image}
                 ></img>
               </a>
               <p>{news.description}</p>

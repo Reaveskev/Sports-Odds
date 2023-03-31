@@ -10,6 +10,7 @@ function NHL() {
   const [inprogress, setInprogress] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [NHLNews, setNHLNews] = useState([]);
+  const [NHLNews2, setNHLNews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
   const [sports_odds, setSports_Odds] = useState([]);
 
@@ -48,6 +49,17 @@ function NHL() {
           .then((res) => {
             setNHLNews(res.data.articles);
             setLoading(false);
+          });
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/NHL_NEWS"
+            // ||
+            //   "http://127.0.0.1:5000/NHL_NEWS"
+          )
+          .then((res) => {
+            setNHLNews2(res.data);
           });
       });
     Yahoo_Sports.forEach((element) => {
@@ -228,6 +240,21 @@ function NHL() {
                   className={styles.Pic}
                   alt="randomnews"
                   src={news.images[0].url}
+                ></img>
+              </a>
+              <p>{news.description}</p>
+            </div>
+          );
+        })}
+        {NHLNews2.map((news) => {
+          return (
+            <div className={styles.newInfo} key={news.headline}>
+              <header>{news.headline}</header>
+              <a href={news.links}>
+                <img
+                  className={styles.Pic}
+                  alt="randomnews"
+                  src={news.image}
                 ></img>
               </a>
               <p>{news.description}</p>

@@ -5,6 +5,7 @@ import Header from "@/src/Header";
 
 const CFB = () => {
   const [CFBnews, setCFBnews] = useState([]);
+  const [CFBnews2, setCFBnews2] = useState([]);
   const [loading, setLoading] = useState([true]);
 
   useEffect(() => {
@@ -15,6 +16,17 @@ const CFB = () => {
       .then((res) => {
         setCFBnews(res.data.articles);
         setLoading(false);
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/CFB_NEWS"
+            // ||
+            // "http://127.0.0.1:5000/CFB_NEWS"
+          )
+          .then((res) => {
+            setCFBnews2(res.data);
+          });
       });
   }, []);
 
@@ -41,6 +53,21 @@ const CFB = () => {
                       className={styles.Pic}
                       alt="randomnews"
                       src={news.images[0].url}
+                    ></img>
+                  </a>
+                  <p>{news.description}</p>
+                </div>
+              );
+            })}
+            {CFBnews2.map((news) => {
+              return (
+                <div className={styles.newInfo} key={news.headline}>
+                  <header>{news.headline}</header>
+                  <a href={news.links}>
+                    <img
+                      className={styles.Pic}
+                      alt="randomnews"
+                      src={news.image}
                     ></img>
                   </a>
                   <p>{news.description}</p>

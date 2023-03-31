@@ -13,7 +13,7 @@ function Header() {
         }}
         className={styles.li}
       >
-        <Link className={styles.link} href="/Homescreen">
+        <Link className={styles.link} href="/">
           Home
         </Link>
       </li>

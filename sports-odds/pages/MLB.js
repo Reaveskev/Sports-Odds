@@ -10,6 +10,7 @@ function MLB() {
   const [inprogress, setInprogress] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [MLBNews, setMLBNews] = useState([]);
+  const [MLBNews2, setMLBNews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
   const [sports_odds, setSports_Odds] = useState([]);
 
@@ -20,7 +21,6 @@ function MLB() {
         "https://statmilk.bleacherreport.com/api/scores/carousel?league=MLB&team=none&carousel_context=league&tz=-25200&appversion=500.0"
       )
       .then((res) => {
-        console.log(res.data);
         if (res.data.game_groups[0] === undefined) {
           setoffseason(true);
         } else if (
@@ -52,12 +52,25 @@ function MLB() {
             setMLBNews(res.data.articles);
             setLoading(false);
           });
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/MLB_NEWS"
+            // ||
+            // "http://127.0.0.1:5000/MLB_NEWS"
+          )
+          .then((res) => {
+            setMLBNews2(res.data);
+          });
+      })
+      .then(() => {
+        Yahoo_Sports.forEach((element) => {
+          if (element.League === "MLB") {
+            temp.push(element);
+          }
+        });
       });
-    Yahoo_Sports.forEach((element) => {
-      if (element.League === "MLB") {
-        temp.push(element);
-      }
-    });
     setSports_Odds(temp);
   }, []);
 
@@ -231,6 +244,21 @@ function MLB() {
                   className={styles.Pic}
                   alt="randomnews"
                   src={news.images[0].url}
+                ></img>
+              </a>
+              <p>{news.description}</p>
+            </div>
+          );
+        })}
+        {MLBNews2.map((news) => {
+          return (
+            <div className={styles.newInfo} key={news.headline}>
+              <header>{news.headline}</header>
+              <a href={news.links}>
+                <img
+                  className={styles.Pic}
+                  alt="randomnews"
+                  src={news.image}
                 ></img>
               </a>
               <p>{news.description}</p>
