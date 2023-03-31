@@ -35,7 +35,7 @@ function NFL() {
           "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news/",
           {
             method: "GET",
-            mode: "no-cors",
+            mode: "*cors",
           }
         ).then((res) => {
           setNFLNews(res.data.articles);
