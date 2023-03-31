@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-import Image from "next/image";
 
 const MCBB = () => {
   const [MCBBnews, setMCBBnews] = useState([]);
@@ -38,7 +37,7 @@ const MCBB = () => {
                 <div className={styles.newInfo} key={news.headline}>
                   <header>{news.headline}</header>
                   <a href={news.links.web.href}>
-                    <Image
+                    <img
                       className={styles.Pic}
                       height={325}
                       width={575}

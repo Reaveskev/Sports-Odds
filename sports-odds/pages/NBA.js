@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-import Image from "next/image";
 import Yahoo_Sports from "./Yahoo_Sports.csv";
 
 function NBA() {
@@ -106,7 +105,7 @@ function NBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <Image
+                              <img
                                 alt=""
                                 className={styles.logo}
                                 src={games.team_one.logo}
@@ -122,7 +121,7 @@ function NBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <Image
+                              <img
                                 alt=""
                                 className={styles.logo}
                                 src={games.team_two.logo}
@@ -154,7 +153,7 @@ function NBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <Image
+                              <img
                                 alt=""
                                 className={styles.logo}
                                 src={games.team_one.logo}
@@ -170,7 +169,7 @@ function NBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <Image
+                              <img
                                 alt=""
                                 className={styles.logo}
                                 src={games.team_two.logo}
@@ -202,7 +201,7 @@ function NBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <Image
+                              <img
                                 alt=""
                                 className={styles.logo}
                                 src={games.team_one.logo}
@@ -218,7 +217,7 @@ function NBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <Image
+                              <img
                                 alt=""
                                 className={styles.logo}
                                 src={games.team_two.logo}
@@ -250,7 +249,7 @@ function NBA() {
             <div className={styles.newInfo} key={news.headline}>
               <header>{news.headline}</header>
               <a href={news.links.web.href}>
-                <Image
+                <img
                   className={styles.Pic}
                   height={325}
                   width={575}
@@ -267,7 +266,7 @@ function NBA() {
             <div className={styles.newInfo} key={news.headline}>
               <header>{news.headline}</header>
               <a href={news.links}>
-                <Image
+                <img
                   className={styles.Pic}
                   height={325}
                   width={575}
@@ -296,7 +295,7 @@ function NBA() {
                   </div>
                   <div className={styles.team_format}>
                     <div className={styles.name_logo}>
-                      <Image
+                      <img
                         alt=""
                         className={styles.odds_logo}
                         src={game.Away_logo}
@@ -314,7 +313,7 @@ function NBA() {
 
                   <div className={styles.team_format}>
                     <div className={styles.name_logo}>
-                      <Image
+                      <img
                         alt=""
                         className={styles.odds_logo}
                         src={game.Home_logo}

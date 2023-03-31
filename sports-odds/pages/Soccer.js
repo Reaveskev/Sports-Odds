@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-import Image from "next/image";
 
 function Soccer() {
   const [loading, setLoading] = useState(true);
@@ -92,7 +91,7 @@ function Soccer() {
     //                           </div>
     //                           <div className={styles.teamContainer}>
     //                             <div className={styles.logoDiv}>
-    //                               <Image
+    //                               <img
     //  alt=''
     //                                 className={styles.logo}
     //                                 src={games.team_one.logo}
@@ -108,7 +107,7 @@ function Soccer() {
     //                           </div>
     //                           <div className={styles.teamContainer}>
     //                             <div className={styles.logoDiv}>
-    //                               <Image
+    //                               <img
     //  alt=''
     //                                 className={styles.logo}
     //                                 src={games.team_two.logo}
@@ -140,7 +139,7 @@ function Soccer() {
     //                           </div>
     //                           <div className={styles.teamContainer}>
     //                             <div className={styles.logoDiv}>
-    //                               <Image
+    //                               <img
     //  alt=''
     //                                 className={styles.logo}
     //                                 src={games.team_one.logo}
@@ -156,7 +155,7 @@ function Soccer() {
     //                           </div>
     //                           <div className={styles.teamContainer}>
     //                             <div className={styles.logoDiv}>
-    //                               <Image
+    //                               <img
     //  alt=''
     //                                 className={styles.logo}
     //                                 src={games.team_two.logo}
@@ -186,7 +185,7 @@ function Soccer() {
     //                       </div>
     //                       <div className={styles.teamContainer}>
     //                         <div className={styles.logoDiv}>
-    //                           <Image
+    //                           <img
     //  alt=''
     //                             className={styles.logo}
     //                             src={games.team_one.logo}
@@ -202,7 +201,7 @@ function Soccer() {
     //                       </div>
     //                       <div className={styles.teamContainer}>
     //                         <div className={styles.logoDiv}>
-    //                           <Image
+    //                           <img
     //  alt=''
     //                             className={styles.logo}
     //                             src={games.team_two.logo}
@@ -232,7 +231,7 @@ function Soccer() {
     //             <div className={styles.newInfo} key={news.headline}>
     //               <header>{news.headline}</header>
     //               <a href={news.links.web.href}>
-    //                 <Image
+    //                 <img
     //                   className={styles.Pic}
     // height={325}
     // width={575}
@@ -249,7 +248,7 @@ function Soccer() {
     //     <div className={styles.newInfo} key={news.headline}>
     //       <header>{news.headline}</header>
     //       <a href={news.links}>
-    //         <Image
+    //         <img
     //           className={styles.Pic}
     // height={325}
     // width={575}
