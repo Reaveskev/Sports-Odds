@@ -9,6 +9,7 @@ function NFL() {
   const [inprogress, setInprogress] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [NFLNews, setNFLNews] = useState([]);
+  const [NFLNews2, setNFLNews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
 
   useEffect(() => {
@@ -31,11 +32,18 @@ function NFL() {
         }
       })
       .then(() => {
-        axios(
-          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
-        ).then((res) => {
-          setNFLNews(res.data.articles);
-          setLoading(false);
+        axios
+          .get(
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+          )
+          .then((res) => {
+            setNFLNews(res.data.articles);
+            setLoading(false);
+          });
+      })
+      .then(() => {
+        axios.get("https://sports-odds.herokuapp.com/NBA_NEWS").then((res) => {
+          setNFLNews2(res.data);
         });
       });
   }, []);
@@ -213,6 +221,21 @@ function NFL() {
                 ></img>
               </a>
               <p>{news.description}</p>
+            </div>
+          );
+        })}
+        {NFLNews2.map((news) => {
+          return (
+            <div className={styles.newInfo} key={news.headline}>
+              <header>{news[0]}</header>
+              <a href={news[4]}>
+                <img
+                  className={styles.Pic}
+                  alt="randomnews"
+                  src={news[1]}
+                ></img>
+              </a>
+              <p>{news[3]}</p>
             </div>
           );
         })}

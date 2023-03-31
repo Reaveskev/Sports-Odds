@@ -54,10 +54,6 @@ function NBA() {
           });
       });
 
-    axios.get("https://sports-odds.herokuapp.com/NBA_NEWS").then((res) => {
-      console.log(res.data);
-    });
-
     Yahoo_Sports.forEach((element) => {
       if (element.League === "NBA") {
         temp.push(element);
