@@ -229,11 +229,11 @@ function NFL() {
           return (
             <div className={styles.newInfo} key={news.headline}>
               <header>{news.headline}</header>
-              <a href={news.url}>
+              <a href={news.links}>
                 <img
                   className={styles.Pic}
                   alt="randomnews"
-                  src={news.img}
+                  src={news.image}
                 ></img>
               </a>
               <p>{news.description}</p>
