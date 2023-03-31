@@ -31,12 +31,8 @@ function NFL() {
         }
       })
       .then(() => {
-        fetch(
-          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news/",
-          {
-            method: "GET",
-            mode: "*cors",
-          }
+        axios(
+          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
         ).then((res) => {
           setNFLNews(res.data.articles);
           setLoading(false);
