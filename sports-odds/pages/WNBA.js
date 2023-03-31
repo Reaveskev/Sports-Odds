@@ -43,7 +43,7 @@ function WNBA() {
       .then(() => {
         axios
           .get(
-            "http://site.api.espn.com/apis/site/v2/sports/basketball/wnba/news"
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/news"
           )
           .then((res) => {
             setWNBANews(res.data.articles);

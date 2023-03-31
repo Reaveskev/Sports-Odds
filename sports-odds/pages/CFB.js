@@ -10,7 +10,7 @@ const CFB = () => {
   useEffect(() => {
     axios
       .get(
-        "http://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
+        "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
       )
       .then((res) => {
         setCFBnews(res.data.articles);

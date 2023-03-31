@@ -32,7 +32,9 @@ function NFL() {
       })
       .then(() => {
         axios
-          .get("http://site.api.espn.com/apis/site/v2/sports/football/nfl/news")
+          .get(
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+          )
           .then((res) => {
             setNFLNews(res.data.articles);
             setLoading(false);

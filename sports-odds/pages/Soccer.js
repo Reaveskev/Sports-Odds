@@ -38,7 +38,7 @@ function Soccer() {
   // .then(() => {
   //   axios
   //     .get(
-  //       "http://site.api.espn.com/apis/site/v2/sports/soccer/:league/news"
+  //       "https://site.api.espn.com/apis/site/v2/sports/soccer/:league/news"
   //     )
   //     .then((res) => {
   //       setSoccerNews(res.data.articles);

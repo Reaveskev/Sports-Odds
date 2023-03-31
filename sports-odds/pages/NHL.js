@@ -44,7 +44,7 @@ function NHL() {
       })
       .then(() => {
         axios
-          .get("http://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news")
+          .get("https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news")
           .then((res) => {
             setNHLNews(res.data.articles);
             setLoading(false);

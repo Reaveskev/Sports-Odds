@@ -46,7 +46,7 @@ function NBA() {
       .then(() => {
         axios
           .get(
-            "http://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
           )
           .then((res) => {
             setNBANews(res.data.articles);
@@ -54,7 +54,7 @@ function NBA() {
           });
       });
 
-    axios.get("https://sports-odds.herokuapp.com/").then((res) => {
+    axios.get("https://sports-odds.herokuapp.com/NBA_NEWS").then((res) => {
       console.log(res.data);
     });
 

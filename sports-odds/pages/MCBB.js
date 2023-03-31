@@ -10,7 +10,7 @@ const MCBB = () => {
   useEffect(() => {
     axios
       .get(
-        "http://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/news"
+        "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/news"
       )
       .then((res) => {
         setMCBBnews(res.data.articles);
