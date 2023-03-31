@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
+
 app = Flask(__name__, static_url_path='/', static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
@@ -53,10 +54,7 @@ def scrape_NFL_News():
         news_list.append(nfl_news)
         
         
-        
-
-    
-    return news_list
+    return jsonify(news_list)
     
 if __name__ == "__main__":
   app.debug=True
