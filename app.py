@@ -29,10 +29,9 @@ def scrape_NFL_News():
 
     news_div = soup.findAll("div", {"class":"list-item"})
 
-    nfl_news = {}
+    news_list =[]
 
-    for news, i in zip(news_div, range(10)):
-        news_list =[]
+    for news, i in enumerate(news_div):
         headline_tag = news.find("span", {"class":"rdf-meta hidden"})
         headline = headline_tag['content']
         picture = news.find('picture')
@@ -41,15 +40,23 @@ def scrape_NFL_News():
         description_div = news.find("div", {"class": "list-item__title"})
         description = description_div.find("a").text
         url = "https://www.sportingnews.com" + description_div.find("a")["href"]
-        news_list.append(headline)
-        news_list.append(img)
-        news_list.append(description)
-        news_list.append(url)
-        nfl_news[i] = news_list
+        # news_list.append(headline)
+        # news_list.append(img)
+        # news_list.append(description)
+        # news_list.append(url)
+        nfl_news = {"headline": headline,
+                    "links": url,
+                    "image": img,
+                    "description": description
+                    }
+
+        news_list.append(nfl_news)
+        
+        
         
 
     
-    return nfl_news
+    return news_list
     
 if __name__ == "__main__":
   app.debug=True
