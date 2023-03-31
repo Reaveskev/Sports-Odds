@@ -43,7 +43,7 @@ function NFL() {
       })
       .then(() => {
         axios.get("https://sports-odds.herokuapp.com/NFL_NEWS").then((res) => {
-          console.log(res.data);
+          console.log(res);
         });
       });
   }, []);
