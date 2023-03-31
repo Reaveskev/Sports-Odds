@@ -52,7 +52,9 @@ const CFB = () => {
                   <a href={news.links.web.href}>
                     <Image
                       className={styles.Pic}
-                      alt={news.links.web.href}
+                      height={325}
+                      width={575}
+                      alt=""
                       src={news.images[0].url}
                     />
                   </a>
@@ -67,7 +69,9 @@ const CFB = () => {
                   <a href={news.links}>
                     <Image
                       className={styles.Pic}
-                      alt={news.links}
+                      height={325}
+                      width={575}
+                      alt=""
                       src={news.image}
                     />
                   </a>
