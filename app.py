@@ -11,7 +11,7 @@ app = Flask(__name__, static_url_path='', static_folder='sports-odds/build')
 CORS(app, support_credentials=True)
 
 
-@app.route('/')
+@app.route('/NBA_NEWS')
 @cross_origin(supports_credentials=True)
 def scrape_NFL_News():
     # url = request.json.get('https://www.sportingnews.com/us/nfl')
