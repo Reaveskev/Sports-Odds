@@ -31,14 +31,19 @@ function NFL() {
         }
       })
       .then(() => {
-        axios
-          .get(
-            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
-          )
-          .then((res) => {
-            setNFLNews(res.data.articles);
-            setLoading(false);
-          });
+        axios(
+          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news/",
+          {
+            method: "GET",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+          }
+        ).then((res) => {
+          setNFLNews(res.data.articles);
+          setLoading(false);
+        });
       });
   }, []);
 
