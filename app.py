@@ -49,8 +49,8 @@ def scrape_NFL_News():
         news_list.append(nfl_news)
         
         
-    # return news_list
-    return "Its Working"
+    return jsonify(news_list)
+
     
 if __name__ == "__main__":
   app.debug=True
