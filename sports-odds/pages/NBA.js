@@ -62,13 +62,6 @@ function NBA() {
     setSports_Odds(temp);
   }, []);
 
-  // const handleCopy = (numbers) => {
-  //   let url = "http://localhost:3000/" + numbers;
-  //   navigator.clipboard.writeText(url);
-  //   console.log(url);
-  //   // router.push(url);
-  // };
-
   return (
     <div>
       <Header />

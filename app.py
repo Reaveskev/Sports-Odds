@@ -18,7 +18,7 @@ def index():
 def not_found(err):  
     return app.send_static_file('404.html')
 
-@app.route('/NBA_NEWS')
+@app.route('/NFL_NEWS')
 @cross_origin(supports_credentials=True)
 def scrape_NFL_News():
     # url = request.json.get('https://www.sportingnews.com/us/nfl')
