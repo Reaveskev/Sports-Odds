@@ -37,4 +37,21 @@ module.exports = {
     loader: "akamai",
     path: "/",
   },
+  exportPathMap: async function (
+    defaultPathMap,
+    { dev, dir, outDir, distDir, buildId }
+  ) {
+    return {
+      "/": { page: "/" },
+      "/NFL": { page: "/NFL" },
+      "/NBA": { page: "/NBA" },
+      "/NHL": { page: "/NHL" },
+      "/WNBA": { page: "/WNBA" },
+      "/CFB": { page: "/CFB" },
+      "/Soccer": { page: "/Soccer" },
+      "/MLB": { page: "/MLB" },
+      "/MCBB": { page: "/MCBB" },
+      "/WCBB": { page: "/WCBB" },
+    };
+  },
 };

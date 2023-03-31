@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
+import Image from "next/image";
 
 const WCBB = () => {
   const [WCBBnews, setWCBBnews] = useState([]);
@@ -37,11 +38,11 @@ const WCBB = () => {
                 <div className={styles.newInfo} key={news.headline}>
                   <header>{news.headline}</header>
                   <a href={news.links.web.href}>
-                    <img
+                    <Image
                       className={styles.Pic}
-                      alt="randomnews"
+                      alt={news.links.web.href}
                       src={news.images[0].url}
-                    ></img>
+                    />
                   </a>
                   <p>{news.description}</p>
                 </div>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
+import Image from "next/image";
 
 function WNBA() {
   const [loading, setLoading] = useState(true);
@@ -83,10 +84,11 @@ function WNBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <img
+                              <Image
+                                alt={games.team_one.logo}
                                 className={styles.logo}
                                 src={games.team_one.logo}
-                              ></img>
+                              />
                             </div>
                             <div className={styles.teamName}>
                               {games.team_one.abbrev}
@@ -98,10 +100,11 @@ function WNBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <img
+                              <Image
+                                alt={games.team_two.logo}
                                 className={styles.logo}
                                 src={games.team_two.logo}
-                              ></img>
+                              />
                             </div>
                             <div className={styles.teamName}>
                               {games.team_two.abbrev}
@@ -129,10 +132,11 @@ function WNBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <img
+                              <Image
+                                alt={games.team_one.logo}
                                 className={styles.logo}
                                 src={games.team_one.logo}
-                              ></img>
+                              />
                             </div>
                             <div className={styles.teamName}>
                               {games.team_one.abbrev}
@@ -144,10 +148,11 @@ function WNBA() {
                           </div>
                           <div className={styles.teamContainer}>
                             <div className={styles.logoDiv}>
-                              <img
+                              <Image
+                                alt={games.team_two.logo}
                                 className={styles.logo}
                                 src={games.team_two.logo}
-                              ></img>
+                              />
                             </div>
                             <div className={styles.teamName}>
                               {games.team_two.abbrev}
@@ -173,10 +178,11 @@ function WNBA() {
                       </div>
                       <div className={styles.teamContainer}>
                         <div className={styles.logoDiv}>
-                          <img
+                          <Image
+                            alt={games.team_one.logo}
                             className={styles.logo}
                             src={games.team_one.logo}
-                          ></img>
+                          />
                         </div>
                         <div className={styles.teamName}>
                           {games.team_one.abbrev}
@@ -188,10 +194,11 @@ function WNBA() {
                       </div>
                       <div className={styles.teamContainer}>
                         <div className={styles.logoDiv}>
-                          <img
+                          <Image
+                            alt={games.team_two.logo}
                             className={styles.logo}
                             src={games.team_two.logo}
-                          ></img>
+                          />
                         </div>
                         <div className={styles.teamName}>
                           {games.team_two.abbrev}
@@ -217,11 +224,11 @@ function WNBA() {
             <div className={styles.newInfo} key={news.headline}>
               <header>{news.headline}</header>
               <a href={news.links.web.href}>
-                <img
+                <Image
                   className={styles.Pic}
-                  alt="randomnews"
+                  alt={news.links.web.href}
                   src={news.images[0].url}
-                ></img>
+                />
               </a>
               <p>{news.description}</p>
             </div>
