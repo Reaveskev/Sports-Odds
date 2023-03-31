@@ -54,7 +54,7 @@ function NBA() {
           });
       });
 
-    axios.get("http://127.0.0.1:5000").then((res) => {
+    axios.get("https://sports-odds.herokuapp.com/").then((res) => {
       console.log(res.data);
     });
 
