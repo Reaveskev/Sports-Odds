@@ -31,7 +31,7 @@ def scrape_NFL_News():
 
     news_list =[]
 
-    for news, i in enumerate(news_div):
+    for news in news_div:
         headline_tag = news.find("span", {"class":"rdf-meta hidden"})
         headline = headline_tag['content']
         picture = news.find('picture')
@@ -44,16 +44,13 @@ def scrape_NFL_News():
         # news_list.append(img)
         # news_list.append(description)
         # news_list.append(url)
-        nfl_news = {"headline": headline,
-                    "links": url,
-                    "image": img,
-                    "description": description
-                    }
+        nfl_news = {"headline": headline, "links": url, "image": img, "description": description}
 
         news_list.append(nfl_news)
         
         
-    return news_list
+    # return news_list
+    return "Its Working"
     
 if __name__ == "__main__":
   app.debug=True
