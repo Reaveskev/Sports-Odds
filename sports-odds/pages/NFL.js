@@ -31,14 +31,11 @@ function NFL() {
         }
       })
       .then(() => {
-        axios(
+        fetch(
           "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news/",
           {
             method: "GET",
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              "Content-Type": "application/json",
-            },
+            mode: "no-cors",
           }
         ).then((res) => {
           setNFLNews(res.data.articles);
