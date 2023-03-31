@@ -43,7 +43,7 @@ function NFL() {
       })
       .then(() => {
         axios.get("https://sports-odds.herokuapp.com/NFL_NEWS").then((res) => {
-          setNFLNews((NFLNews) => [...NFLNews, res.data]);
+          setNFLNews2(res.data);
         });
       });
   }, []);
@@ -224,21 +224,21 @@ function NFL() {
             </div>
           );
         })}
-        {/* {NFLNews2.map((news) => {
+        {NFLNews2.map((news) => {
           return (
             <div className={styles.newInfo} key={news.headline}>
-              <header>{news[0]}</header>
-              <a href={news[4]}>
+              <header>{news.headline}</header>
+              <a href={news.url}>
                 <img
                   className={styles.Pic}
                   alt="randomnews"
-                  src={news[1]}
+                  src={news.img}
                 ></img>
               </a>
-              <p>{news[3]}</p>
+              <p>{news.description}</p>
             </div>
           );
-        })} */}
+        })}
       </div>
     </div>
   );
