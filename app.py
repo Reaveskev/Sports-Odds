@@ -22,7 +22,6 @@ def not_found(err):
 @app.route('/NFL_NEWS')
 @cross_origin(supports_credentials=True)
 def scrape_NFL_News():
-    # url = request.json.get('https://www.sportingnews.com/us/nfl')
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/nfl')
 
@@ -48,7 +47,7 @@ def scrape_NFL_News():
         nfl_news = {"headline": headline,
                     "links": url,
                     "image": img,
-                    "description": description,
+                    "description": description
                     }
 
         news_list.append(nfl_news)
