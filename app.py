@@ -48,7 +48,7 @@ def scrape_NFL_News():
         nfl_news = {"headline": headline,
                     "links": url,
                     "image": img,
-                    "description": description
+                    "description": description,
                     }
 
         news_list.append(nfl_news)
