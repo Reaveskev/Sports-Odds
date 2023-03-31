@@ -19,6 +19,7 @@
 // module.exports = nextConfig;
 
 module.exports = {
+  trailingSlash: true,
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.csv$/,
@@ -36,5 +37,4 @@ module.exports = {
     loader: "akamai",
     path: "/",
   },
-  trailingSlash: true,
 };
