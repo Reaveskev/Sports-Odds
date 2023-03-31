@@ -42,12 +42,11 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
-@app.errorhandler(404)  
-def not_found(err):  
-    return app.send_static_file('404.html')
+# @app.errorhandler(404)  
+# def not_found(err):  
+#     return app.send_static_file('404.html')
 
 @app.route('/NFL_NEWS')
-# @cross_origin(supports_credentials=True)
 def scrape_NFL_News():
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/nfl')
@@ -75,7 +74,6 @@ def scrape_NFL_News():
     return jsonify(news_list)
 
 @app.route('/NBA_NEWS')
-# @cross_origin(supports_credentials=True)
 def scrape_NFL_Nba():
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/nba')
@@ -105,7 +103,6 @@ def scrape_NFL_Nba():
 
 
 @app.route('/MLB_NEWS')
-# @cross_origin(supports_credentials=True)
 def scrape_MLB_News():
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/mlb/news')
@@ -134,7 +131,6 @@ def scrape_MLB_News():
 
 
 @app.route('/NHL_NEWS')
-# @cross_origin(supports_credentials=True)
 def scrape_NHL_News():
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/nhl/news')
@@ -162,7 +158,6 @@ def scrape_NHL_News():
     return jsonify(news_list)
 
 @app.route('/CFB_NEWS')
-# @cross_origin(supports_credentials=True)
 def scrape_CFB_News():
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/ncaa-football/news')
@@ -192,7 +187,6 @@ def scrape_CFB_News():
 
 
 @app.route('/SOCCER_NEWS')
-# @cross_origin(supports_credentials=True)
 def scrape_SOCCER_News():
     
     page_to_scrape = requests.get('https://www.sportingnews.com/us/soccer/news')
