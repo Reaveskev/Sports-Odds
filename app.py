@@ -7,9 +7,16 @@ from bs4 import BeautifulSoup
 import requests
 
 
-app = Flask(__name__, static_url_path='', static_folder='sports-odds/build')
+app = Flask(__name__, static_url_path='/', static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
+@app.route("/")  
+def index():  
+    return app.send_static_file('index.html')
+
+@app.errorhandler(404)  
+def not_found(err):  
+    return app.send_static_file('404.html')
 
 @app.route('/NBA_NEWS')
 @cross_origin(supports_credentials=True)
