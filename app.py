@@ -33,12 +33,12 @@ def scrape_NFL_News():
 
     for news in news_div:
         headline_tag = news.find("span", {"class":"rdf-meta hidden"})
-        headline = headline_tag['content']
+        headline = headline_tag['content'] + "."
         picture = news.find('picture')
         img_tag = picture.find('img')
         img = img_tag['src']
         description_div = news.find("div", {"class": "list-item__title"})
-        description = description_div.find("a").text
+        description = description_div.find("a").text + "."
         url = "https://www.sportingnews.com" + description_div.find("a")["href"]
         # news_list.append(headline)
         # news_list.append(img)
