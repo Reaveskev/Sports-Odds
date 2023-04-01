@@ -31,10 +31,7 @@ else:
     app.config.from_object(ProductionConfig)
 
 
-@app.route("/")  
-def index():  
-    return app.send_static_file('index.html')
-
+@app.route("/", defaults={'path': ''})  
 @app.route('/<path:path>')
 def serve(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
@@ -42,9 +39,9 @@ def serve(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
 
-# @app.errorhandler(404)  
-# def not_found(err):  
-#     return app.send_static_file('404.html')
+@app.errorhandler(404)  
+def not_found(err):  
+    return app.send_static_file('404.html')
 
 @app.route('/NFL_NEWS')
 def scrape_NFL_News():
