@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-
 import Yahoo_Sports from "./Yahoo_Sports.csv";
 
 function MLB() {
@@ -135,7 +134,7 @@ function MLB() {
                             <div className={styles.record}>
                               {games.team_two.record}
                             </div>
-                            <span>{games.team_one.score}</span>
+                            <span>{games.team_two.score}</span>
                           </div>
                         </div>
                       );
@@ -183,7 +182,7 @@ function MLB() {
                             <div className={styles.record}>
                               {games.team_two.record}
                             </div>
-                            <span>{games.team_one.score}</span>
+                            <span>{games.team_two.score}</span>
                           </div>
                         </div>
                       );
@@ -229,7 +228,7 @@ function MLB() {
                         <div className={styles.record}>
                           {games.team_two.record}
                         </div>
-                        <span>{games.team_one.score}</span>
+                        <span>{games.team_two.score}</span>
                       </div>
                     </div>
                   );
