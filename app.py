@@ -38,12 +38,17 @@ def catch_all(path):
     #     return send_from_directory(app.static_folder, path)
     # else:
     #     return send_from_directory(app.static_folder, 'index.html')
-    if path != '' and os.path.exists(app.static_folder + '/' + path):
-        return send_from_directory(app.static_folder, path)
+    if path == '':
+        return send_from_directory('static', 'index.html')
+    elif os.path.exists(os.path.join('static', path)):
+        return send_from_directory('static', path)
     else:
-        # Get the current URL and redirect to it with a 302 status code
-        full_url = request.url
-        return redirect(full_url, code=302)
+        return send_from_directory('static', 'index.html')
+    
+
+@app.route('/_next/<path:path>')
+def next_js(path):
+    return send_from_directory('static/_next', path)
 
 @app.errorhandler(404)  
 def not_found(err):  
