@@ -36,7 +36,7 @@ else:
 def catch_all(path):
     print(path)
     if path != "" and os.path.exists(app.static_folder + '/' + path + 'html'):
-        return send_from_directory(app.static_folder, path + 'html')
+        return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
     
