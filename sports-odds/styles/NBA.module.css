@@ -71,10 +71,10 @@
   justify-content: center;
   align-items: center;
   color: white;
+  margin-top: 20px;
 }
 
 .newInfo {
-  /* background-color: white; */
   background-color: #333;
   height: auto;
   color: white;
@@ -87,10 +87,8 @@
   width: 670px;
   border-radius: 12px;
   padding: 24px;
-  /* box-shadow: rgb(0 0 0 / 12%) 2px 6px 16px; */
   align-items: center;
-  /* border-style: solid; */
-  margin: 5px;
+  margin-bottom: 20px;
   text-align: center;
   overflow-wrap: break-word;
   inline-size: 670px;

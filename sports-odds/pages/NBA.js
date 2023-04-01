@@ -243,7 +243,7 @@ function NBA() {
       </div>
       <div style={{ width: "60%", float: "left" }}>
         <div className={styles.news}>
-          <header className="newsHeader">NBA News</header>
+          <h1 className={styles.upcoming}>NBA News</h1>
           {NBANews.map((news) => {
             return (
               <div className={styles.newInfo} key={news.headline}>
@@ -282,7 +282,7 @@ function NBA() {
         </div>
       </div>
       <div style={{ width: "40%", float: "right" }}>
-        <div className={styles.odds_div}>
+        <div style={{ marginRight: "20%" }} className={styles.odds_div}>
           <div className={styles.odds}>
             <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
 
