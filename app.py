@@ -34,14 +34,11 @@ else:
 @app.route("/", defaults={'path': ''})  
 @app.route('/<path:path>')
 def catch_all(path):
-    if not path:
-        path = 'index.html'
-    return send_from_directory(app.static_folder, path)
-    # if path != "" and os.path.exists(app.static_folder + '/' + path ):
-    #     print(path)
-    #     return send_from_directory(app.static_folder, path)
-    # else:
-    #     return send_from_directory(app.static_folder, 'index.html')
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        new_path = path + ".html"
+        return send_from_directory(app.static_folder, new_path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
     
 
 
