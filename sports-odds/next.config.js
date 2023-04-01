@@ -3,7 +3,6 @@
 const nextConfig = {
   reactStrictMode: true,
   output: "export",
-  trailingSlash: true,
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.csv$/,
@@ -41,7 +40,7 @@ const nextConfig = {
 };
 
 module.exports = nextConfig;
-
+///////////////////////////////////////////////
 // module.exports = {
 //   trailingSlash: true,
 //   webpack: (config, options) => {
@@ -79,3 +78,4 @@ module.exports = nextConfig;
 //     };
 //   },
 // };
+//////////////////////////////////////////

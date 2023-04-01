@@ -8,8 +8,8 @@ import requests
 import os
 
 
-
-app = Flask(__name__, static_url_path='/', static_folder='./sports-odds/out')
+#  static_url_path='/'
+app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
 # Set up configuration classes
@@ -33,7 +33,7 @@ else:
 
 @app.route("/", defaults={'path': ''})  
 @app.route('/<path:path>')
-def serve(path):
+def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         return send_from_directory(app.static_folder, path)
     else:
