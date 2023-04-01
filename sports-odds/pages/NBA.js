@@ -229,7 +229,7 @@ function NBA() {
                             <div className={styles.record}>
                               {games.team_two.record}
                             </div>
-                            <span>{games.team_one.score}</span>
+                            <span>{games.team_two.score}</span>
                           </div>
                         </div>
                       );
@@ -241,96 +241,100 @@ function NBA() {
           </>
         )}
       </div>
-
-      <div className={styles.news}>
-        <header className="newsHeader">NBA News</header>
-        {NBANews.map((news) => {
-          return (
-            <div className={styles.newInfo} key={news.headline}>
-              <header>{news.headline}</header>
-              <a href={news.links.web.href}>
-                <img
-                  className={styles.Pic}
-                  height={325}
-                  width={575}
-                  alt=""
-                  src={news.images[0].url}
-                />
-              </a>
-              <p>{news.description}</p>
-            </div>
-          );
-        })}
-        {NBANews2.map((news) => {
-          return (
-            <div className={styles.newInfo} key={news.headline}>
-              <header>{news.headline}</header>
-              <a href={news.links}>
-                <img
-                  className={styles.Pic}
-                  height={325}
-                  width={575}
-                  alt=""
-                  src={news.image}
-                />
-              </a>
-              <p>{news.description}</p>
-            </div>
-          );
-        })}
-      </div>
-      <div className={styles.odds_div}>
-        <div className={styles.odds}>
-          <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
-
-          {sports_odds.map((game) => {
+      <div style={{ width: "60%", float: "left" }}>
+        <div className={styles.news}>
+          <header className="newsHeader">NBA News</header>
+          {NBANews.map((news) => {
             return (
-              <>
-                <div className={styles.team_info}>
-                  <div className={styles.team_header}>
-                    <p style={{ minWidth: 180 }}></p>
-                    <p style={{ minWidth: 72 }}>Money Line</p>
-                    <p style={{ minWidth: 120 }}>Point Spread</p>
-                    <p style={{ minWidth: 120 }}>Total Points</p>
-                  </div>
-                  <div className={styles.team_format}>
-                    <div className={styles.name_logo}>
-                      <img
-                        alt=""
-                        className={styles.odds_logo}
-                        src={game.Away_logo}
-                      />
-                      <div className={styles.name_record}>
-                        <h4>{game.Away_Team}</h4>
-                        <span>{game.Away_Record}</span>
-                        <span style={{ paddingTop: 5 }}>@</span>
-                      </div>
-                    </div>
-                    <p>{game.Away_Money_line}</p>
-                    <p>{game.Away_Point_spread}</p>
-                    <p>{game.Away_Total_points}</p>
-                  </div>
-
-                  <div className={styles.team_format}>
-                    <div className={styles.name_logo}>
-                      <img
-                        alt=""
-                        className={styles.odds_logo}
-                        src={game.Home_logo}
-                      />
-                      <div className={styles.name_record}>
-                        <h4>{game.Home_Team}</h4>
-                        <span>{game.Home_Record}</span>
-                      </div>
-                    </div>
-                    <p>{game.Home_Money_line}</p>
-                    <p>{game.Home_Point_spread}</p>
-                    <p>{game.Home_Total_points}</p>
-                  </div>
-                </div>
-              </>
+              <div className={styles.newInfo} key={news.headline}>
+                <header>{news.headline}</header>
+                <a href={news.links.web.href}>
+                  <img
+                    className={styles.Pic}
+                    height={325}
+                    width={575}
+                    alt=""
+                    src={news.images[0].url}
+                  />
+                </a>
+                <p>{news.description}</p>
+              </div>
             );
           })}
+
+          {NBANews2.map((news) => {
+            return (
+              <div className={styles.newInfo} key={news.headline}>
+                <header>{news.headline}</header>
+                <a href={news.links}>
+                  <img
+                    className={styles.Pic}
+                    height={325}
+                    width={575}
+                    alt=""
+                    src={news.image}
+                  />
+                </a>
+                <p>{news.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{ width: "40%", float: "right" }}>
+        <div className={styles.odds_div}>
+          <div className={styles.odds}>
+            <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
+
+            {sports_odds.map((game) => {
+              return (
+                <>
+                  <div className={styles.team_info}>
+                    <div className={styles.team_header}>
+                      <p style={{ minWidth: 180 }}></p>
+                      <p style={{ minWidth: 72 }}>Money Line</p>
+                      <p style={{ minWidth: 120 }}>Point Spread</p>
+                      <p style={{ minWidth: 120 }}>Total Points</p>
+                    </div>
+                    <div className={styles.team_format}>
+                      <div className={styles.name_logo}>
+                        <img
+                          alt=""
+                          className={styles.odds_logo}
+                          src={game.Away_logo}
+                        />
+                        <div className={styles.name_record}>
+                          <h4>{game.Away_Team}</h4>
+                          <span>{game.Away_Record}</span>
+                          <span style={{ paddingTop: 5 }}>@</span>
+                        </div>
+                      </div>
+                      <p>{game.Away_Money_line}</p>
+                      <p>{game.Away_Point_spread}</p>
+                      <p>{game.Away_Total_points}</p>
+                    </div>
+
+                    <div className={styles.team_format}>
+                      <div className={styles.name_logo}>
+                        <img
+                          alt=""
+                          className={styles.odds_logo}
+                          src={game.Home_logo}
+                        />
+                        <div className={styles.name_record}>
+                          <h4>{game.Home_Team}</h4>
+                          <span>{game.Home_Record}</span>
+                        </div>
+                      </div>
+                      <p>{game.Home_Money_line}</p>
+                      <p>{game.Home_Point_spread}</p>
+                      <p>{game.Home_Total_points}</p>
+                    </div>
+                  </div>
+                </>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
