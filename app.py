@@ -16,7 +16,7 @@ CORS(app, support_credentials=True)
 
 # MySql ####################
 # app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_HOST'] = os.environ['CLEARDB_DATABASE_URL']
+app.config['MYSQL_HOST'] = url
 app.config['MYSQL_USER'] = db_user
 app.config['MYSQL_PASSWORD'] = db_password
 app.config['MYSQL_DB'] = db_name
