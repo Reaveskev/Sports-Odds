@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 import MySQLdb.cursors
+# import mysql.connector
 import requests
 import os
 
@@ -14,14 +15,17 @@ app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
 # MySql ####################
-app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_HOST'] = os.environ['CLEARDB_DATABASE_URL']
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Upshaw123!'
 app.config['MYSQL_DB'] = 'sports_odds'
  
 mysql = MySQL(app)
+####################
 
 
+#####################
 # Set up configuration classes
 class BaseConfig:
     DEBUG = False
