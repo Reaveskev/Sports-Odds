@@ -6,7 +6,6 @@ from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import MySQLdb.cursors
-from hidden import *
 import requests
 import os
 
