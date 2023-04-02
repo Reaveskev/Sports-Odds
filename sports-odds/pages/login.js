@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "@/styles/login.module.css";
 import Header from "@/src/Header";
+import dotenv from "dotenv";
+dotenv.config();
 
 function Login() {
   const router = useRouter();
@@ -14,7 +16,9 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let url = "http://127.0.0.1:5000/login_to_db";
+    const url = process.env.DATABASE_URL;
+    // let url =
+
     // https://sports-odds.herokuapp.com/
 
     try {
