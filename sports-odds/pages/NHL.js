@@ -130,7 +130,7 @@ function NHL() {
                             <div className={styles.record}>
                               {games.team_two.record}
                             </div>
-                            <span>{games.team_one.score}</span>
+                            <span>{games.team_two.score}</span>
                           </div>
                         </div>
                       );
@@ -178,7 +178,7 @@ function NHL() {
                             <div className={styles.record}>
                               {games.team_two.record}
                             </div>
-                            <span>{games.team_one.score}</span>
+                            <span>{games.team_two.score}</span>
                           </div>
                         </div>
                       );
@@ -224,7 +224,7 @@ function NHL() {
                         <div className={styles.record}>
                           {games.team_two.record}
                         </div>
-                        <span>{games.team_one.score}</span>
+                        <span>{games.team_two.score}</span>
                       </div>
                     </div>
                   );

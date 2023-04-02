@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-from flask import Flask, jsonify, send_from_directory, request, redirect
-from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS, cross_origin
+from flask import Flask, jsonify, send_from_directory, request
+from flask_cors import CORS
+from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
+import MySQLdb.cursors
 import requests
 import os
 
@@ -11,6 +12,15 @@ import os
 #  static_url_path='/'
 app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
+
+# MySql ####################
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = 'Upshaw123!'
+app.config['MYSQL_DB'] = 'sports_odds'
+ 
+mysql = MySQL(app)
+
 
 # Set up configuration classes
 class BaseConfig:
@@ -40,7 +50,32 @@ def catch_all(path):
     else:
         return send_from_directory(app.static_folder, 'index.html')
     
+####################
+@app.route('/login_to_db' , methods=['GET', 'POST'])
+def login():
+    msg = ""
+    if request.method == "POST":
+        username = request.json['username']
+        password = request.json['password']
+         # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
+        # Fetch one record and return result
+        user = cursor.fetchone()
+        # If account exists in accounts table in out database
+        if user is None:
+            return jsonify({'error': 'Invalid credentials'}), 401
+           
+        else:
+            return jsonify({'user_id': user['user_id']})
+           
+    
+      
 
+
+
+
+####################
 
 @app.errorhandler(404)  
 def not_found(err):  

@@ -35,6 +35,7 @@ const nextConfig = {
       "/MLB": { page: "/MLB" },
       "/MCBB": { page: "/MCBB" },
       "/WCBB": { page: "/WCBB" },
+      "/login": { page: "/login" },
     };
   },
 };

@@ -59,3 +59,9 @@
   text-decoration: none;
   color: white;
 }
+
+.login_or_profile {
+  position: absolute;
+  right: 5px;
+  float: right;
+}

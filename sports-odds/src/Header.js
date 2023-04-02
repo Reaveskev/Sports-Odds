@@ -4,6 +4,7 @@ import Link from "next/link";
 
 function Header() {
   const [seeMore, setSeeMore] = useState(false);
+  const [Login, setLogin] = useState(false);
 
   return (
     <div className={styles.navbar}>
@@ -113,16 +114,33 @@ function Header() {
           </>
         ) : null}
       </li>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
-        <Link className={styles.link} href="/test">
-          Test
-        </Link>
-      </li>
+      {Login ? (
+        <div className={styles.login_or_profile}>
+          <li
+            onMouseEnter={() => {
+              setSeeMore(false);
+            }}
+            className={styles.li}
+          >
+            <Link className={styles.link} href="/profile">
+              Profile
+            </Link>
+          </li>
+        </div>
+      ) : (
+        <div className={styles.login_or_profile}>
+          <li
+            onMouseEnter={() => {
+              setSeeMore(false);
+            }}
+            className={styles.li}
+          >
+            <Link className={styles.link} href="/login">
+              Login
+            </Link>
+          </li>
+        </div>
+      )}
     </div>
   );
 }
