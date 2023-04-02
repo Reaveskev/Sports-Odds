@@ -4,22 +4,23 @@ from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 import MySQLdb.cursors
 from hidden import *
 import requests
 import os
 
-
+load_dotenv()
 #  static_url_path='/'
 app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
 # MySql ####################
 # app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_HOST'] = url
-app.config['MYSQL_USER'] = db_user
-app.config['MYSQL_PASSWORD'] = db_password
-app.config['MYSQL_DB'] = db_name
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
  
 mysql = MySQL(app)
 ####################

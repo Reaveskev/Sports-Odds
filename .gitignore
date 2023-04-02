@@ -2,3 +2,4 @@ node_modules/
 .next/
 hidden.py
 backup.sql
+.env
