@@ -16,6 +16,8 @@ function Login() {
 
     let url = "https://sports-odds.herokuapp.com/login_to_db";
 
+    // let url = "http://127.0.0.1:5000/login_to_db";
+
     try {
       const response = await axios.post(url, {
         username: username,
