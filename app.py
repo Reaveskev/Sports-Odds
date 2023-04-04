@@ -11,23 +11,21 @@ import requests
 import os
 
 load_dotenv()
-#  static_url_path='/'
+
 app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
 # MySql ####################
-mysql = MySQL()
 
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
-app.config['PORT'] = os.getenv('PORT')
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
-
-mysql.init_app(app)
+# mysql.init_app(app)
 
 
 @app.route("/", defaults={'path': ''})  
@@ -37,11 +35,11 @@ def catch_all(path):
         try:
         # Test the database connection by querying a table
             cursor = mysql.connection.cursor()
-            cursor.execute('SELECT COUNT(*) FROM user')
-            result = cursor.fetchone()[0]
+            cursor.execute('''SELECT * FROM user''')
+            result = cursor.fetchall()
             cursor.close()
-            if result > 0:
-                print( 'The database has data!')
+            if result != "":
+                print(result)
             else:
                 print( 'The database is empty.')
         except Exception as e:
@@ -51,7 +49,7 @@ def catch_all(path):
         return send_from_directory(app.static_folder, 'index.html')
     
 ####################
-@app.route('/login_to_db' , methods=['GET', 'POST'])
+@app.route('/login_to_db', methods=['GET', 'POST'])
 def login():
     msg = ""
     try:
@@ -59,18 +57,22 @@ def login():
             username = request.json['username']
             password = request.json['password']
              # Check if account exists using MySQL
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
+            print(username, password)
+            cursor = mysql.connection.cursor()
+            cursor.execute('''SELECT * FROM user WHERE username = {} AND password = {}'''.format(username, password,))
             # Fetch one record and return result
             user = cursor.fetchone()
             cursor.close()
             # If account exists in accounts table in out database
             if user is None:
+                print('Invalid credentials')
                 return jsonify({'error': 'Invalid credentials'}), 401
 
             else:
+                print({'user_id': user['user_id']})
                 return jsonify({'user_id': user['user_id']})
     except Exception as e:
+            print(str(e))
             return(f'{str(e)}')           
     
       
