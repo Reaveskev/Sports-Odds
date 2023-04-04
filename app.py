@@ -3,7 +3,6 @@
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 from flask_mysqldb import MySQL
-from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup
 import mysql.connector
 from dotenv import load_dotenv
@@ -23,20 +22,19 @@ mysql_user = os.environ.get('MYSQL_USER')
 mysql_password = os.environ.get('MYSQL_PASSWORD')
 mysql_db = os.environ.get('MYSQL_DB')
 
-app.config['MYSQL_HOST'] = mysql_host
-app.config['MYSQL_USER'] = mysql_user
-app.config['MYSQL_PASSWORD'] = mysql_password
-app.config['MYSQL_DB'] = mysql_db
+# app.config['MYSQL_HOST'] = mysql_host
+# app.config['MYSQL_USER'] = mysql_user
+# app.config['MYSQL_PASSWORD'] = mysql_password
+# app.config['MYSQL_DB'] = mysql_db
 
-mysql = MySQL(app)
+db = mysql.connector.connect(
+    host=mysql_host,
+    database=mysql_db,
+    user=mysql_user,
+    password=mysql_password
+)
 
-# db = mysql.connector.connect(
-#     host = os.environ.get('MYSQL_HOST'),
-#     user = os.environ.get('MYSQL_USER'),
-#     password = os.environ.get('MYSQL_PASSWORD'),
-#     database = os.environ.get('MYSQL_DB')
-# )
-
+# mysql = MySQL(app)
 
 
 #####################
@@ -65,7 +63,8 @@ def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         try:
         # Test the database connection by querying a table
-            cursor = mysql.connection.cursor()
+            # cursor = mysql.connection.cursor()
+            cursor = db.cursor()
             cursor.execute('SELECT COUNT(*) FROM user')
             result = cursor.fetchone()[0]
             cursor.close()
@@ -75,14 +74,6 @@ def catch_all(path):
                 print( 'The database is empty.')
         except Exception as e:
             print(f'Database connection error: {str(e)}')
-        # try:
-        #     cursor = db.cursor()
-        #     cursor.execute("SELECT 1")
-        #     result = cursor.fetchone()
-        #     cursor.close()
-        #     print(f"Database connected successfully: {result}")
-        # except mysql.connector.Error as error:
-        #     print(f"Error connecting to database: {error}")
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
@@ -97,8 +88,8 @@ def login():
             password = request.json['password']
             print(username, password)
              # Check if account exists using MySQL
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            # cursor = db.cursor()
+            # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor = db.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
             # Fetch one record and return result
             user = cursor.fetchone()
@@ -110,7 +101,7 @@ def login():
             else:
                 return jsonify({'user_id': user['user_id']})
     except Exception as e:
-            print(f'{str(e)}')           
+            return(f'{str(e)}')           
     
       
 
