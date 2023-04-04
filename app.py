@@ -45,25 +45,24 @@ db = mysql.connector.connect(
 ####################
 
 
-
 #####################
 # Set up configuration classes
-class BaseConfig:
-    DEBUG = False
-    TESTING = False
+# class BaseConfig:
+#     DEBUG = False
+#     TESTING = False
 
-class DevelopmentConfig(BaseConfig):
-    DEBUG = True
-    DEVELOPMENT = True
+# class DevelopmentConfig(BaseConfig):
+#     DEBUG = True
+#     DEVELOPMENT = True
 
-class ProductionConfig(BaseConfig):
-    DEBUG = False
-    DEVELOPMENT = False
+# class ProductionConfig(BaseConfig):
+#     DEBUG = False
+#     DEVELOPMENT = False
 
-if app.env == "development":
-    app.config.from_object(DevelopmentConfig)
-else:
-    app.config.from_object(ProductionConfig)
+# if app.env == "development":
+#     app.config.from_object(DevelopmentConfig)
+# else:
+#     app.config.from_object(ProductionConfig)
 
 
 @app.route("/", defaults={'path': ''})  
