@@ -18,24 +18,24 @@ CORS(app, support_credentials=True)
 
 # MySql ####################
 
-# mysql_host = os.environ.get('MYSQL_HOST')
-# mysql_user = os.environ.get('MYSQL_USER')
-# mysql_password = os.environ.get('MYSQL_PASSWORD')
-# mysql_db = os.environ.get('MYSQL_DB')
+mysql_host = os.environ.get('MYSQL_HOST')
+mysql_user = os.environ.get('MYSQL_USER')
+mysql_password = os.environ.get('MYSQL_PASSWORD')
+mysql_db = os.environ.get('MYSQL_DB')
 
-# app.config['MYSQL_HOST'] = mysql_host
-# app.config['MYSQL_USER'] = mysql_user
-# app.config['MYSQL_PASSWORD'] = mysql_password
-# app.config['MYSQL_DB'] = mysql_db
+app.config['MYSQL_HOST'] = mysql_host
+app.config['MYSQL_USER'] = mysql_user
+app.config['MYSQL_PASSWORD'] = mysql_password
+app.config['MYSQL_DB'] = mysql_db
 
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
-db = mysql.connector.connect(
-    host = os.environ.get('MYSQL_HOST'),
-    user = os.environ.get('MYSQL_USER'),
-    password = os.environ.get('MYSQL_PASSWORD'),
-    database = os.environ.get('MYSQL_DB')
-)
+# db = mysql.connector.connect(
+#     host = os.environ.get('MYSQL_HOST'),
+#     user = os.environ.get('MYSQL_USER'),
+#     password = os.environ.get('MYSQL_PASSWORD'),
+#     database = os.environ.get('MYSQL_DB')
+# )
 
 
 
@@ -63,26 +63,26 @@ db = mysql.connector.connect(
 @app.route('/<path:path>')
 def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
-        # try:
-        # # Test the database connection by querying a table
-        #     cursor = mysql.connection.cursor()
-        #     cursor.execute('SELECT COUNT(*) FROM user')
-        #     result = cursor.fetchone()[0]
-        #     cursor.close()
-        #     if result > 0:
-        #         print( 'The database has data!')
-        #     else:
-        #         print( 'The database is empty.')
-        # except Exception as e:
-        #     print(f'Database connection error: {str(e)}')
         try:
-            cursor = db.cursor()
-            cursor.execute("SELECT 1")
-            result = cursor.fetchone()
+        # Test the database connection by querying a table
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT COUNT(*) FROM user')
+            result = cursor.fetchone()[0]
             cursor.close()
-            print(f"Database connected successfully: {result}")
-        except mysql.connector.Error as error:
-            print(f"Error connecting to database: {error}")
+            if result > 0:
+                print( 'The database has data!')
+            else:
+                print( 'The database is empty.')
+        except Exception as e:
+            print(f'Database connection error: {str(e)}')
+        # try:
+        #     cursor = db.cursor()
+        #     cursor.execute("SELECT 1")
+        #     result = cursor.fetchone()
+        #     cursor.close()
+        #     print(f"Database connected successfully: {result}")
+        # except mysql.connector.Error as error:
+        #     print(f"Error connecting to database: {error}")
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
@@ -97,8 +97,8 @@ def login():
             password = request.json['password']
             print(username, password)
              # Check if account exists using MySQL
-            # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor = db.cursor()
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # cursor = db.cursor()
             cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
             # Fetch one record and return result
             user = cursor.fetchone()
