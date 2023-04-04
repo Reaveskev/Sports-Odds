@@ -22,19 +22,19 @@ mysql_user = os.environ.get('MYSQL_USER')
 mysql_password = os.environ.get('MYSQL_PASSWORD')
 mysql_db = os.environ.get('MYSQL_DB')
 
-# app.config['MYSQL_HOST'] = mysql_host
-# app.config['MYSQL_USER'] = mysql_user
-# app.config['MYSQL_PASSWORD'] = mysql_password
-# app.config['MYSQL_DB'] = mysql_db
+app.config['MYSQL_HOST'] = mysql_host
+app.config['MYSQL_USER'] = mysql_user
+app.config['MYSQL_PASSWORD'] = mysql_password
+app.config['MYSQL_DB'] = mysql_db
 
-db = mysql.connector.connect(
-    host=mysql_host,
-    database=mysql_db,
-    user=mysql_user,
-    password=mysql_password
-)
+# db = mysql.connector.connect(
+#     host=mysql_host,
+#     database=mysql_db,
+#     user=mysql_user,
+#     password=mysql_password
+# )
 
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
 
 #####################
@@ -63,8 +63,7 @@ def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         try:
         # Test the database connection by querying a table
-            # cursor = mysql.connection.cursor()
-            cursor = db.cursor()
+            cursor = mysql.connection.cursor()
             cursor.execute('SELECT COUNT(*) FROM user')
             result = cursor.fetchone()[0]
             cursor.close()
@@ -88,8 +87,7 @@ def login():
             password = request.json['password']
             print(username, password)
              # Check if account exists using MySQL
-            # cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor = db.cursor(MySQLdb.cursors.DictCursor)
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
             # Fetch one record and return result
             user = cursor.fetchone()
