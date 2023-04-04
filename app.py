@@ -38,7 +38,7 @@ db = mysql.connector.connect(
     database=os.environ.get('MYSQL_DB')
 )
 
-cursor = db.cursor()
+cursor = mysql.connection.cursor()
  
 # mysql = MySQL(app)
 
@@ -95,11 +95,10 @@ def login():
         password = request.json['password']
         print(username, password)
          # Check if account exists using MySQL
-        
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
         # Fetch one record and return result
         user = cursor.fetchone()
-        cursor.close()
         # If account exists in accounts table in out database
         if user is None:
             return jsonify({'error': 'Invalid credentials'}), 401
