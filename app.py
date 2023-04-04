@@ -30,26 +30,6 @@ app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 mysql.init_app(app)
 
 
-#####################
-# Set up configuration classes
-# class BaseConfig:
-#     DEBUG = False
-#     TESTING = False
-
-# class DevelopmentConfig(BaseConfig):
-#     DEBUG = True
-#     DEVELOPMENT = True
-
-# class ProductionConfig(BaseConfig):
-#     DEBUG = False
-#     DEVELOPMENT = False
-
-# if app.env == "development":
-#     app.config.from_object(DevelopmentConfig)
-# else:
-#     app.config.from_object(ProductionConfig)
-
-
 @app.route("/", defaults={'path': ''})  
 @app.route('/<path:path>')
 def catch_all(path):
