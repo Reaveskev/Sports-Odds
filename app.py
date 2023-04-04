@@ -33,8 +33,10 @@ app.config['MYSQL_DB'] = mysql_db
 #     user=mysql_user,
 #     password=mysql_password
 # )
+# mysql = MySQL(app)
 
-mysql = MySQL(app)
+mysql = MySQL()
+mysql.init_app(app)
 
 
 #####################
