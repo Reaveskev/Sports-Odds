@@ -16,6 +16,7 @@ app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
 # MySql ####################
+mysql = MySQL()
 
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
@@ -25,7 +26,7 @@ app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 
 # mysql = MySQL(app)
 
-mysql = MySQL()
+
 mysql.init_app(app)
 
 
