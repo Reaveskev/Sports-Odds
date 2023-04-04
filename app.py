@@ -20,27 +20,27 @@ CORS(app, support_credentials=True)
 # app.config['MYSQL_HOST'] = 'localhost'
 
 
-# mysql_host = os.environ.get('MYSQL_HOST')
-# mysql_user = os.environ.get('MYSQL_USER')
-# mysql_password = os.environ.get('MYSQL_PASSWORD')
-# mysql_db = os.environ.get('MYSQL_DB')
+mysql_host = os.environ.get('MYSQL_HOST')
+mysql_user = os.environ.get('MYSQL_USER')
+mysql_password = os.environ.get('MYSQL_PASSWORD')
+mysql_db = os.environ.get('MYSQL_DB')
 
 
-# app.config['MYSQL_HOST'] = mysql_host
-# app.config['MYSQL_USER'] = mysql_user
-# app.config['MYSQL_PASSWORD'] = mysql_password
-# app.config['MYSQL_DB'] = mysql_db
+app.config['MYSQL_HOST'] = mysql_host
+app.config['MYSQL_USER'] = mysql_user
+app.config['MYSQL_PASSWORD'] = mysql_password
+app.config['MYSQL_DB'] = mysql_db
 
-db = mysql.connector.connect(
-    host=os.environ.get('MYSQL_HOST'),
-    user=os.environ.get('MYSQL_USER'),
-    password=os.environ.get('MYSQL_PASSWORD'),
-    database=os.environ.get('MYSQL_DB')
-)
+# db = mysql.connector.connect(
+#     host=os.environ.get('MYSQL_HOST'),
+#     user=os.environ.get('MYSQL_USER'),
+#     password=os.environ.get('MYSQL_PASSWORD'),
+#     database=os.environ.get('MYSQL_DB')
+# )
 
-cursor = mysql.connection.cursor()
+
  
-# mysql = MySQL(app)
+mysql = MySQL(app)
 
 ####################
 
@@ -72,7 +72,7 @@ def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         try:
         # Test the database connection by querying a table
-            
+            cursor = mysql.connection.cursor()
             cursor.execute('SELECT COUNT(*) FROM user')
             result = cursor.fetchone()[0]
             cursor.close()
