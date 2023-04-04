@@ -17,19 +17,18 @@ app = Flask(__name__, static_folder='./sports-odds/out')
 CORS(app, support_credentials=True)
 
 # MySql ####################
-# app.config['MYSQL_HOST'] = 'localhost'
-
 
 # mysql_host = os.environ.get('MYSQL_HOST')
 # mysql_user = os.environ.get('MYSQL_USER')
 # mysql_password = os.environ.get('MYSQL_PASSWORD')
 # mysql_db = os.environ.get('MYSQL_DB')
 
-
 # app.config['MYSQL_HOST'] = mysql_host
 # app.config['MYSQL_USER'] = mysql_user
 # app.config['MYSQL_PASSWORD'] = mysql_password
 # app.config['MYSQL_DB'] = mysql_db
+
+# mysql = MySQL(app)
 
 db = mysql.connector.connect(
     host = os.environ.get('MYSQL_HOST'),
@@ -38,11 +37,6 @@ db = mysql.connector.connect(
     database = os.environ.get('MYSQL_DB')
 )
 
-
- 
-# mysql = MySQL(app)
-
-####################
 
 
 #####################
@@ -299,5 +293,5 @@ def scrape_SOCCER_News():
 
 
 if __name__ == "__main__":
-  app.debug=True
+#   app.debug=True
   app.run()
