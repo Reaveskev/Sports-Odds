@@ -90,22 +90,24 @@ def catch_all(path):
 @app.route('/login_to_db' , methods=['GET', 'POST'])
 def login():
     msg = ""
-    if request.method == "POST":
-        username = request.json['username']
-        password = request.json['password']
-        print(username, password)
-         # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
-        # Fetch one record and return result
-        user = cursor.fetchone()
-        # If account exists in accounts table in out database
-        if user is None:
-            return jsonify({'error': 'Invalid credentials'}), 401
-           
-        else:
-            return jsonify({'user_id': user['user_id']})
-           
+    try:
+        if request.method == "POST":
+            username = request.json['username']
+            password = request.json['password']
+            print(username, password)
+             # Check if account exists using MySQL
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
+            # Fetch one record and return result
+            user = cursor.fetchone()
+            # If account exists in accounts table in out database
+            if user is None:
+                return jsonify({'error': 'Invalid credentials'}), 401
+
+            else:
+                return jsonify({'user_id': user['user_id']})
+    except Exception as e:
+            print(f'{str(e)}')           
     
       
 
