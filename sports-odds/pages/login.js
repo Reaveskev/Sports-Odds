@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import styles from "@/styles/login.module.css";
 import Header from "@/src/Header";
+import { useAppContext } from "@/src/GlobalContext";
 
 function Login() {
   const router = useRouter();
@@ -10,6 +11,7 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const { user, setUser } = useAppContext();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +21,14 @@ function Login() {
     // let url = "http://127.0.0.1:5000/login_to_db";
 
     try {
-      const response = await axios.post(url, {
-        username: username,
-        password: password,
-      });
+      const response = await axios
+        .post(url, {
+          username: username,
+          password: password,
+        })
+        .then((res) => {
+          console.log(res);
+        });
 
       router.push("/");
     } catch (error) {

@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
+import { useAppContext } from "./GlobalContext";
 
 function Header() {
   const [seeMore, setSeeMore] = useState(false);
   const [Login, setLogin] = useState(false);
+  const { user } = useAppContext();
 
   return (
     <div className={styles.navbar}>

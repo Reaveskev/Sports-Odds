@@ -85,7 +85,6 @@ def login():
         if request.method == "POST":
             username = request.json['username']
             password = request.json['password']
-            print(username, password)
              # Check if account exists using MySQL
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password,))
