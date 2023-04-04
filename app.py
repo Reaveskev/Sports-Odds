@@ -17,22 +17,12 @@ CORS(app, support_credentials=True)
 
 # MySql ####################
 
-mysql_host = os.environ.get('MYSQL_HOST')
-mysql_user = os.environ.get('MYSQL_USER')
-mysql_password = os.environ.get('MYSQL_PASSWORD')
-mysql_db = os.environ.get('MYSQL_DB')
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 
-app.config['MYSQL_HOST'] = mysql_host
-app.config['MYSQL_USER'] = mysql_user
-app.config['MYSQL_PASSWORD'] = mysql_password
-app.config['MYSQL_DB'] = mysql_db
 
-# db = mysql.connector.connect(
-#     host=mysql_host,
-#     database=mysql_db,
-#     user=mysql_user,
-#     password=mysql_password
-# )
 # mysql = MySQL(app)
 
 mysql = MySQL()
@@ -283,5 +273,4 @@ def scrape_SOCCER_News():
 
 
 if __name__ == "__main__":
-#   app.debug=True
   app.run()
