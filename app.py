@@ -6,14 +6,16 @@ from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 import mysql.connector
 from dotenv import load_dotenv
-import MySQLdb.cursors
+# import MySQLdb.cursors
 import requests
 import os
+# import bcrypt
 
 load_dotenv()
 
 app = Flask(__name__, static_folder='./sports-odds/out')
-CORS(app, support_credentials=True)
+cors = CORS(app, support_credentials=True)
+
 
 # MySql ####################
 
@@ -23,9 +25,14 @@ app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-mysql = MySQL(app)
+# app.config['MYSQL_USER'] = "root"
+# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+# app.config['MYSQL_HOST'] = "localhost"
+# app.config['MYSQL_DB'] = "sports_odds"
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# mysql.init_app(app)
+
+mysql = MySQL(app)
 
 
 @app.route("/", defaults={'path': ''})  
@@ -49,38 +56,26 @@ def catch_all(path):
         return send_from_directory(app.static_folder, 'index.html')
     
 ####################
-@app.route('/login_to_db', methods=['GET', 'POST'])
+@app.route('/login_to_db', methods=['POST'])
 def login():
-    msg = ""
     try:
-        if request.method == "POST":
-            username = request.json['username']
-            password = request.json['password']
-             # Check if account exists using MySQL
-            print(username, password)
-            cursor = mysql.connection.cursor()
-            cursor.execute('''SELECT * FROM user WHERE username = {} AND password = {}'''.format(username, password,))
-            # Fetch one record and return result
-            user = cursor.fetchone()
-            cursor.close()
-            # If account exists in accounts table in out database
-            if user is None:
-                print('Invalid credentials')
-                return jsonify({'error': 'Invalid credentials'}), 401
-
-            else:
-                print({'user_id': user['user_id']})
-                return jsonify({'user_id': user['user_id']})
-    except Exception as e:
-            print(str(e))
-            return(f'{str(e)}')           
-    
+        username = request.json['username']
+        password = request.json['password']
+         # Check if account exists using MySQL
+        print(username, password)
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
+        # Fetch one record and return result
+        user = cursor.fetchone()
+        cursor.close()
+        # If account exists in accounts table in out database
+        if user:
+            return jsonify(user) 
+        else:
+            return jsonify({'error': 'Invalid username or password'}), 401
+    except Exception as e: print(e)
       
 
-
-
-
-####################
 
 @app.errorhandler(404)  
 def not_found(err):  
@@ -256,4 +251,4 @@ def scrape_SOCCER_News():
 
 
 if __name__ == "__main__":
-  app.run()
+    app.run()
