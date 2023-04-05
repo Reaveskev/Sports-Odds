@@ -56,25 +56,27 @@ def catch_all(path):
         return send_from_directory(app.static_folder, 'index.html')
     
 ####################
-@app.route('/login_to_db', methods=['POST'])
+@app.route('/login_to_db', methods=['GET', 'POST'])
 def login():
-    try:
-        username = request.json['username']
-        password = request.json['password']
-         # Check if account exists using MySQL
-        print(username, password)
-        cursor = mysql.connection.cursor()
-        cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
-        # Fetch one record and return result
-        user = cursor.fetchone()
-        cursor.close()
-        # If account exists in accounts table in out database
-        if user:
-            return jsonify(user) 
-        else:
-            return jsonify({'error': 'Invalid username or password'}), 401
-    except Exception as e: print(e)
-      
+    if request.method == 'POST':
+        try:
+            username = request.json['username']
+            password = request.json['password']
+             # Check if account exists using MySQL
+            print(username, password)
+            cursor = mysql.connection.cursor()
+            cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
+            # Fetch one record and return result
+            user = cursor.fetchone()
+            cursor.close()
+            # If account exists in accounts table in out database
+            if user:
+                print(user) 
+            else:
+                return jsonify({'error': 'Invalid username or password'}), 401
+        except Exception as e: print(e)
+    else:
+        print("Please login")  
 
 
 @app.errorhandler(404)  
@@ -251,4 +253,5 @@ def scrape_SOCCER_News():
 
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
