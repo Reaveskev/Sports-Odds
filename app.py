@@ -71,12 +71,12 @@ def login():
             cursor.close()
             # If account exists in accounts table in out database
             if user:
-                print(user) 
+                return jsonify(user) 
             else:
                 return jsonify({'error': 'Invalid username or password'}), 401
         except Exception as e: print(e)
     else:
-        print("Please login")  
+        return print("Please login") 
 
 
 @app.errorhandler(404)  

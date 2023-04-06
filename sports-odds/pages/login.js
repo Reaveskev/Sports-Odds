@@ -25,12 +25,15 @@ function Login() {
           password,
         })
         .then((res) => {
+          if (res.status === 200) {
+            router.push("/");
+          } else {
+            setError("Invalid username or password!");
+          }
           console.log(res);
         });
-
-      router.push("/");
     } catch (error) {
-      setError("Invalid username or password!");
+      console.log("Something else");
     }
   };
 
@@ -47,7 +50,10 @@ function Login() {
             id="username"
             placeholder="Username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setError("");
+            }}
             required
           />
         </div>
@@ -58,7 +64,10 @@ function Login() {
             id="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError("");
+            }}
             required
           />
         </div>
