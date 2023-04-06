@@ -19,10 +19,10 @@ cors = CORS(app, support_credentials=True)
 
 # MySql ####################
 
-app.config['MYSQL_USER'] = os.environ('DB_USER')
-app.config['MYSQL_PASSWORD'] = os.environ('DB_PASSWORD')
-app.config['MYSQL_HOST'] = os.environ('DB_HOST')
-app.config['MYSQL_DB'] = os.environ('DB')
+app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+app.config['MYSQL_DB'] = os.environ.get('DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
