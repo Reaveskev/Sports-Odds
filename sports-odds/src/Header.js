@@ -1,12 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import { useAppContext } from "./GlobalContext";
 
 function Header() {
   const [seeMore, setSeeMore] = useState(false);
-  const [Login, setLogin] = useState(false);
-  const { user } = useAppContext();
+  const { user, setUser } = useAppContext();
+
+  const handleLogout = () => {
+    let url = "https://sports-odds.herokuapp.com/logout";
+    // let url = "http://127.0.0.1:5000/logout";
+    try {
+      axios.post(url).then((res) => {
+        if (res.status === 200) {
+          setUser(null);
+        } else {
+          console.log(res);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className={styles.navbar}>
@@ -126,6 +142,19 @@ function Header() {
           >
             <Link className={styles.link} href="/profile">
               Profile
+            </Link>
+          </li>
+          <li
+            onMouseEnter={() => {
+              setSeeMore(false);
+            }}
+            onClick={() => {
+              handleLogout();
+            }}
+            className={styles.li}
+          >
+            <Link className={styles.link} href="/">
+              Logout
             </Link>
           </li>
         </div>

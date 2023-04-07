@@ -95,11 +95,11 @@ def login():
     else:
         return print("Please login")
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.pop('user_id', None)
     print('Logged out successfully.', 'success')
-    return send_from_directory(app.static_folder, 'index.html')   
+    return jsonify({'success': 'Logged out successfully.'}), 200 
 
 @app.route('/update_info', methods=['GET', 'POST'])
 def update_info():
