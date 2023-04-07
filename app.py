@@ -6,13 +6,13 @@ from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 from bs4 import BeautifulSoup
 import mysql.connector
-from dotenv import load_dotenv
-import MySQLdb.cursors
+# from dotenv import load_dotenv
+# import MySQLdb.cursors
 import requests
 import os
 # import bcrypt
 
-load_dotenv()
+# load_dotenv()
 
 app = Flask(__name__, static_folder='./sports-odds/out')
 
@@ -23,11 +23,12 @@ cors = CORS(app, support_credentials=True)
 
 # MySql ####################
 
-# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-# app.config['MYSQL_DB'] = os.environ.get('DB')
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+app.config['MYSQL_DB'] = os.environ.get('DB')
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 # app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 # app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
@@ -35,12 +36,12 @@ cors = CORS(app, support_credentials=True)
 # app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-app.config['MYSQL_USER'] = "root"
-app.config['MYSQL_PASSWORD'] = "Upshaw123!"
-app.config['MYSQL_HOST'] = "localhost"
-app.config['MYSQL_DB'] = "sports_odds"
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = 'mysecretkey'
+# app.config['MYSQL_USER'] = "root"
+# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+# app.config['MYSQL_HOST'] = "localhost"
+# app.config['MYSQL_DB'] = "sports_odds"
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# app.config['SECRET_KEY'] = 'mysecretkey'
 
 
 mysql = MySQL(app)
