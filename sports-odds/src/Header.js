@@ -116,7 +116,7 @@ function Header() {
           </>
         ) : null}
       </li>
-      {Login ? (
+      {user ? (
         <div className={styles.login_or_profile}>
           <li
             onMouseEnter={() => {

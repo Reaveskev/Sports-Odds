@@ -1,29 +1,33 @@
 #!/usr/bin/python3
 
-from flask import Flask, jsonify, send_from_directory, request
+from flask import Flask, jsonify, send_from_directory, request, session
 from flask_cors import CORS
 from flask_mysqldb import MySQL
+from werkzeug.security import generate_password_hash, check_password_hash
 from bs4 import BeautifulSoup
 import mysql.connector
-# from dotenv import load_dotenv
-# import MySQLdb.cursors
+from dotenv import load_dotenv
+import MySQLdb.cursors
 import requests
 import os
 # import bcrypt
 
-# load_dotenv()
+load_dotenv()
 
 app = Flask(__name__, static_folder='./sports-odds/out')
+
+
+app.debug = True
 cors = CORS(app, support_credentials=True)
 
 
 # MySql ####################
 
-app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-app.config['MYSQL_DB'] = os.environ.get('DB')
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+# app.config['MYSQL_DB'] = os.environ.get('DB')
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 # app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
@@ -31,11 +35,12 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# app.config['MYSQL_USER'] = "root"
-# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
-# app.config['MYSQL_HOST'] = "localhost"
-# app.config['MYSQL_DB'] = "sports_odds"
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_DB'] = "sports_odds"
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = 'mysecretkey'
 
 
 mysql = MySQL(app)
@@ -45,18 +50,18 @@ mysql = MySQL(app)
 @app.route('/<path:path>')
 def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
-        try:
-        # Test the database connection by querying a table
-            cursor = mysql.connection.cursor()
-            cursor.execute('''SELECT * FROM user''')
-            result = cursor.fetchall()
-            cursor.close()
-            if result != "":
-                print(result)
-            else:
-                print( 'The database is empty.')
-        except Exception as e:
-            print(f'Database connection error: {str(e)}')
+        # try:
+        # # Test the database connection by querying a table
+        #     cursor = mysql.connection.cursor()
+        #     cursor.execute('''SELECT * FROM user''')
+        #     result = cursor.fetchall()
+        #     cursor.close()
+        #     if result != "":
+        #         print(result)
+        #     else:
+        #         print( 'The database is empty.')
+        # except Exception as e:
+        #     print(f'Database connection error: {str(e)}')
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
@@ -69,20 +74,61 @@ def login():
             username = request.json['username']
             password = request.json['password']
              # Check if account exists using MySQL
-            print(username, password)
             cursor = mysql.connection.cursor()
             cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
             # Fetch one record and return result
             user = cursor.fetchone()
             cursor.close()
-            # If account exists in accounts table in out database
             if user:
-                return jsonify(user) 
+                 session['user_id'] = user['user_id']
+                 print('Logged in successfully.', 'success')
+                 return jsonify(user)
             else:
                 return jsonify({'error': 'Invalid username or password'}), 401
+            # If account exists in accounts table in our database
+            # if user:
+            #     return jsonify(user) 
+            # else:
+            #     return jsonify({'error': 'Invalid username or password'}), 401
         except Exception as e: print(e)
     else:
-        return print("Please login") 
+        return print("Please login")
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    print('Logged out successfully.', 'success')
+    return send_from_directory(app.static_folder, 'index.html')   
+
+@app.route('/update_info', methods=['GET', 'POST'])
+def update_info():
+    user_id = session.get('user_id')
+    if not user_id:
+        print("Need user id", user_id)
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
+    user = cur.fetchone()
+    cur.close()
+    if not user:
+        print('User not found.', 'error')
+    if request.method == 'POST':
+        username = request.json['username']
+        password = request.json['password']
+        first_name = request.json['firstName']
+        last_name = request.json['lastName']
+        if not username or not password or not first_name or not last_name:
+            print('All fields are required.', 'error')
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute('UPDATE user SET username = %s, password = %s, f_name = %s, l_name = %s WHERE user_id = %s', (username, password, first_name, last_name,  user_id))
+            mysql.connection.commit()
+            cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
+            updated_user = cur.fetchone()
+            cur.close()
+            print('Profile updated successfully.', 'success')
+            
+
+    return jsonify(updated_user)
 
 
 @app.errorhandler(404)  
@@ -260,4 +306,4 @@ def scrape_SOCCER_News():
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(DEBUG="True",host='0.0.0.0', port=port)

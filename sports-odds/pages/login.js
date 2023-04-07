@@ -26,6 +26,7 @@ function Login() {
         })
         .then((res) => {
           if (res.status === 200) {
+            setUser(res.data);
             router.push("/");
           } else {
             setError("Invalid username or password!");
@@ -33,7 +34,7 @@ function Login() {
           console.log(res);
         });
     } catch (error) {
-      console.log("Something else");
+      console.log(error);
     }
   };
 

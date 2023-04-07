@@ -3,12 +3,7 @@ import { createContext, useContext, useState } from "react";
 const AppContext = createContext();
 
 export function AppWrapper({ children }) {
-  const [user, setUser] = useState({
-    username: "",
-    password: "",
-    first_name: "",
-    last_name: "",
-  });
+  const [user, setUser] = useState();
 
   let sharedState = { user, setUser };
 

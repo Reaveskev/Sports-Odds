@@ -36,6 +36,7 @@ const nextConfig = {
       "/MCBB": { page: "/MCBB" },
       "/WCBB": { page: "/WCBB" },
       "/login": { page: "/login" },
+      "/profile": { page: "/profile" },
     };
   },
 };
