@@ -9,6 +9,7 @@ function Profile() {
   const [lastName, setLastName] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [allBets, setAllBets] = useState();
   const { user, setUser } = useAppContext();
 
   const handleFirstNameChange = (event) => {
@@ -32,10 +33,23 @@ function Profile() {
     setUsername("");
   };
 
+  useEffect(() => {
+    let url = "http://127.0.0.1:5000/seeBets";
+
+    axios.get(url).then((res) => {
+      if (res.status === 200) {
+        setAllBets(res.data);
+      } else {
+        console.log("Did not work as planned");
+      }
+      console.log(res);
+    });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let url = "https://sports-odds.herokuapp.com/update_info";
-    // let url = "http://127.0.0.1:5000/update_info";
+    // let url = "https://sports-odds.herokuapp.com/update_info";
+    let url = "http://127.0.0.1:5000/update_info";
 
     try {
       if (username === "") {
@@ -117,6 +131,32 @@ function Profile() {
             <button type="submit">Save Changes</button>
           </form>
         </div>
+        {allBets ? (
+          <table className={styles.bet_table}>
+            <thead>
+              <tr>
+                <th className={styles.bet_table_header}>Teams</th>
+                <th className={styles.bet_table_header}>Point Spread</th>
+                <th className={styles.bet_table_header}>Total Points</th>
+                <th className={styles.bet_table_header}>Money Line</th>
+                <th className={styles.bet_table_header}>Bet Amount</th>
+                <th className={styles.bet_table_header}>Payout</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allBets.map((bet) => (
+                <tr key={bet.bet_id} className={styles.bet_table_row}>
+                  <td className={styles.bet_table_cell}>{bet.teams}</td>
+                  <td className={styles.bet_table_cell}>{bet.point_spread}</td>
+                  <td className={styles.bet_table_cell}>{bet.total_points}</td>
+                  <td className={styles.bet_table_cell}>{bet.money_line}</td>
+                  <td className={styles.bet_table_cell}>${bet.bet_amount}</td>
+                  <td className={styles.bet_table_cell}>{bet.payout}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : null}
       </div>
     </>
   );

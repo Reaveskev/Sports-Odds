@@ -4,7 +4,7 @@ import { AppWrapper } from "@/src/GlobalContext";
 export default function App({ Component, pageProps }) {
   return (
     <AppWrapper>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </AppWrapper>
   );
 }

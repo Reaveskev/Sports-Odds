@@ -23,12 +23,12 @@ cors = CORS(app, support_credentials=True)
 
 # MySql ####################
 
-app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-app.config['MYSQL_DB'] = os.environ.get('DB')
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+# app.config['MYSQL_DB'] = os.environ.get('DB')
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 # app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 # app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
@@ -36,12 +36,12 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# app.config['MYSQL_USER'] = "root"
-# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
-# app.config['MYSQL_HOST'] = "localhost"
-# app.config['MYSQL_DB'] = "sports_odds"
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# app.config['SECRET_KEY'] = 'mysecretkey'
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_DB'] = "sports_odds"
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = 'mysecretkey'
 
 
 mysql = MySQL(app)
@@ -51,18 +51,6 @@ mysql = MySQL(app)
 @app.route('/<path:path>')
 def catch_all(path):
     if path != "" and os.path.exists(app.static_folder + '/' + path):
-        # try:
-        # # Test the database connection by querying a table
-        #     cursor = mysql.connection.cursor()
-        #     cursor.execute('''SELECT * FROM user''')
-        #     result = cursor.fetchall()
-        #     cursor.close()
-        #     if result != "":
-        #         print(result)
-        #     else:
-        #         print( 'The database is empty.')
-        # except Exception as e:
-        #     print(f'Database connection error: {str(e)}')
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
@@ -86,11 +74,7 @@ def login():
                  return jsonify(user)
             else:
                 return jsonify({'error': 'Invalid username or password'}), 401
-            # If account exists in accounts table in our database
-            # if user:
-            #     return jsonify(user) 
-            # else:
-            #     return jsonify({'error': 'Invalid username or password'}), 401
+           
         except Exception as e: print(e)
     else:
         return print("Please login")
@@ -105,20 +89,20 @@ def logout():
 def update_info():
     user_id = session.get('user_id')
     if not user_id:
-        print("Need user id", user_id)
+        return jsonify({"error":"Need user id"}), 401
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
     user = cur.fetchone()
     cur.close()
     if not user:
-        print('User not found.', 'error')
+        return jsonify({"error":"User does not exist"}), 401
     if request.method == 'POST':
         username = request.json['username']
         password = request.json['password']
         first_name = request.json['firstName']
         last_name = request.json['lastName']
         if not username or not password or not first_name or not last_name:
-            print('All fields are required.', 'error')
+            return jsonify({"error":'All fields are required.'}), 401
         else:
             cur = mysql.connection.cursor()
             cur.execute('UPDATE user SET username = %s, password = %s, f_name = %s, l_name = %s WHERE user_id = %s', (username, password, first_name, last_name,  user_id))
@@ -130,6 +114,51 @@ def update_info():
             
 
     return jsonify(updated_user)
+
+@app.route('/addBet', methods=['POST'])
+def addBet():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    try:
+        teams = request.json['teams']
+        money_line = request.json.get('moneyline')
+        point_spread = request.json.get('pointSpread')
+        total_points = request.json.get('totalPoints')
+        payout = request.json['parlayPayout']
+        bet_amount = request.json['betAmount']
+        cursor = mysql.connection.cursor()
+        cursor.execute('INSERT INTO bets (teams, money_line, point_spread, total_points, payout, bet_amount, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s)',(teams, money_line, point_spread, total_points, payout, bet_amount, user_id))
+        mysql.connection.commit()
+        cursor.close()
+
+        return jsonify({'success': 'Bet added successfully'}), 200
+    
+    except KeyError:
+        return jsonify({'error': 'Missing required parameter(s)'}), 400
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to add bet'}), 500
+   
+
+@app.route('/seeBets', methods=['GET'])
+def seeBets():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('Select * from bets WHERE user_id = %s',(user_id,))
+        bets = cursor.fetchall()
+        cursor.close()
+
+        print('Retrieved all bets', 'success')
+        return jsonify(bets)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to get bets'}), 500
 
 
 @app.errorhandler(404)  

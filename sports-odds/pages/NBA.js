@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 import Yahoo_Sports from "./Yahoo_Sports.csv";
+import * as AiIcon from "react-icons/Ai";
+import { useAppContext } from "@/src/GlobalContext";
+import Bet from "../src/Bet";
 
 function NBA() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +16,8 @@ function NBA() {
   const [NBANews2, setNBANews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
   const [sports_odds, setSports_Odds] = useState([]);
+  const [openBet, setOpenBet] = useState(false);
+  const { setBetInfo, betInfo } = useAppContext();
 
   useEffect(() => {
     let temp = [];
@@ -285,13 +290,34 @@ function NBA() {
         <div style={{ marginRight: "20%" }} className={styles.odds_div}>
           <div className={styles.odds}>
             <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
-
             {sports_odds.map((game) => {
               return (
                 <>
                   <div className={styles.team_info}>
                     <div className={styles.team_header}>
-                      <p style={{ minWidth: 180 }}></p>
+                      <div style={{ minWidth: 60, cursor: "pointer" }}>
+                        <AiIcon.AiFillPlusCircle
+                          onClick={() => {
+                            setBetInfo([
+                              game.Away_logo,
+                              game.Away_Team,
+                              game.Away_Record,
+                              game.Away_Money_line,
+                              game.Away_Point_spread,
+                              game.Away_Total_points,
+                              game.Home_logo,
+                              game.Home_Team,
+                              game.Home_Record,
+                              game.Home_Money_line,
+                              game.Home_Point_spread,
+                              game.Home_Total_points,
+                            ]);
+                            setOpenBet(!openBet);
+                          }}
+                          color="green"
+                        />
+                      </div>
+                      <p style={{ minWidth: 100 }}></p>
                       <p style={{ minWidth: 72 }}>Money Line</p>
                       <p style={{ minWidth: 120 }}>Point Spread</p>
                       <p style={{ minWidth: 120 }}>Total Points</p>
@@ -334,6 +360,7 @@ function NBA() {
                 </>
               );
             })}
+            {openBet ? <Bet openBet={openBet} setOpenBet={setOpenBet} /> : null}
           </div>
         </div>
       </div>
