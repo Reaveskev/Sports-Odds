@@ -31,7 +31,7 @@ const nextConfig = {
       "/NHL": { page: "/NHL" },
       "/WNBA": { page: "/WNBA" },
       "/CFB": { page: "/CFB" },
-      "/Soccer": { page: "/Soccer" },
+      // "/Soccer": { page: "/Soccer" },
       "/MLB": { page: "/MLB" },
       "/MCBB": { page: "/MCBB" },
       "/WCBB": { page: "/WCBB" },

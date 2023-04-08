@@ -34,7 +34,8 @@ function Profile() {
   };
 
   useEffect(() => {
-    let url = "http://127.0.0.1:5000/seeBets";
+    let url = "https://sports-odds.herokuapp.com/seeBets";
+    // let url = "http://127.0.0.1:5000/seeBets";
 
     axios.get(url).then((res) => {
       if (res.status === 200) {
@@ -48,8 +49,8 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // let url = "https://sports-odds.herokuapp.com/update_info";
-    let url = "http://127.0.0.1:5000/update_info";
+    let url = "https://sports-odds.herokuapp.com/update_info";
+    // let url = "http://127.0.0.1:5000/update_info";
 
     try {
       if (username === "") {

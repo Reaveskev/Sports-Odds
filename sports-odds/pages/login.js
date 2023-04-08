@@ -12,8 +12,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { user, setUser } = useAppContext();
-  // let url = "https://sports-odds.herokuapp.com/login_to_db";
-  let url = "http://127.0.0.1:5000/login_to_db";
+  let url = "https://sports-odds.herokuapp.com/login_to_db";
+  // let url = "http://127.0.0.1:5000/login_to_db";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

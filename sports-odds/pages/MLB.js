@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 import Yahoo_Sports from "./Yahoo_Sports.csv";
+import * as AiIcon from "react-icons/Ai";
+import { useAppContext } from "@/src/GlobalContext";
+import Bet from "../src/Bet";
 
 function MLB() {
   const [loading, setLoading] = useState(true);
@@ -13,6 +16,8 @@ function MLB() {
   const [MLBNews2, setMLBNews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
   const [sports_odds, setSports_Odds] = useState([]);
+  const [openBet, setOpenBet] = useState(false);
+  const { setBetInfo, betInfo } = useAppContext();
 
   useEffect(() => {
     let temp = [];
@@ -239,95 +244,121 @@ function MLB() {
         )}
       </div>
 
-      <div className={styles.news}>
-        <header className="newsHeader">MLB News</header>
-        {MLBNews.map((news) => {
-          return (
-            <div className={styles.newInfo} key={news.headline}>
-              <header>{news.headline}</header>
-              <a href={news.links.web.href}>
-                <img
-                  className={styles.Pic}
-                  height={325}
-                  width={575}
-                  alt=""
-                  src={news.images[0].url}
-                />
-              </a>
-              <p>{news.description}</p>
-            </div>
-          );
-        })}
-        {MLBNews2.map((news) => {
-          return (
-            <div className={styles.newInfo} key={news.headline}>
-              <header>{news.headline}</header>
-              <a href={news.links}>
-                <img
-                  className={styles.Pic}
-                  height={325}
-                  width={575}
-                  alt=""
-                  src={news.image}
-                />
-              </a>
-              <p>{news.description}</p>
-            </div>
-          );
-        })}
-      </div>
-      <div className={styles.odds_div}>
-        <div className={styles.odds}>
-          <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
-
-          {sports_odds.map((game) => {
+      <div style={{ width: "60%", float: "left" }}>
+        <div className={styles.news}>
+          <h1 className={styles.upcoming}>MLB News</h1>
+          {MLBNews.map((news) => {
             return (
-              <>
-                <div className={styles.team_info}>
-                  <div className={styles.team_header}>
-                    <p style={{ minWidth: 180 }}></p>
-                    <p style={{ minWidth: 72 }}>Money Line</p>
-                    <p style={{ minWidth: 120 }}>Point Spread</p>
-                    <p style={{ minWidth: 120 }}>Total Points</p>
-                  </div>
-                  <div className={styles.team_format}>
-                    <div className={styles.name_logo}>
-                      <img
-                        alt=""
-                        className={styles.odds_logo}
-                        src={game.Away_logo}
-                      />
-                      <div className={styles.name_record}>
-                        <h4>{game.Away_Team}</h4>
-                        <span>{game.Away_Record}</span>
-                        <span style={{ paddingTop: 5 }}>@</span>
-                      </div>
-                    </div>
-                    <p>{game.Away_Money_line}</p>
-                    <p>{game.Away_Point_spread}</p>
-                    <p>{game.Away_Total_points}</p>
-                  </div>
-
-                  <div className={styles.team_format}>
-                    <div className={styles.name_logo}>
-                      <img
-                        alt=""
-                        className={styles.odds_logo}
-                        src={game.Home_logo}
-                      />
-                      <div className={styles.name_record}>
-                        <h4>{game.Home_Team}</h4>
-                        <span>{game.Home_Record}</span>
-                      </div>
-                    </div>
-                    <p>{game.Home_Money_line}</p>
-                    <p>{game.Home_Point_spread}</p>
-                    <p>{game.Home_Total_points}</p>
-                  </div>
-                </div>
-              </>
+              <div className={styles.newInfo} key={news.headline}>
+                <header>{news.headline}</header>
+                <a href={news.links.web.href}>
+                  <img
+                    className={styles.Pic}
+                    height={325}
+                    width={575}
+                    alt=""
+                    src={news.images[0].url}
+                  />
+                </a>
+                <p>{news.description}</p>
+              </div>
             );
           })}
+          {MLBNews2.map((news) => {
+            return (
+              <div className={styles.newInfo} key={news.headline}>
+                <header>{news.headline}</header>
+                <a href={news.links}>
+                  <img
+                    className={styles.Pic}
+                    height={325}
+                    width={575}
+                    alt=""
+                    src={news.image}
+                  />
+                </a>
+                <p>{news.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div style={{ width: "40%", float: "right" }}>
+        <div style={{ marginRight: "20%" }} className={styles.odds_div}>
+          <div className={styles.odds}>
+            <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
+            {sports_odds.map((game) => {
+              return (
+                <>
+                  <div className={styles.team_info}>
+                    <div className={styles.team_header}>
+                      <div style={{ minWidth: 60, cursor: "pointer" }}>
+                        <AiIcon.AiFillPlusCircle
+                          onClick={() => {
+                            setBetInfo([
+                              game.Away_logo,
+                              game.Away_Team,
+                              game.Away_Record,
+                              game.Away_Money_line,
+                              game.Away_Point_spread,
+                              game.Away_Total_points,
+                              game.Home_logo,
+                              game.Home_Team,
+                              game.Home_Record,
+                              game.Home_Money_line,
+                              game.Home_Point_spread,
+                              game.Home_Total_points,
+                            ]);
+                            setOpenBet(!openBet);
+                          }}
+                          color="green"
+                        />
+                      </div>
+                      <p style={{ minWidth: 100 }}></p>
+                      <p style={{ minWidth: 72 }}>Money Line</p>
+                      <p style={{ minWidth: 120 }}>Point Spread</p>
+                      <p style={{ minWidth: 120 }}>Total Points</p>
+                    </div>
+                    <div className={styles.team_format}>
+                      <div className={styles.name_logo}>
+                        <img
+                          alt=""
+                          className={styles.odds_logo}
+                          src={game.Away_logo}
+                        />
+                        <div className={styles.name_record}>
+                          <h4>{game.Away_Team}</h4>
+                          <span>{game.Away_Record}</span>
+                          <span style={{ paddingTop: 5 }}>@</span>
+                        </div>
+                      </div>
+                      <p>{game.Away_Money_line}</p>
+                      <p>{game.Away_Point_spread}</p>
+                      <p>{game.Away_Total_points}</p>
+                    </div>
+
+                    <div className={styles.team_format}>
+                      <div className={styles.name_logo}>
+                        <img
+                          alt=""
+                          className={styles.odds_logo}
+                          src={game.Home_logo}
+                        />
+                        <div className={styles.name_record}>
+                          <h4>{game.Home_Team}</h4>
+                          <span>{game.Home_Record}</span>
+                        </div>
+                      </div>
+                      <p>{game.Home_Money_line}</p>
+                      <p>{game.Home_Point_spread}</p>
+                      <p>{game.Home_Total_points}</p>
+                    </div>
+                  </div>
+                </>
+              );
+            })}
+            {openBet ? <Bet openBet={openBet} setOpenBet={setOpenBet} /> : null}
+          </div>
         </div>
       </div>
     </div>

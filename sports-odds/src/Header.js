@@ -9,8 +9,8 @@ function Header() {
   const { user, setUser } = useAppContext();
 
   const handleLogout = () => {
-    // let url = "https://sports-odds.herokuapp.com/logout";
-    let url = "http://127.0.0.1:5000/logout";
+    let url = "https://sports-odds.herokuapp.com/logout";
+    // let url = "http://127.0.0.1:5000/logout";
     try {
       axios.post(url).then((res) => {
         if (res.status === 200) {
@@ -26,57 +26,32 @@ function Header() {
 
   return (
     <div className={styles.navbar}>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
+      <li className={styles.li}>
         <Link className={styles.link} href="/">
           Home
         </Link>
       </li>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
+      <li className={styles.li}>
         <Link className={styles.link} href="/NFL">
           NFL
         </Link>
       </li>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
+      <li className={styles.li}>
         <Link className={styles.link} href="/NBA">
           NBA
         </Link>
       </li>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
+      <li className={styles.li}>
         <Link className={styles.link} href="/WNBA">
           WNBA
         </Link>
       </li>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
+      <li className={styles.li}>
         <Link className={styles.link} href="/MLB">
           MLB
         </Link>
       </li>
-      <li
+      {/* <li
         onMouseEnter={() => {
           setSeeMore(false);
         }}
@@ -85,13 +60,8 @@ function Header() {
         <Link className={styles.link} href="/Soccer">
           Soccer
         </Link>
-      </li>
-      <li
-        onMouseEnter={() => {
-          setSeeMore(false);
-        }}
-        className={styles.li}
-      >
+      </li> */}
+      <li className={styles.li}>
         <Link className={styles.link} href="/NHL">
           NHL
         </Link>
