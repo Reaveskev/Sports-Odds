@@ -134,7 +134,7 @@ function Profile() {
         </div>
         {allBets ? (
           <>
-            <h2>Account Information</h2>
+            <h2 style={{ paddingTop: 50 }}>Your Bets</h2>
             <table className={styles.bet_table}>
               <thead>
                 <tr>
