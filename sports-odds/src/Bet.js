@@ -27,8 +27,8 @@ const Bet = ({ openBet, setOpenBet }) => {
     potential,
     betAmount
   ) => {
-    // let url = "https://sports-odds.herokuapp.com/addBet";
-    let url = "http://127.0.0.1:5000/addBet";
+    let url = "https://sports-odds.herokuapp.com/addBet";
+    // let url = "http://127.0.0.1:5000/addBet";
     try {
       const response = await axios
         .post(url, {
