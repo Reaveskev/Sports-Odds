@@ -3,14 +3,23 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/profile.module.css";
 import Header from "@/src/Header";
 import { useAppContext } from "@/src/GlobalContext";
+import * as AiIcon from "react-icons/Ai";
+import * as RxIcon from "react-icons/Rx";
 
 function Profile() {
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [allBets, setAllBets] = useState();
-  const { user, setUser } = useAppContext();
+
+  const {
+    user,
+    setUser,
+    allBets,
+    setAllBets,
+    allBetsOutcome,
+    setAllBetsOutcome,
+  } = useAppContext();
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -33,18 +42,39 @@ function Profile() {
     setUsername("");
   };
 
-  useEffect(() => {
-    let url = "https://sports-odds.herokuapp.com/seeBets";
-    // let url = "http://127.0.0.1:5000/seeBets";
+  // function test(words) {
+  //   var n = words.split(" ");
+  //   return n[n.length - 1];
+  // }
 
-    axios.get(url).then((res) => {
-      if (res.status === 200) {
-        setAllBets(res.data);
-      } else {
-        console.log("Did not work as planned");
-      }
-      console.log(res);
-    });
+  // let teamName = test(betInfo[1]);
+  useEffect(() => {
+    // let url2 = "https://sports-odds.herokuapp.com/seeBets";
+    // // let url2 = "http://127.0.0.1:5000/seeBets";
+    // axios.get(url2).then((res) => {
+    //   if (res.status === 200) {
+    //     setAllBets(res.data);
+    //   } else {
+    //     console.log("Did not work as planned");
+    //   }
+    // console.log(res);
+    // });
+    //////////////////
+    // let url2 = "http://127.0.0.1:5000/seeBets";
+    // axios.get(url2).then((res) => {
+    //   if (res.status === 200) {
+    //     setAllBets(res.data);
+    //     // let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
+    //     let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+    //     axios.get(url3).then((res) => {
+    //       if (res.status === 200) {
+    //         setAllBetsOutcome(res.data);
+    //       }
+    //     });
+    //   } else {
+    //     console.log("Did not work as planned");
+    //   }
+    // });
   }, []);
 
   const handleSubmit = async (e) => {
@@ -79,7 +109,6 @@ function Profile() {
           } else {
             setError("Invalid username or password!");
           }
-          console.log(res);
         });
     } catch (error) {
       console.log(error);
@@ -147,20 +176,129 @@ function Profile() {
                 </tr>
               </thead>
               <tbody>
-                {allBets.map((bet) => (
-                  <tr key={bet.bet_id} className={styles.bet_table_row}>
-                    <td className={styles.bet_table_cell}>{bet.teams}</td>
-                    <td className={styles.bet_table_cell}>
-                      {bet.point_spread}
-                    </td>
-                    <td className={styles.bet_table_cell}>
-                      {bet.total_points}
-                    </td>
-                    <td className={styles.bet_table_cell}>{bet.money_line}</td>
-                    <td className={styles.bet_table_cell}>${bet.bet_amount}</td>
-                    <td className={styles.bet_table_cell}>{bet.payout}</td>
-                  </tr>
-                ))}
+                {allBets.map((bet, index) => {
+                  // let outcome = allBetsOutcome[index] || "TBD"
+                  return (
+                    <tr key={bet.bet_id} className={styles.bet_table_row}>
+                      <td className={styles.bet_table_cell}>{bet.teams}</td>
+                      <td className={styles.bet_table_cell}>
+                        {!allBetsOutcome[index]?.point_spread ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {bet.point_spread}
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 10 }}
+                              color="green"
+                            />
+                            {bet.point_spread}
+                          </div>
+                        )}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        {!allBetsOutcome[index]?.total_points ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {bet.total_points}
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 10 }}
+                              color="green"
+                            />
+                            {bet.total_points}
+                          </div>
+                        )}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        {!allBetsOutcome[index]?.money_line ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {bet.money_line}
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 10 }}
+                              color="green"
+                            />
+                            {bet.money_line}
+                          </div>
+                        )}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        ${bet.bet_amount}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        {!allBetsOutcome[index]?.payout ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            {/* <RxIcon.RxCross2
+                              style={{ marginRight: 10 }}
+                              color="red"
+                            /> */}
+                            {bet.payout}
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 10 }}
+                              color="green"
+                            />
+                            {bet.payout}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </>

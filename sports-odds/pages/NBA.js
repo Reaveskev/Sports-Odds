@@ -62,7 +62,7 @@ function NBA() {
         axios
           .get(
             "https://sports-odds.herokuapp.com/NBA_NEWS"
-            // ||
+
             // "http://127.0.0.1:5000/NBA_NEWS"
           )
           .then((res) => {
@@ -77,6 +77,9 @@ function NBA() {
     });
     setSports_Odds(temp);
   }, []);
+
+  let game_ids = {};
+  let game_over_ids = {};
 
   return (
     <div>
@@ -148,6 +151,9 @@ function NBA() {
                 {completed.games !== undefined ? (
                   <>
                     {completed.games.map((games) => {
+                      let teams = [games.team_one.name, games.team_two.name];
+                      let id = games.id;
+                      game_over_ids[id] = teams;
                       return (
                         <div className={styles.games} key={games.id}>
                           <div className={styles.date}>
@@ -196,6 +202,9 @@ function NBA() {
                 {upcoming.games !== undefined ? (
                   <>
                     {upcoming.games.map((games) => {
+                      let teams = [games.team_one.name, games.team_two.name];
+                      let id = games.id;
+                      game_ids[id] = teams;
                       return (
                         <div className={styles.games} key={games.id}>
                           <div className={styles.date}>
@@ -360,7 +369,15 @@ function NBA() {
                 </>
               );
             })}
-            {openBet ? <Bet openBet={openBet} setOpenBet={setOpenBet} /> : null}
+            {openBet ? (
+              <Bet
+                openBet={openBet}
+                setOpenBet={setOpenBet}
+                game_ids={game_ids}
+                game_over_ids={game_over_ids}
+                completed={completed}
+              />
+            ) : null}
           </div>
         </div>
       </div>

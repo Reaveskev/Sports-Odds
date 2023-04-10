@@ -79,6 +79,9 @@ function MLB() {
     setSports_Odds(temp);
   }, []);
 
+  let game_ids = {};
+  let game_over_ids = {};
+
   return (
     <div>
       <Header />
@@ -149,6 +152,9 @@ function MLB() {
                 {completed.games !== undefined ? (
                   <>
                     {completed.games.map((games) => {
+                      let teams = [games.team_one.name, games.team_two.name];
+                      let id = games.id;
+                      game_over_ids[id] = teams;
                       return (
                         <div className={styles.games} key={games.id}>
                           <div className={styles.date}>
@@ -195,6 +201,9 @@ function MLB() {
                   </>
                 ) : null}
                 {upcoming.games.map((games) => {
+                  let teams = [games.team_one.name, games.team_two.name];
+                  let id = games.id;
+                  game_ids[id] = teams;
                   return (
                     <div className={styles.games} key={games.id}>
                       <div className={styles.date}>
@@ -357,7 +366,15 @@ function MLB() {
                 </>
               );
             })}
-            {openBet ? <Bet openBet={openBet} setOpenBet={setOpenBet} /> : null}
+            {openBet ? (
+              <Bet
+                openBet={openBet}
+                setOpenBet={setOpenBet}
+                game_ids={game_ids}
+                game_over_ids={game_over_ids}
+                completed={completed}
+              />
+            ) : null}
           </div>
         </div>
       </div>

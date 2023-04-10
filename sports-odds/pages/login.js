@@ -11,9 +11,9 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { user, setUser } = useAppContext();
-  let url = "https://sports-odds.herokuapp.com/login_to_db";
-  // let url = "http://127.0.0.1:5000/login_to_db";
+  const { user, setUser, setAllBets, setAllBetsOutcome } = useAppContext();
+  // let url = "https://sports-odds.herokuapp.com/login_to_db";
+  let url = "http://127.0.0.1:5000/login_to_db";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,11 +27,28 @@ function Login() {
         .then((res) => {
           if (res.status === 200) {
             setUser(res.data);
-            router.push("/");
+
+            // let url2 = "https://sports-odds.herokuapp.com/seeBets";
+            let url2 = "http://127.0.0.1:5000/seeBets";
+
+            axios.get(url2).then((res) => {
+              if (res.status === 200) {
+                setAllBets(res.data);
+                // let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
+                let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+                axios.get(url3).then((res) => {
+                  if (res.status === 200) {
+                    setAllBetsOutcome(res.data);
+                    router.push("/");
+                  }
+                });
+              } else {
+                console.log("Did not work as planned");
+              }
+            });
           } else {
             setError("Invalid username or password!");
           }
-          console.log(res);
         });
     } catch (error) {
       console.log(error);

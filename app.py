@@ -23,12 +23,12 @@ cors = CORS(app, support_credentials=True)
 
 # MySql ####################
 
-app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-app.config['MYSQL_DB'] = os.environ.get('DB')
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+# app.config['MYSQL_DB'] = os.environ.get('DB')
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 # app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
 # app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
@@ -36,12 +36,12 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
-# app.config['MYSQL_USER'] = "root"
-# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
-# app.config['MYSQL_HOST'] = "localhost"
-# app.config['MYSQL_DB'] = "sports_odds"
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# app.config['SECRET_KEY'] = 'mysecretkey'
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_DB'] = "sports_odds"
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = 'mysecretkey'
 
 
 mysql = MySQL(app)
@@ -159,6 +159,51 @@ def seeBets():
     except Exception as e:
         print(e)
         return jsonify({'error': 'Failed to get bets'}), 500
+    
+
+@app.route('/addBetOutcome', methods=['POST'])
+def addBetOutcome():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    try:
+        money_line = request.json.get('moneyline')
+        point_spread = request.json.get('pointSpread')
+        total_points = request.json.get('totalPoints')
+        payout = request.json['payout']
+        bet_id = request.json['bet_id']
+        cursor = mysql.connection.cursor()
+        cursor.execute('INSERT INTO bet_outcome (money_line, point_spread, total_points, payout, bet_id , user_id) VALUES (%s, %s, %s, %s, %s, %s, %s)',(money_line, point_spread, total_points, payout, bet_id , user_id))
+        mysql.connection.commit()
+        cursor.close()
+
+        return jsonify({'success': 'Bet updated successfully'}), 200
+    
+    except KeyError:
+        return jsonify({'error': 'Missing required parameter(s)'}), 400
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to update bet'}), 500
+   
+
+@app.route('/seeBetsOutcome', methods=['GET'])
+def seeBetsOutcome():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('Select * from bet_outcome WHERE user_id = %s',(user_id,))
+        bets = cursor.fetchall()
+        cursor.close()
+
+        print('Retrieved all bet outcomes', 'success')
+        return jsonify(bets)
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to get bet outcomes'}), 500
 
 
 @app.errorhandler(404)  

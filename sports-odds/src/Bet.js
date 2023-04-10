@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "@/styles/bet.module.css";
-import { useAppContext } from "@/src/GlobalContext";
+import { useAppContext } from "./GlobalContext";
 import * as AiIcon from "react-icons/Ai";
 
-const Bet = ({ openBet, setOpenBet }) => {
-  const { betInfo, user } = useAppContext();
+const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
+  const { betInfo, user, allBets, setAllBets } = useAppContext();
   const [potential, setPotential] = useState();
   const [moneyline, setMoneyline] = useState();
   const [pointSpread, setPointSpread] = useState();
@@ -17,7 +17,64 @@ const Bet = ({ openBet, setOpenBet }) => {
     setbetAmount(event.target.value);
   }
 
+  //
+  function test(words) {
+    var n = words.split(" ");
+    return n[n.length - 1];
+  }
+
   let teams = betInfo[1] + " vs " + betInfo[7];
+
+  let teamName = test(allBets[0].teams);
+  let matchingKey;
+  let matchingKey2;
+
+  useEffect(() => {
+    if (Object.keys(game_over_ids).length !== 0) {
+      for (const key in game_over_ids) {
+        if (game_over_ids[key].some((value) => value.includes(teamName))) {
+          matchingKey = key;
+          // console.log(matchingKey);
+          break;
+        }
+      }
+    }
+
+    if (Object.keys(game_ids).length !== 0) {
+      for (const key in game_ids) {
+        if (game_ids[key].some((value) => value.includes(teamName))) {
+          matchingKey2 = key;
+          // console.log(matchingKey2);
+          break;
+        }
+      }
+    }
+
+    if (Object.keys(completed).length !== 0) {
+      if (completed.games.some((obj) => obj.id === matchingKey)) {
+        let filteredData = completed.games.filter(
+          (obj) => obj.id === matchingKey
+        );
+
+        let game_over_stats = {
+          Team1: filteredData[0].team_one.name,
+          Team2: filteredData[0].team_two.name,
+          "Total score":
+            parseInt(filteredData[0].team_one.score) +
+            parseInt(filteredData[0].team_two.score),
+
+          "Point Spread":
+            parseInt(filteredData[0].team_one.score) -
+            parseInt(filteredData[0].team_two.score),
+          Winner:
+            parseInt(filteredData[0].team_one.score) >
+            parseInt(filteredData[0].team_two.score)
+              ? filteredData[0].team_one.name
+              : filteredData[0].team_two.name,
+        };
+      }
+    }
+  }, [game_over_ids, game_over_ids]);
 
   const addBet = async (
     teams,
@@ -27,8 +84,8 @@ const Bet = ({ openBet, setOpenBet }) => {
     potential,
     betAmount
   ) => {
-    let url = "https://sports-odds.herokuapp.com/addBet";
-    // let url = "http://127.0.0.1:5000/addBet";
+    // let url = "https://sports-odds.herokuapp.com/addBet";
+    let url = "http://127.0.0.1:5000/addBet";
     try {
       const response = await axios
         .post(url, {
@@ -50,6 +107,13 @@ const Bet = ({ openBet, setOpenBet }) => {
               setbetAmount();
               setOpenBet(false);
             }, "3000");
+            let url2 = "http://127.0.0.1:5000/seeBets";
+
+            axios.get(url2).then((res) => {
+              if (res.status === 200) {
+                setAllBets(res.data);
+              }
+            });
           } else {
             console.log(res);
           }
@@ -158,6 +222,7 @@ const Bet = ({ openBet, setOpenBet }) => {
               <div
                 style={{
                   padding: 5,
+                  whiteSpace: "nowrap",
                 }}
               >
                 {betInfo[1]}
