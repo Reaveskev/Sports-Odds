@@ -210,150 +210,19 @@ def seeBetsOutcome():
 def not_found(err):  
     return app.send_static_file('404.html')
 
-@app.route('/NFL_NEWS')
-def scrape_NFL_News():
+
+
+@app.route('/Sport_News/<sport>')
+def scrape_News(sport):
+    sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
+    if sport not in sports:
+        return jsonify({'error': 'Input a valid sports league'}), 400
+        
+
+    url = 'https://www.sportingnews.com/us/{}/news'.format(sport)
+
     
-    page_to_scrape = requests.get('https://www.sportingnews.com/us/nfl')
-
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-
-    news_div = soup.findAll("div", {"class":"list-item"})
-
-    news_list =[]
-
-    for news in news_div:
-        headline_tag = news.find("span", {"class":"rdf-meta hidden"})
-        headline = headline_tag['content'] + "."
-        picture = news.find('picture')
-        img_tag = picture.find('img')
-        img = img_tag['src']
-        description_div = news.find("div", {"class": "list-item__title"})
-        description = description_div.find("a").text + "."
-        url = "https://www.sportingnews.com" + description_div.find("a")["href"]
-        nfl_news = {"headline": headline, "links": url, "image": img, "description": description}
-
-        news_list.append(nfl_news)
-        
-        
-    return jsonify(news_list)
-
-@app.route('/NBA_NEWS')
-def scrape_NFL_Nba():
-    
-    page_to_scrape = requests.get('https://www.sportingnews.com/us/nba')
-
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-
-    news_div = soup.findAll("div", {"class":"list-item"})
-
-    news_list =[]
-
-    for news in news_div:
-        headline_tag = news.find("span", {"class":"rdf-meta hidden"})
-        headline = headline_tag['content'] + "."
-        picture = news.find('picture')
-        img_tag = picture.find('img')
-        img = img_tag['src']
-        description_div = news.find("div", {"class": "list-item__title"})
-        description = description_div.find("a").text + "."
-        url = "https://www.sportingnews.com" + description_div.find("a")["href"]
-        nba_news = {"headline": headline, "links": url, "image": img, "description": description}
-
-        news_list.append(nba_news)
-        
-        
-    return jsonify(news_list)
-
-
-
-@app.route('/MLB_NEWS')
-def scrape_MLB_News():
-    
-    page_to_scrape = requests.get('https://www.sportingnews.com/us/mlb/news')
-
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-
-    news_div = soup.findAll("div", {"class":"list-item"})
-
-    news_list =[]
-
-    for i, news in zip(range(8),news_div):
-        headline_tag = news.find("span", {"class":"rdf-meta hidden"})
-        headline = headline_tag['content'] + "."
-        picture = news.find('picture')
-        img_tag = picture.find('img')
-        img = img_tag['src']
-        description_div = news.find("div", {"class": "list-item__title"})
-        description = description_div.find("a").text + "."
-        url = "https://www.sportingnews.com" + description_div.find("a")["href"]
-        mlb_news = {"headline": headline, "links": url, "image": img, "description": description}
-
-        news_list.append(mlb_news)
-        
-        
-    return jsonify(news_list)
-
-
-@app.route('/NHL_NEWS')
-def scrape_NHL_News():
-    
-    page_to_scrape = requests.get('https://www.sportingnews.com/us/nhl/news')
-
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-
-    news_div = soup.findAll("div", {"class":"list-item"})
-
-    news_list =[]
-
-    for i, news in zip(range(8),news_div):
-        headline_tag = news.find("span", {"class":"rdf-meta hidden"})
-        headline = headline_tag['content'] + "."
-        picture = news.find('picture')
-        img_tag = picture.find('img')
-        img = img_tag['src']
-        description_div = news.find("div", {"class": "list-item__title"})
-        description = description_div.find("a").text + "."
-        url = "https://www.sportingnews.com" + description_div.find("a")["href"]
-        nhl_news = {"headline": headline, "links": url, "image": img, "description": description}
-
-        news_list.append(nhl_news)
-        
-        
-    return jsonify(news_list)
-
-@app.route('/CFB_NEWS')
-def scrape_CFB_News():
-    
-    page_to_scrape = requests.get('https://www.sportingnews.com/us/ncaa-football/news')
-
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-
-    news_div = soup.findAll("div", {"class":"list-item"})
-
-    news_list =[]
-
-    for i, news in zip(range(8),news_div):
-        headline_tag = news.find("span", {"class":"rdf-meta hidden"})
-        headline = headline_tag['content'] + "."
-        picture = news.find('picture')
-        img_tag = picture.find('img')
-        img = img_tag['src']
-        description_div = news.find("div", {"class": "list-item__title"})
-        description = description_div.find("a").text + "."
-        url = "https://www.sportingnews.com" + description_div.find("a")["href"]
-        cfb_news = {"headline": headline, "links": url, "image": img, "description": description}
-
-        news_list.append(cfb_news)
-        
-        
-    return jsonify(news_list)
-
-
-
-@app.route('/SOCCER_NEWS')
-def scrape_SOCCER_News():
-    
-    page_to_scrape = requests.get('https://www.sportingnews.com/us/soccer/news')
+    page_to_scrape = requests.get(url)
 
     soup = BeautifulSoup(page_to_scrape.text, "html.parser")
 
@@ -376,6 +245,321 @@ def scrape_SOCCER_News():
         
         
     return jsonify(news_list)
+
+
+@app.route('/Odds/<league>')
+def scrape_Odds(league):
+    sport = ["mlb", "nhl", "college-basketball", "nba", "nfl", "college-football", "wnba"]
+    if league not in sport:
+        return jsonify({'error': 'Input a valid sports league'}), 400
+        
+
+    url = 'https://sports.yahoo.com/{}/odds/'.format(league)
+
+    page_to_scrape = requests.get(url)
+
+    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
+
+    all_games = []
+
+
+    upcoming_games = []
+
+
+    inprogress_away_team_logo = []
+    inprogress_home_team_logo = []
+    inprogress_team_1_money_line = []
+    inprogress_team_1_point_spread = []
+    inprogress_team_1_point_spread_odd = []
+    inprogress_team_1_total_points = []
+    inprogress_team_1_total_points_odd = []
+    inprogress_teams_list = []
+    inprogress_score_list = []
+    inprogress_all_team_logos = []
+    inprogress_home_odds = []
+    inprogress_away_odds = []
+    inprogress_games = []
+
+
+    final_away_team_logo = []
+    final_home_team_logo = []
+    final_team_1_money_line = []
+    final_team_1_point_spread = []
+    final_team_1_total_points = []
+    final_teams_list = []
+    final_score_list = []
+    final_all_team_logos = []
+    final_home_odds = []
+    final_away_odds = []
+    final_games = []
+
+
+
+
+    final_div = soup.findAll('div', class_=lambda c: c and 'FINAL' in c)
+    inprogress_div = soup.findAll('div', class_=lambda c: c and 'IN_PROGRESS' in c)
+    pregame_div = soup.findAll('div', class_=lambda c: c and 'PREGAME' in c)
+##############
+
+    for x in final_div:
+        final_teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
+        final_score = x.findAll("span",{"class":"Fw(800) D(n) D(ib)!--medPhone Fl(end) Maw(30px) Pend(12px)"} )
+        final_odds = x.findAll("span", {"class":"Lh(19px)"} )
+        final_away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
+        final_home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+        
+        final_away_team_logo = []
+        final_home_team_logo = []
+        final_team_1_money_line = []
+        final_team_1_point_spread = []
+        final_team_1_total_points = []
+        final_teams_list = []
+        final_score_list = []
+        final_all_team_logos = []
+        final_home_odds = []
+        final_away_odds = []
+
+
+        for div_tag in final_away_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            final_away_team_logo.append(img_src)
+    
+        for div_tag in final_home_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            final_home_team_logo.append(img_src)
+
+        
+
+        for i in range(len(final_away_team_logo)):
+            final_all_team_logos.append(final_away_team_logo[i])
+            final_all_team_logos.append(final_home_team_logo[i])
+
+
+        count = 0
+        for soup in final_odds:
+            count += 1
+            for span in soup.find_all('span'):
+                if count == 1:
+                    if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                        final_team_1_money_line.append("True " + span.text)
+                    else:
+                        final_team_1_money_line.append(span.text)
+                elif count == 2:
+                    if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                        final_team_1_point_spread.append("True " + span.text)
+                    else:
+                        final_team_1_point_spread.append(span.text)
+                elif count == 3:
+                    count = 0
+                    if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                        final_team_1_total_points.append("True " + span.text)
+                    else:
+                        final_team_1_total_points.append(span.text)
+        
+        for team, record in zip(final_teams, final_score ):
+            final_teams_list.append(team.text)
+            final_score_list.append(record.text)
+
+        
+
+
+        counter = 0
+        for l, t, s, m1, p1, t1 in zip(final_all_team_logos, final_teams_list, final_score_list, final_team_1_money_line, final_team_1_point_spread, final_team_1_total_points):
+            if((counter % 2) == 0):
+                final_away_odds.append([l, t, s, m1, p1, t1])
+                counter += 1
+            else:
+                final_home_odds.append([l, t, s, m1, p1, t1])
+                counter += 1
+
+        
+        for i in range(len(final_away_odds)):
+            game = {}
+            game['home'] = {"team" : final_home_odds[i][1], "logo": final_home_odds[i][0], "score":  final_home_odds[i][2], "moneyline":  final_home_odds[i][3], 'point_spread': final_home_odds[i][4],  'total_points': final_home_odds[i][5]  }
+            game['away'] = {"team" : final_away_odds[i][1], "logo": final_away_odds[i][0], "score":  final_away_odds[i][2], "moneyline":  final_away_odds[i][3], 'point_spread': final_away_odds[i][4],  'total_points': final_away_odds[i][5] }
+       
+            final_games.append(game)
+
+    #####################
+    
+    for x in inprogress_div:
+        inprogress_teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
+        inprogress_score = x.findAll("span",{"class":"Fw(800) D(n) D(ib)!--medPhone Fl(end) Maw(30px) Pend(12px)"} )
+        inprogress_odds = x.findAll("span", {"class":"Lh(19px)"} )
+        inprogress_away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
+        inprogress_home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+        
+        inprogress_away_team_logo = []
+        inprogress_home_team_logo = []
+        inprogress_team_1_money_line = []
+        inprogress_team_1_point_spread = []
+        inprogress_team_1_point_spread_odd = []
+        inprogress_team_1_total_points = []
+        inprogress_team_1_total_points_odd = []
+        inprogress_teams_list = []
+        inprogress_score_list = []
+        inprogress_all_team_logos = []
+        inprogress_home_odds = []
+        inprogress_away_odds = []
+        
+    
+
+        for div_tag in inprogress_away_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            inprogress_away_team_logo.append(img_src)
+    
+        for div_tag in inprogress_home_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            inprogress_home_team_logo.append(img_src)
+
+        
+
+        for i in range(len(inprogress_away_team_logo)):
+            inprogress_all_team_logos.append(inprogress_away_team_logo[i])
+            inprogress_all_team_logos.append(inprogress_home_team_logo[i])
+
+        
+        count = 0
+        for soup in inprogress_odds:
+            count += 1
+            if count == 1:
+                    inprogress_team_1_money_line.append(soup.text)
+            elif count == 2:
+                    inprogress_team_1_point_spread.append(soup.text)
+            elif count == 3:        
+                    inprogress_team_1_point_spread_odd.append(soup.text)
+            elif count == 4:
+                    inprogress_team_1_total_points.append(soup.text)
+            elif count == 5:
+                    count = 0
+                    inprogress_team_1_total_points_odd.append(soup.text)
+            
+        
+        for team, record in zip(inprogress_teams, inprogress_score ):
+            inprogress_teams_list.append(team.text)
+            inprogress_score_list.append(record.text)
+
+        
+
+       
+        counter = 0
+        for l, t, s, m1, p1, ps, t1, ts in zip(inprogress_all_team_logos, inprogress_teams_list, inprogress_score_list, inprogress_team_1_money_line, inprogress_team_1_point_spread, inprogress_team_1_point_spread_odd, inprogress_team_1_total_points, inprogress_team_1_total_points_odd):
+            if((counter % 2) == 0):
+                with_odds_p = p1 + ' ({})'.format(ps)
+                with_odds_t = t1 + ' ({})'.format(ts)
+                inprogress_away_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                counter += 1
+            else:
+                with_odds_p = p1 + ' ({})'.format(ps)
+                with_odds_t = t1 + ' ({})'.format(ts)
+                inprogress_home_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                counter += 1
+
+       
+        
+        for h, a in zip(inprogress_home_odds, inprogress_away_odds):
+            
+            ingames = {}
+            ingames['home'] = {"team" : h[1], "logo": h[0], "score":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5]}
+            ingames['away'] = {"team" : a[1], "logo": a[0], "score":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5]}
+            
+            inprogress_games.append(ingames)
+
+
+    
+    for div in pregame_div: 
+        upcoming_teams = div.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
+        upcoming_record = div.findAll("span",{"class":"C(dimmed-text) Fz(12px)"} )
+        upcoming_odds = div.findAll("span", {"class":"Lh(19px)"} )
+        upcoming_away_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
+        upcoming_home_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+        upcoming_start  = div.findAll("span", {"class":" Fz(14px) smartphone_Fz(12px) C(#828c93)"} )
+    
+        upcoming_away_team_logo = []
+        upcoming_home_team_logo = []
+        upcoming_team_1_money_line = []
+        upcoming_team_1_point_spread = []
+        upcoming_team_1_point_spread_odd = []
+        upcoming_team_1_total_points = []
+        upcoming_team_1_total_points_odd = []
+        upcoming_teams_list = []
+        upcoming_all_team_logos = []
+        upcoming_home_odds = []
+        upcoming_away_odds = []
+        upcoming_records_list = []
+        upcoming_start_time = []
+
+
+        for start in upcoming_start:
+            upcoming_start_time.append(start.text)
+            upcoming_start_time.append(start.text)
+
+        for div_tag in upcoming_away_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            upcoming_away_team_logo.append(img_src)
+
+        for div_tag in upcoming_home_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            upcoming_home_team_logo.append(img_src)
+
+        for i in range(len(upcoming_away_team_logo)):
+            upcoming_all_team_logos.append(upcoming_away_team_logo[i])
+            upcoming_all_team_logos.append(upcoming_home_team_logo[i])
+        count = 0
+
+        for soup in upcoming_odds:
+            count += 1
+            if count == 1:
+                upcoming_team_1_money_line.append(soup.text)
+            elif count == 2:
+                upcoming_team_1_point_spread.append(soup.text)
+            elif count == 3:        
+                upcoming_team_1_point_spread_odd.append(soup.text)
+            elif count == 4:
+                upcoming_team_1_total_points.append(soup.text)
+            elif count == 5:
+                count = 0
+                upcoming_team_1_total_points_odd.append(soup.text)
+        for team, record in zip(upcoming_teams, upcoming_record ):
+            upcoming_teams_list.append(team.text)
+            upcoming_records_list.append(record.text)
+
+        counter = 0
+        for l, t, s, m1, p1, ps, t1, ts in zip(upcoming_all_team_logos, upcoming_teams_list, upcoming_records_list, upcoming_team_1_money_line, upcoming_team_1_point_spread, upcoming_team_1_point_spread_odd, upcoming_team_1_total_points, upcoming_team_1_total_points_odd):
+            if((counter % 2) == 0):
+                with_odds_p = p1 + ' ({})'.format(ps)
+                with_odds_t = t1 + ' ({})'.format(ts)
+                upcoming_away_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                counter += 1
+            else:
+                with_odds_p = p1 + ' ({})'.format(ps)
+                with_odds_t = t1 + ' ({})'.format(ts)
+                upcoming_home_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                counter += 1
+        
+
+        games = {}
+        for h, a in zip(upcoming_home_odds, upcoming_away_odds):
+            games['home'] = {"team" : h[1], "logo": h[0], "record":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5]}
+            games['away'] = {"team" : a[1], "logo": a[0], "record":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5]}
+            upcoming_games.append(games)
+       
+
+
+    Upcoming = {}
+    Upcoming["Upcoming"] = upcoming_games
+    Inprogress = {}
+    Inprogress["Inprogress"] = inprogress_games
+    Final = {}
+    Final["Final"] = final_games
+    
+    return jsonify(Upcoming,Inprogress,Final)
 
 
 

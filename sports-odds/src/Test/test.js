@@ -1,40 +1,57 @@
-// import axios from "axios";
-// import { useState, useEffect } from "react";
-// import styles from "@/styles/NBA.module.css";
-// import Header from "@/src/Header";
+<div class="FINAL sixpack W(100%) Mb(20px) D(f) team-id-mlb.t.4 team-id-mlb.t.9 Bd(border-light) Bdrs(12px)">
+  {/*AWAY TEAM MONEYLINE  */}
+  <div class="sixpack-bet-ODDS_MONEY_LINE D(f) Fld(c) Ai(c)">
+    <span class="Lh(19px)">
+      <img
+        alt="correct"
+        class="Mend(4px)"
+        height="19"
+        src="https://s.yimg.com/cv/apiv2/sportsbook/accept-fill@2x.png"
+        width="19"
+      />
+      <span>-145</span>
+    </span>
+  </div>
+  {/* AWAYTEAM POINT SPREAD */}
 
-// function Test() {
-//   const [loading, setLoading] = useState(true);
-//   const [completed, setCompleted] = useState([]);
-//   const [inprogress, setInprogress] = useState([]);
-//   const [upcoming, setUpcoming] = useState([]);
-//   const [NBANews, setNBANews] = useState([]);
-//   const [offseason, setoffseason] = useState(false);
+  <div class="sixpack-bet-ODDS_POINT_SPREAD D(f) Fld(c) Ai(c)">
+    <span class="Lh(19px)">
+      <span>-1.5</span>
+    </span>
+  </div>
+  {/* AWAY TEAM TOTAL POINTS */}
 
-//   useEffect(() => {
-//     axios
-//       .get(
-//         "https://statmilk.bleacherreport.com/api/scores/schedules?date=2023-03-22&league=&appversion=500.0&context="
-//       )
-//       .then((res) => {
-//         console.log(res.data.game_groups);
-//       });
-//   }, []);
+  <div class="sixpack-bet-ODDS_TOTAL_POINTS D(f) Fld(c) Ai(c)">
+    <span class="Lh(19px)">
+      <span>O 7</span>
+    </span>
+  </div>
 
-//   return (
-//     <div>
-//       <Header />
-//     </div>
-//   );
-// }
+  {/* HOME TEAM MONEYLINE */}
+  <div class="sixpack-bet-ODDS_MONEY_LINE D(f) Fld(c) Ai(c)">
+    <span class="Lh(19px)">
+      <span>+120</span>
+    </span>
+  </div>
+  {/* HOME TEAM POINT SPREAD */}
+  <div class="sixpack-bet-ODDS_POINT_SPREAD D(f) Fld(c) Ai(c)">
+    <span class="Lh(19px)">
+      <img
+        alt="correct"
+        class="Mend(4px)"
+        height="19"
+        src="https://s.yimg.com/cv/apiv2/sportsbook/accept-fill@2x.png"
+        width="19"
+      />
+      <span>+1.5</span>
+    </span>
+  </div>
+  {/* HOME TEAM TOTAL POINTS */}
 
-// export default Test;
-
-// fetch(
-//   "https://ncp-gw-sports.media.yahoo.com/api/v1/gql/stream_view?listId=5f3cfc79-39ad-4c00-938b-e4e94458386b&namespace=sports&id=headlines&version=v1&lang=en-US&region=US&ssl=true",
-//   {
-//     referrerPolicy: "no-referrer-when-downgrade",
-//     body: null,
-//     method: "GET",
-//   }
-// );
+  <div class="sixpack-bet-ODDS_TOTAL_POINTS D(f) Fld(c) Ai(c)">
+    <span class="Lh(19px)">
+      <span>U 7</span>
+    </span>
+  </div>
+  {/*  */}
+</div>;

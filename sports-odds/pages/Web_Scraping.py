@@ -369,48 +369,6 @@ def scrape_NHL ():
 
     
 
-
-# def test():
-#     unwanted = ["points", "% of Bets", "goals", "runs"]
-    
-
-#     page_to_scrape = requests.get('https://sports.yahoo.com/mlb/odds/')
-
-#     soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-    # Parse the HTML content with BeautifulSoup
-    
-    # pregame = soup.find("div", {"class": "Fxg(1)"})
-    # pregame = soup.findAll("span", {"class": "Lh(19px)"})
-    # print(pregame)
-
-    # tables = soup.findAll("tbody")
-
-    # for table in tables:
-    #     for row in table.findAll("td"):
-    #         for span in row.findAll('span'):
-    #             if span.text not in unwanted:
-    #                 if len(span.text) < 25:
-    #                         td.append(span.text)
-                    
-    
-
-    # size = 20
-    # smaller_lists = [td[i:i+size] for i in range(0, len(td), size)]
-    # print(smaller_lists[0])
-
-
-    # for inner_list in smaller_lists:
-    #     for index, item in enumerate(inner_list):
-    #         print("Index:", index, "Value:", item)
-
-    
-
-            
-        
-
-
-
-# test() 
 scrape_NBA()
 scrape_NHL()
 scrape_MLB()

@@ -2,7 +2,6 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-import Yahoo_Sports from "./Yahoo_Sports.csv";
 import * as AiIcon from "react-icons/Ai";
 import { useAppContext } from "@/src/GlobalContext";
 import Bet from "../src/Bet";
@@ -14,12 +13,13 @@ function WNBA() {
   const [upcoming, setUpcoming] = useState([]);
   const [WNBANews, setWNBANews] = useState([]);
   const [offseason, setoffseason] = useState(false);
-  const [sports_odds, setSports_Odds] = useState([]);
+  const [upcomingSportsOdds, setUpcomingSportsOdds] = useState([]);
+  const [finalSportsOdds, setFinalSportsOdds] = useState([]);
+  const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
   const [openBet, setOpenBet] = useState(false);
   const { setBetInfo, betInfo } = useAppContext();
 
   useEffect(() => {
-    let temp = [];
     axios
       .get(
         "https://statmilk.bleacherreport.com/api/scores/carousel?league=WNBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
@@ -56,13 +56,20 @@ function WNBA() {
             setWNBANews(res.data.articles);
             setLoading(false);
           });
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/Odds/wnba"
+
+            // "http://127.0.0.1:5000/Odds/wnba"
+          )
+          .then((res) => {
+            setUpcomingSportsOdds(res.data[0].Upcoming);
+            setInprogressSportsOdds(res.data[1].Inprogress);
+            setFinalSportsOdds(res.data[2].Final);
+          });
       });
-    Yahoo_Sports.forEach((element) => {
-      if (element.League === "WNBA") {
-        temp.push(element);
-      }
-    });
-    setSports_Odds(temp);
   }, []);
 
   return (
@@ -255,34 +262,164 @@ function WNBA() {
       <div style={{ width: "40%", float: "right" }}>
         <div style={{ marginRight: "20%" }} className={styles.odds_div}>
           <div className={styles.odds}>
-            <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
-            {sports_odds.map((game) => {
+            {inprogressSportsOdds.length > 0 ? (
+              <>
+                <h1 className={styles.upcoming}>Live Game Odds</h1>
+                {inprogressSportsOdds.map((game) => {
+                  return (
+                    <>
+                      <div className={styles.team_info}>
+                        <div className={styles.team_header}>
+                          <div style={{ minWidth: 60, cursor: "pointer" }}>
+                            <AiIcon.AiFillPlusCircle
+                              onClick={() => {
+                                setBetInfo([
+                                  game.away.logo,
+                                  game.away.team,
+                                  game.away.score,
+                                  game.away.moneyline,
+                                  game.away.point_spread,
+                                  game.away.total_points,
+                                  game.home.logo,
+                                  game.home.team,
+                                  game.home.score,
+                                  game.home.moneyline,
+                                  game.home.point_spread,
+                                  game.home.total_points,
+                                ]);
+                                setOpenBet(!openBet);
+                              }}
+                              color="green"
+                            />
+                          </div>
+                          <p style={{ minWidth: 100 }}></p>
+                          <p style={{ minWidth: 72 }}>Money Line</p>
+                          <p style={{ minWidth: 120 }}>Point Spread</p>
+                          <p style={{ minWidth: 120 }}>Total Points</p>
+                        </div>
+                        <div className={styles.team_format}>
+                          <div className={styles.name_logo}>
+                            <img
+                              alt=""
+                              className={styles.odds_logo}
+                              src={game.away.logo}
+                            />
+                            <div className={styles.name_record}>
+                              <h4>{game.away.team}</h4>
+                              <span>Current Score: {game.away.score}</span>
+                              <span style={{ paddingTop: 5 }}>@</span>
+                            </div>
+                          </div>
+                          <p>{game.away.moneyline}</p>
+                          <p>{game.away.point_spread}</p>
+                          <p>{game.away.total_points}</p>
+                        </div>
+
+                        <div className={styles.team_format}>
+                          <div className={styles.name_logo}>
+                            <img
+                              alt=""
+                              className={styles.odds_logo}
+                              src={game.home.logo}
+                            />
+                            <div className={styles.name_record}>
+                              <h4>{game.home.team}</h4>
+                              <span>Current Score: {game.home.score}</span>
+                            </div>
+                          </div>
+                          <p>{game.home.moneyline}</p>
+                          <p>{game.home.point_spread}</p>
+                          <p>{game.home.total_points}</p>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </>
+            ) : null}
+            {upcomingSportsOdds.length > 0 ? (
+              <>
+                <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
+                {upcomingSportsOdds.map((game) => {
+                  return (
+                    <>
+                      <div className={styles.team_info}>
+                        <div className={styles.team_header}>
+                          <div style={{ minWidth: 60, cursor: "pointer" }}>
+                            <AiIcon.AiFillPlusCircle
+                              onClick={() => {
+                                setBetInfo([
+                                  game.away.logo,
+                                  game.away.team,
+                                  game.away.record,
+                                  game.away.moneyline,
+                                  game.away.point_spread,
+                                  game.away.total_points,
+                                  game.home.logo,
+                                  game.home.team,
+                                  game.home.record,
+                                  game.home.moneyline,
+                                  game.home.point_spread,
+                                  game.home.total_points,
+                                ]);
+                                setOpenBet(!openBet);
+                              }}
+                              color="green"
+                            />
+                          </div>
+                          <p style={{ minWidth: 100 }}></p>
+                          <p style={{ minWidth: 72 }}>Money Line</p>
+                          <p style={{ minWidth: 120 }}>Point Spread</p>
+                          <p style={{ minWidth: 120 }}>Total Points</p>
+                        </div>
+                        <div className={styles.team_format}>
+                          <div className={styles.name_logo}>
+                            <img
+                              alt=""
+                              className={styles.odds_logo}
+                              src={game.away.logo}
+                            />
+                            <div className={styles.name_record}>
+                              <h4>{game.away.team}</h4>
+                              <span>{game.away.record}</span>
+                              <span style={{ paddingTop: 5 }}>@</span>
+                            </div>
+                          </div>
+                          <p>{game.away.moneyline}</p>
+                          <p>{game.away.point_spread}</p>
+                          <p>{game.away.total_points}</p>
+                        </div>
+
+                        <div className={styles.team_format}>
+                          <div className={styles.name_logo}>
+                            <img
+                              alt=""
+                              className={styles.odds_logo}
+                              src={game.home.logo}
+                            />
+                            <div className={styles.name_record}>
+                              <h4>{game.home.team}</h4>
+                              <span>{game.home.record}</span>
+                            </div>
+                          </div>
+                          <p>{game.home.moneyline}</p>
+                          <p>{game.home.point_spread}</p>
+                          <p>{game.home.total_points}</p>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </>
+            ) : null}
+            {finalSportsOdds.length > 0 ? (
+              <h1 className={styles.upcoming}>Game Final Odds</h1>
+            ) : null}
+            {finalSportsOdds.map((game) => {
               return (
                 <>
                   <div className={styles.team_info}>
                     <div className={styles.team_header}>
-                      <div style={{ minWidth: 60, cursor: "pointer" }}>
-                        <AiIcon.AiFillPlusCircle
-                          onClick={() => {
-                            setBetInfo([
-                              game.Away_logo,
-                              game.Away_Team,
-                              game.Away_Record,
-                              game.Away_Money_line,
-                              game.Away_Point_spread,
-                              game.Away_Total_points,
-                              game.Home_logo,
-                              game.Home_Team,
-                              game.Home_Record,
-                              game.Home_Money_line,
-                              game.Home_Point_spread,
-                              game.Home_Total_points,
-                            ]);
-                            setOpenBet(!openBet);
-                          }}
-                          color="green"
-                        />
-                      </div>
                       <p style={{ minWidth: 100 }}></p>
                       <p style={{ minWidth: 72 }}>Money Line</p>
                       <p style={{ minWidth: 120 }}>Point Spread</p>
@@ -293,17 +430,17 @@ function WNBA() {
                         <img
                           alt=""
                           className={styles.odds_logo}
-                          src={game.Away_logo}
+                          src={game.away.logo}
                         />
                         <div className={styles.name_record}>
-                          <h4>{game.Away_Team}</h4>
-                          <span>{game.Away_Record}</span>
+                          <h4>{game.away.team}</h4>
+                          <span>Current Score: {game.away.score}</span>
                           <span style={{ paddingTop: 5 }}>@</span>
                         </div>
                       </div>
-                      <p>{game.Away_Money_line}</p>
-                      <p>{game.Away_Point_spread}</p>
-                      <p>{game.Away_Total_points}</p>
+                      <p>{game.away.moneyline}</p>
+                      <p>{game.away.point_spread}</p>
+                      <p>{game.away.total_points}</p>
                     </div>
 
                     <div className={styles.team_format}>
@@ -311,16 +448,16 @@ function WNBA() {
                         <img
                           alt=""
                           className={styles.odds_logo}
-                          src={game.Home_logo}
+                          src={game.home.logo}
                         />
                         <div className={styles.name_record}>
-                          <h4>{game.Home_Team}</h4>
-                          <span>{game.Home_Record}</span>
+                          <h4>{game.home.team}</h4>
+                          <span>Current Score: {game.home.score}</span>
                         </div>
                       </div>
-                      <p>{game.Home_Money_line}</p>
-                      <p>{game.Home_Point_spread}</p>
-                      <p>{game.Home_Total_points}</p>
+                      <p>{game.home.moneyline}</p>
+                      <p>{game.home.point_spread}</p>
+                      <p>{game.home.total_points}</p>
                     </div>
                   </div>
                 </>

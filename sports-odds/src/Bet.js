@@ -17,7 +17,6 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
     setbetAmount(event.target.value);
   }
 
-  //
   function test(words) {
     var n = words.split(" ");
     return n[n.length - 1];
@@ -84,8 +83,8 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
     potential,
     betAmount
   ) => {
-    // let url = "https://sports-odds.herokuapp.com/addBet";
-    let url = "http://127.0.0.1:5000/addBet";
+    let url = "https://sports-odds.herokuapp.com/addBet";
+    // let url = "http://127.0.0.1:5000/addBet";
     try {
       const response = await axios
         .post(url, {
@@ -107,7 +106,8 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
               setbetAmount();
               setOpenBet(false);
             }, "3000");
-            let url2 = "http://127.0.0.1:5000/seeBets";
+            let url2 = "https://sports-odds.herokuapp.com/seeBets";
+            // let url2 = "http://127.0.0.1:5000/seeBets";
 
             axios.get(url2).then((res) => {
               if (res.status === 200) {

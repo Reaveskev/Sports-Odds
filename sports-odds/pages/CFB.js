@@ -7,6 +7,9 @@ const CFB = () => {
   const [CFBnews, setCFBnews] = useState([]);
   const [CFBnews2, setCFBnews2] = useState([]);
   const [loading, setLoading] = useState([true]);
+  const [upcomingSportsOdds, setUpcomingSportsOdds] = useState([]);
+  const [finalSportsOdds, setFinalSportsOdds] = useState([]);
+  const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
 
   useEffect(() => {
     axios
@@ -20,9 +23,21 @@ const CFB = () => {
       .then(() => {
         axios
           .get(
-            "https://sports-odds.herokuapp.com/CFB_NEWS"
-            // ||
-            // "http://127.0.0.1:5000/CFB_NEWS"
+            "https://sports-odds.herokuapp.com/Odds/college-football"
+
+            // "http://127.0.0.1:5000/Odds/college-football"
+          )
+          .then((res) => {
+            setUpcomingSportsOdds(res.data[0].Upcoming);
+            setInprogressSportsOdds(res.data[1].Inprogress);
+            setFinalSportsOdds(res.data[2].Final);
+          });
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/Sport_News/ncaa-football"
+            // "http://127.0.0.1:5000/Sport_News/ncaa-football"
           )
           .then((res) => {
             setCFBnews2(res.data);
