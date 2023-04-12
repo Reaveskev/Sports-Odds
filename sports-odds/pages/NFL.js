@@ -453,7 +453,7 @@ function NFL() {
                         />
                         <div className={styles.name_record}>
                           <h4>{game.away.team}</h4>
-                          <span>Current Score: {game.away.score}</span>
+                          <span>Final Score: {game.away.score}</span>
                           <span style={{ paddingTop: 5 }}>@</span>
                         </div>
                       </div>
@@ -471,7 +471,7 @@ function NFL() {
                         />
                         <div className={styles.name_record}>
                           <h4>{game.home.team}</h4>
-                          <span>Current Score: {game.home.score}</span>
+                          <span>Final Score: {game.home.score}</span>
                         </div>
                       </div>
                       <p>{game.home.moneyline}</p>

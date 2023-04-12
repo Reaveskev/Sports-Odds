@@ -470,13 +470,25 @@ function MLB() {
                         />
                         <div className={styles.name_record}>
                           <h4>{game.away.team}</h4>
-                          <span>Current Score: {game.away.score}</span>
+                          <span>Final Score: {game.away.score}</span>
                           <span style={{ paddingTop: 5 }}>@</span>
                         </div>
                       </div>
-                      <p>{game.away.moneyline}</p>
-                      <p>{game.away.point_spread}</p>
-                      <p>{game.away.total_points}</p>
+                      {game.away.moneyline.length > 5 ? (
+                        <p>{game.away.moneyline.slice(5)}</p>
+                      ) : (
+                        <p>{game.away.moneyline}</p>
+                      )}
+                      {game.away.point_spread.length > 5 ? (
+                        <p>{game.away.point_spread.slice(5)}</p>
+                      ) : (
+                        <p>{game.away.point_spread}</p>
+                      )}
+                      {game.away.total_points.length > 5 ? (
+                        <p>{game.away.total_points.slice(5)}</p>
+                      ) : (
+                        <p>{game.away.total_points}</p>
+                      )}
                     </div>
 
                     <div className={styles.team_format}>
@@ -488,12 +500,24 @@ function MLB() {
                         />
                         <div className={styles.name_record}>
                           <h4>{game.home.team}</h4>
-                          <span>Current Score: {game.home.score}</span>
+                          <span>Final Score: {game.home.score}</span>
                         </div>
                       </div>
-                      <p>{game.home.moneyline}</p>
-                      <p>{game.home.point_spread}</p>
-                      <p>{game.home.total_points}</p>
+                      {game.home.moneyline.length > 5 ? (
+                        <p>{game.home.moneyline.slice(5)}</p>
+                      ) : (
+                        <p>{game.home.moneyline}</p>
+                      )}
+                      {game.home.point_spread.length > 5 ? (
+                        <p>{game.home.point_spread.slice(5)}</p>
+                      ) : (
+                        <p>{game.home.point_spread}</p>
+                      )}
+                      {game.home.total_points.length > 5 ? (
+                        <p>{game.home.total_points.slice(5)}</p>
+                      ) : (
+                        <p>{game.home.total_points}</p>
+                      )}
                     </div>
                   </div>
                 </>
@@ -516,3 +540,10 @@ function MLB() {
 }
 
 export default MLB;
+
+{
+  /* <AiIcon.AiFillCheckCircle
+style={{ marginRight: 10 }}
+color="green"
+/> */
+}
