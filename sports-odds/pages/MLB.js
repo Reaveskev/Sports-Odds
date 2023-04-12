@@ -61,8 +61,7 @@ function MLB() {
       .then(() => {
         axios
           .get(
-            "https://sports-odds.herokuapp.com/Odds/nba"
-
+            "https://sports-odds.herokuapp.com/Odds/mlb"
             // "http://127.0.0.1:5000/Odds/mlb"
           )
           .then((res) => {
