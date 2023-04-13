@@ -16,7 +16,7 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
   function handleBetAmountChange(event) {
     setbetAmount(event.target.value);
   }
-  console.log(betInfo);
+
   function test(words) {
     var n = words.split(" ");
     return n[n.length - 1];

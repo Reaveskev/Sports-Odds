@@ -475,35 +475,35 @@ function MLB() {
                         </div>
                       </div>
                       {game.away.moneyline.length > 5 ? (
-                        <>
+                        <p>
                           <AiIcon.AiFillCheckCircle
                             style={{ marginRight: 10 }}
                             color="green"
                           />
-                          <p>{game.away.moneyline.slice(5)}</p>
-                        </>
+                          {game.away.moneyline.slice(5)}
+                        </p>
                       ) : (
                         <p>{game.away.moneyline}</p>
                       )}
                       {game.away.point_spread.length > 5 ? (
-                        <>
+                        <p>
                           <AiIcon.AiFillCheckCircle
                             style={{ marginRight: 10 }}
                             color="green"
                           />
-                          <p>{game.away.point_spread.slice(5)}</p>
-                        </>
+                          {game.away.point_spread.slice(5)}
+                        </p>
                       ) : (
                         <p>{game.away.point_spread}</p>
                       )}
                       {game.away.total_points.length > 5 ? (
-                        <>
+                        <p>
                           <AiIcon.AiFillCheckCircle
                             style={{ marginRight: 10 }}
                             color="green"
                           />
-                          <p>{game.away.total_points.slice(5)}</p>
-                        </>
+                          {game.away.total_points.slice(5)}
+                        </p>
                       ) : (
                         <p>{game.away.total_points}</p>
                       )}
@@ -522,35 +522,35 @@ function MLB() {
                         </div>
                       </div>
                       {game.home.moneyline.length > 5 ? (
-                        <>
+                        <p>
                           <AiIcon.AiFillCheckCircle
                             style={{ marginRight: 10 }}
                             color="green"
                           />
-                          <p>{game.home.moneyline.slice(5)}</p>
-                        </>
+                          {game.home.moneyline.slice(5)}
+                        </p>
                       ) : (
                         <p>{game.home.moneyline}</p>
                       )}
                       {game.home.point_spread.length > 5 ? (
-                        <>
+                        <p>
                           <AiIcon.AiFillCheckCircle
                             style={{ marginRight: 10 }}
                             color="green"
                           />
-                          <p>{game.home.point_spread.slice(5)}</p>
-                        </>
+                          {game.home.point_spread.slice(5)}
+                        </p>
                       ) : (
                         <p>{game.home.point_spread}</p>
                       )}
                       {game.home.total_points.length > 5 ? (
-                        <>
+                        <p>
                           <AiIcon.AiFillCheckCircle
                             style={{ marginRight: 10 }}
                             color="green"
                           />
-                          <p>{game.home.total_points.slice(5)}</p>
-                        </>
+                          {game.home.total_points.slice(5)}
+                        </p>
                       ) : (
                         <p>{game.home.total_points}</p>
                       )}
