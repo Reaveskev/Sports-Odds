@@ -21,15 +21,15 @@ const MCBB = () => {
   return (
     <div>
       <Header />
-      <div className={styles.offseason}>
-        <p>It is currently the offseason.</p>
-      </div>
       {loading ? (
         <>
           <p>Data is loading...</p>
         </>
       ) : (
         <>
+          <div className={styles.offseason}>
+            <p>It is currently the offseason.</p>
+          </div>
           <div className={styles.news}>
             <header className="newsHeader">MCBB News</header>
             {MCBBnews.map((news) => {
