@@ -24,30 +24,28 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
 
   let teams = betInfo[1] + " vs " + betInfo[7];
 
-  let teamName = test(allBets[0].teams);
+  // let teamName = test(allBets[0].teams);
   let matchingKey;
   let matchingKey2;
 
   useEffect(() => {
-    if (Object.keys(game_over_ids).length !== 0) {
-      for (const key in game_over_ids) {
-        if (game_over_ids[key].some((value) => value.includes(teamName))) {
-          matchingKey = key;
-          // console.log(matchingKey);
-          break;
-        }
-      }
-    }
+    // if (Object.keys(game_over_ids).length !== 0) {
+    //   for (const key in game_over_ids) {
+    //     if (game_over_ids[key].some((value) => value.includes(teamName))) {
+    //       matchingKey = key;
+    //       break;
+    //     }
+    //   }
+    // }
 
-    if (Object.keys(game_ids).length !== 0) {
-      for (const key in game_ids) {
-        if (game_ids[key].some((value) => value.includes(teamName))) {
-          matchingKey2 = key;
-          // console.log(matchingKey2);
-          break;
-        }
-      }
-    }
+    // if (Object.keys(game_ids).length !== 0) {
+    //   for (const key in game_ids) {
+    //     if (game_ids[key].some((value) => value.includes(teamName))) {
+    //       matchingKey2 = key;
+    //       break;
+    //     }
+    //   }
+    // }
 
     if (Object.keys(completed).length !== 0) {
       if (completed.games.some((obj) => obj.id === matchingKey)) {

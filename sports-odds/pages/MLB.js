@@ -256,7 +256,12 @@ function MLB() {
         )}
       </div>
 
-      <div style={{ width: "60%", float: "left" }}>
+      <div
+        style={{
+          width: offseason ? "100%" : "60%",
+          float: offseason ? "none" : "left",
+        }}
+      >
         <div className={styles.news}>
           <h1 className={styles.upcoming}>MLB News</h1>
           {MLBNews.map((news) => {
@@ -295,40 +300,170 @@ function MLB() {
           })}
         </div>
       </div>
-      <div style={{ width: "40%", float: "right" }}>
-        <div style={{ marginRight: "20%" }} className={styles.odds_div}>
-          <div className={styles.odds}>
-            {inprogressSportsOdds.length > 0 ? (
-              <>
-                <h1 className={styles.upcoming}>Live Game Odds</h1>
-                {inprogressSportsOdds.map((game) => {
+      {offseason ? null : (
+        <>
+          <div style={{ width: "40%", float: "right" }}>
+            <div style={{ marginRight: "20%" }} className={styles.odds_div}>
+              <div className={styles.odds}>
+                {inprogressSportsOdds.length > 0 ? (
+                  <>
+                    <h1 className={styles.upcoming}>Live Game Odds</h1>
+                    {inprogressSportsOdds.map((game) => {
+                      return (
+                        <>
+                          <div className={styles.team_info}>
+                            <div className={styles.team_header}>
+                              <div style={{ minWidth: 60, cursor: "pointer" }}>
+                                <AiIcon.AiFillPlusCircle
+                                  onClick={() => {
+                                    setBetInfo([
+                                      game.away.logo,
+                                      game.away.team,
+                                      game.away.score,
+                                      game.away.moneyline,
+                                      game.away.point_spread,
+                                      game.away.total_points,
+                                      game.home.logo,
+                                      game.home.team,
+                                      game.home.score,
+                                      game.home.moneyline,
+                                      game.home.point_spread,
+                                      game.home.total_points,
+                                    ]);
+                                    setOpenBet(!openBet);
+                                  }}
+                                  color="green"
+                                />
+                              </div>
+                              <p style={{ minWidth: 100 }}></p>
+                              <p style={{ minWidth: 72 }}>Money Line</p>
+                              <p style={{ minWidth: 120 }}>Point Spread</p>
+                              <p style={{ minWidth: 120 }}>Total Points</p>
+                            </div>
+                            <div className={styles.team_format}>
+                              <div className={styles.name_logo}>
+                                <img
+                                  alt=""
+                                  className={styles.odds_logo}
+                                  src={game.away.logo}
+                                />
+                                <div className={styles.name_record}>
+                                  <h4>{game.away.team}</h4>
+                                  <span>Current Score: {game.away.score}</span>
+                                  <span style={{ paddingTop: 5 }}>@</span>
+                                </div>
+                              </div>
+                              <p>{game.away.moneyline}</p>
+                              <p>{game.away.point_spread}</p>
+                              <p>{game.away.total_points}</p>
+                            </div>
+
+                            <div className={styles.team_format}>
+                              <div className={styles.name_logo}>
+                                <img
+                                  alt=""
+                                  className={styles.odds_logo}
+                                  src={game.home.logo}
+                                />
+                                <div className={styles.name_record}>
+                                  <h4>{game.home.team}</h4>
+                                  <span>Current Score: {game.home.score}</span>
+                                </div>
+                              </div>
+                              <p>{game.home.moneyline}</p>
+                              <p>{game.home.point_spread}</p>
+                              <p>{game.home.total_points}</p>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                ) : null}
+                {upcomingSportsOdds.length > 0 ? (
+                  <>
+                    <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
+                    {upcomingSportsOdds.map((game) => {
+                      return (
+                        <>
+                          <div className={styles.team_info}>
+                            <div className={styles.team_header}>
+                              <div style={{ minWidth: 60, cursor: "pointer" }}>
+                                <AiIcon.AiFillPlusCircle
+                                  onClick={() => {
+                                    setBetInfo([
+                                      game.away.logo,
+                                      game.away.team,
+                                      game.away.record,
+                                      game.away.moneyline,
+                                      game.away.point_spread,
+                                      game.away.total_points,
+                                      game.home.logo,
+                                      game.home.team,
+                                      game.home.record,
+                                      game.home.moneyline,
+                                      game.home.point_spread,
+                                      game.home.total_points,
+                                    ]);
+                                    setOpenBet(!openBet);
+                                  }}
+                                  color="green"
+                                />
+                              </div>
+                              <p style={{ minWidth: 100 }}></p>
+                              <p style={{ minWidth: 72 }}>Money Line</p>
+                              <p style={{ minWidth: 120 }}>Point Spread</p>
+                              <p style={{ minWidth: 120 }}>Total Points</p>
+                            </div>
+                            <div className={styles.team_format}>
+                              <div className={styles.name_logo}>
+                                <img
+                                  alt=""
+                                  className={styles.odds_logo}
+                                  src={game.away.logo}
+                                />
+                                <div className={styles.name_record}>
+                                  <h4>{game.away.team}</h4>
+                                  <span>{game.away.record}</span>
+                                  <span style={{ paddingTop: 5 }}>@</span>
+                                </div>
+                              </div>
+                              <p>{game.away.moneyline}</p>
+                              <p>{game.away.point_spread}</p>
+                              <p>{game.away.total_points}</p>
+                            </div>
+
+                            <div className={styles.team_format}>
+                              <div className={styles.name_logo}>
+                                <img
+                                  alt=""
+                                  className={styles.odds_logo}
+                                  src={game.home.logo}
+                                />
+                                <div className={styles.name_record}>
+                                  <h4>{game.home.team}</h4>
+                                  <span>{game.home.record}</span>
+                                </div>
+                              </div>
+                              <p>{game.home.moneyline}</p>
+                              <p>{game.home.point_spread}</p>
+                              <p>{game.home.total_points}</p>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                ) : null}
+                {finalSportsOdds.length > 0 ? (
+                  <h1 className={styles.upcoming}>Game Final Odds</h1>
+                ) : null}
+                {finalSportsOdds.map((game) => {
                   return (
                     <>
                       <div className={styles.team_info}>
                         <div className={styles.team_header}>
-                          <div style={{ minWidth: 60, cursor: "pointer" }}>
-                            <AiIcon.AiFillPlusCircle
-                              onClick={() => {
-                                setBetInfo([
-                                  game.away.logo,
-                                  game.away.team,
-                                  game.away.score,
-                                  game.away.moneyline,
-                                  game.away.point_spread,
-                                  game.away.total_points,
-                                  game.home.logo,
-                                  game.home.team,
-                                  game.home.score,
-                                  game.home.moneyline,
-                                  game.home.point_spread,
-                                  game.home.total_points,
-                                ]);
-                                setOpenBet(!openBet);
-                              }}
-                              color="green"
-                            />
-                          </div>
-                          <p style={{ minWidth: 100 }}></p>
+                          <p style={{ minWidth: 180 }}></p>
                           <p style={{ minWidth: 72 }}>Money Line</p>
                           <p style={{ minWidth: 120 }}>Point Spread</p>
                           <p style={{ minWidth: 120 }}>Total Points</p>
@@ -342,13 +477,43 @@ function MLB() {
                             />
                             <div className={styles.name_record}>
                               <h4>{game.away.team}</h4>
-                              <span>Current Score: {game.away.score}</span>
+                              <span>Final Score: {game.away.score}</span>
                               <span style={{ paddingTop: 5 }}>@</span>
                             </div>
                           </div>
-                          <p>{game.away.moneyline}</p>
-                          <p>{game.away.point_spread}</p>
-                          <p>{game.away.total_points}</p>
+                          {game.away.moneyline.length > 5 ? (
+                            <p>
+                              <AiIcon.AiFillCheckCircle
+                                style={{ marginRight: 10 }}
+                                color="green"
+                              />
+                              {game.away.moneyline.slice(5)}
+                            </p>
+                          ) : (
+                            <p>{game.away.moneyline}</p>
+                          )}
+                          {game.away.point_spread.length > 5 ? (
+                            <p>
+                              <AiIcon.AiFillCheckCircle
+                                style={{ marginRight: 10 }}
+                                color="green"
+                              />
+                              {game.away.point_spread.slice(5)}
+                            </p>
+                          ) : (
+                            <p>{game.away.point_spread}</p>
+                          )}
+                          {game.away.total_points.length > 5 ? (
+                            <p>
+                              <AiIcon.AiFillCheckCircle
+                                style={{ marginRight: 10 }}
+                                color="green"
+                              />
+                              {game.away.total_points.slice(5)}
+                            </p>
+                          ) : (
+                            <p>{game.away.total_points}</p>
+                          )}
                         </div>
 
                         <div className={styles.team_format}>
@@ -360,226 +525,63 @@ function MLB() {
                             />
                             <div className={styles.name_record}>
                               <h4>{game.home.team}</h4>
-                              <span>Current Score: {game.home.score}</span>
+                              <span>Final Score: {game.home.score}</span>
                             </div>
                           </div>
-                          <p>{game.home.moneyline}</p>
-                          <p>{game.home.point_spread}</p>
-                          <p>{game.home.total_points}</p>
+                          {game.home.moneyline.length > 5 ? (
+                            <p>
+                              <AiIcon.AiFillCheckCircle
+                                style={{ marginRight: 10 }}
+                                color="green"
+                              />
+                              {game.home.moneyline.slice(5)}
+                            </p>
+                          ) : (
+                            <p>{game.home.moneyline}</p>
+                          )}
+                          {game.home.point_spread.length > 5 ? (
+                            <p>
+                              <AiIcon.AiFillCheckCircle
+                                style={{ marginRight: 10 }}
+                                color="green"
+                              />
+                              {game.home.point_spread.slice(5)}
+                            </p>
+                          ) : (
+                            <p>{game.home.point_spread}</p>
+                          )}
+                          {game.home.total_points.length > 5 ? (
+                            <p>
+                              <AiIcon.AiFillCheckCircle
+                                style={{ marginRight: 10 }}
+                                color="green"
+                              />
+                              {game.home.total_points.slice(5)}
+                            </p>
+                          ) : (
+                            <p>{game.home.total_points}</p>
+                          )}
                         </div>
                       </div>
                     </>
                   );
                 })}
-              </>
-            ) : null}
-            {upcomingSportsOdds.length > 0 ? (
-              <>
-                <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
-                {upcomingSportsOdds.map((game) => {
-                  return (
-                    <>
-                      <div className={styles.team_info}>
-                        <div className={styles.team_header}>
-                          <div style={{ minWidth: 60, cursor: "pointer" }}>
-                            <AiIcon.AiFillPlusCircle
-                              onClick={() => {
-                                setBetInfo([
-                                  game.away.logo,
-                                  game.away.team,
-                                  game.away.record,
-                                  game.away.moneyline,
-                                  game.away.point_spread,
-                                  game.away.total_points,
-                                  game.home.logo,
-                                  game.home.team,
-                                  game.home.record,
-                                  game.home.moneyline,
-                                  game.home.point_spread,
-                                  game.home.total_points,
-                                ]);
-                                setOpenBet(!openBet);
-                              }}
-                              color="green"
-                            />
-                          </div>
-                          <p style={{ minWidth: 100 }}></p>
-                          <p style={{ minWidth: 72 }}>Money Line</p>
-                          <p style={{ minWidth: 120 }}>Point Spread</p>
-                          <p style={{ minWidth: 120 }}>Total Points</p>
-                        </div>
-                        <div className={styles.team_format}>
-                          <div className={styles.name_logo}>
-                            <img
-                              alt=""
-                              className={styles.odds_logo}
-                              src={game.away.logo}
-                            />
-                            <div className={styles.name_record}>
-                              <h4>{game.away.team}</h4>
-                              <span>{game.away.record}</span>
-                              <span style={{ paddingTop: 5 }}>@</span>
-                            </div>
-                          </div>
-                          <p>{game.away.moneyline}</p>
-                          <p>{game.away.point_spread}</p>
-                          <p>{game.away.total_points}</p>
-                        </div>
-
-                        <div className={styles.team_format}>
-                          <div className={styles.name_logo}>
-                            <img
-                              alt=""
-                              className={styles.odds_logo}
-                              src={game.home.logo}
-                            />
-                            <div className={styles.name_record}>
-                              <h4>{game.home.team}</h4>
-                              <span>{game.home.record}</span>
-                            </div>
-                          </div>
-                          <p>{game.home.moneyline}</p>
-                          <p>{game.home.point_spread}</p>
-                          <p>{game.home.total_points}</p>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })}
-              </>
-            ) : null}
-            {finalSportsOdds.length > 0 ? (
-              <h1 className={styles.upcoming}>Game Final Odds</h1>
-            ) : null}
-            {finalSportsOdds.map((game) => {
-              return (
-                <>
-                  <div className={styles.team_info}>
-                    <div className={styles.team_header}>
-                      <p style={{ minWidth: 180 }}></p>
-                      <p style={{ minWidth: 72 }}>Money Line</p>
-                      <p style={{ minWidth: 120 }}>Point Spread</p>
-                      <p style={{ minWidth: 120 }}>Total Points</p>
-                    </div>
-                    <div className={styles.team_format}>
-                      <div className={styles.name_logo}>
-                        <img
-                          alt=""
-                          className={styles.odds_logo}
-                          src={game.away.logo}
-                        />
-                        <div className={styles.name_record}>
-                          <h4>{game.away.team}</h4>
-                          <span>Final Score: {game.away.score}</span>
-                          <span style={{ paddingTop: 5 }}>@</span>
-                        </div>
-                      </div>
-                      {game.away.moneyline.length > 5 ? (
-                        <p>
-                          <AiIcon.AiFillCheckCircle
-                            style={{ marginRight: 10 }}
-                            color="green"
-                          />
-                          {game.away.moneyline.slice(5)}
-                        </p>
-                      ) : (
-                        <p>{game.away.moneyline}</p>
-                      )}
-                      {game.away.point_spread.length > 5 ? (
-                        <p>
-                          <AiIcon.AiFillCheckCircle
-                            style={{ marginRight: 10 }}
-                            color="green"
-                          />
-                          {game.away.point_spread.slice(5)}
-                        </p>
-                      ) : (
-                        <p>{game.away.point_spread}</p>
-                      )}
-                      {game.away.total_points.length > 5 ? (
-                        <p>
-                          <AiIcon.AiFillCheckCircle
-                            style={{ marginRight: 10 }}
-                            color="green"
-                          />
-                          {game.away.total_points.slice(5)}
-                        </p>
-                      ) : (
-                        <p>{game.away.total_points}</p>
-                      )}
-                    </div>
-
-                    <div className={styles.team_format}>
-                      <div className={styles.name_logo}>
-                        <img
-                          alt=""
-                          className={styles.odds_logo}
-                          src={game.home.logo}
-                        />
-                        <div className={styles.name_record}>
-                          <h4>{game.home.team}</h4>
-                          <span>Final Score: {game.home.score}</span>
-                        </div>
-                      </div>
-                      {game.home.moneyline.length > 5 ? (
-                        <p>
-                          <AiIcon.AiFillCheckCircle
-                            style={{ marginRight: 10 }}
-                            color="green"
-                          />
-                          {game.home.moneyline.slice(5)}
-                        </p>
-                      ) : (
-                        <p>{game.home.moneyline}</p>
-                      )}
-                      {game.home.point_spread.length > 5 ? (
-                        <p>
-                          <AiIcon.AiFillCheckCircle
-                            style={{ marginRight: 10 }}
-                            color="green"
-                          />
-                          {game.home.point_spread.slice(5)}
-                        </p>
-                      ) : (
-                        <p>{game.home.point_spread}</p>
-                      )}
-                      {game.home.total_points.length > 5 ? (
-                        <p>
-                          <AiIcon.AiFillCheckCircle
-                            style={{ marginRight: 10 }}
-                            color="green"
-                          />
-                          {game.home.total_points.slice(5)}
-                        </p>
-                      ) : (
-                        <p>{game.home.total_points}</p>
-                      )}
-                    </div>
-                  </div>
-                </>
-              );
-            })}
-            {openBet ? (
-              <Bet
-                openBet={openBet}
-                setOpenBet={setOpenBet}
-                game_ids={game_ids}
-                game_over_ids={game_over_ids}
-                completed={completed}
-              />
-            ) : null}
+                {openBet ? (
+                  <Bet
+                    openBet={openBet}
+                    setOpenBet={setOpenBet}
+                    game_ids={game_ids}
+                    game_over_ids={game_over_ids}
+                    completed={completed}
+                  />
+                ) : null}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
 
 export default MLB;
-
-{
-  /* <AiIcon.AiFillCheckCircle
-style={{ marginRight: 10 }}
-color="green"
-/> */
-}
