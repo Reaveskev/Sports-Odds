@@ -276,11 +276,10 @@ def scrape_Odds(league):
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
-   
+    driver.implicitly_wait(10)
     driver.get(url)
 
-    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "Fz(14px) smartphone_Fz(12px) C(#828c93)")))
-    driver.implicitly_wait(5)
+    
     html = driver.page_source 
 
     # page_to_scrape = requests.get(url)
