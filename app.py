@@ -6,6 +6,9 @@ from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 import mysql.connector
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 # from selenium.webdriver.chrome.options import Options
 # import MySQLdb.cursors
 import requests
@@ -234,7 +237,7 @@ def scrape_News(sport):
     if sport not in sports:
         return jsonify({'error': 'Input a valid sports league'}), 400
         
-
+    
     url = 'https://www.sportingnews.com/us/{}/news'.format(sport)
 
     
@@ -269,12 +272,14 @@ def scrape_Odds(league):
     if league not in sport:
         return jsonify({'error': 'Input a valid sports league'}), 400
 
-      
+          
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
    
     driver.get(url)
+
+    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "Fz(14px) smartphone_Fz(12px) C(#828c93)")))
     driver.implicitly_wait(5)
     html = driver.page_source 
 
