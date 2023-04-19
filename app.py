@@ -510,6 +510,7 @@ def scrape_Odds(league):
         upcoming_home_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
         upcoming_start_elem = div.find('span', {'class': 'Fz(14px) smartphone_Fz(12px) C(#828c93)'})
         if upcoming_start_elem != []:
+            print(upcoming_start)
             upcoming_start = upcoming_start_elem.find_all('span')[1]
         else:
             break
