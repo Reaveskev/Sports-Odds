@@ -312,6 +312,8 @@ function NFL() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.total_points,
+                                          "nfl",
+                                          "football",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}

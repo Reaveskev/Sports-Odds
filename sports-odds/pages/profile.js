@@ -4,13 +4,14 @@ import styles from "@/styles/profile.module.css";
 import Header from "@/src/Header";
 import { useAppContext } from "@/src/GlobalContext";
 import * as AiIcon from "react-icons/Ai";
-import * as RxIcon from "react-icons/Rx";
 
 function Profile() {
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [info, setInfo] = useState();
+  const [findFinal, setFindFinal] = useState(false);
 
   const {
     user,
@@ -20,6 +21,104 @@ function Profile() {
     allBetsOutcome,
     setAllBetsOutcome,
   } = useAppContext();
+
+  const findSpecifcGame = (oldGames) => {
+    for (let i = 0; i < oldGames.length; i++) {
+      if (oldGames[i].name === info.teams) {
+        let home = oldGames[i].competitions[0].competitors[0];
+        let away = oldGames[i].competitions[0].competitors[1];
+        let winner;
+        let point_spread;
+        if (home.winner === true) {
+          winner = home.team.name;
+        } else {
+          winner = away.team.name;
+        }
+        if (info.money_line_team === home.team.name) {
+          point_spread = home.score - away.score;
+        } else {
+          point_spread = away.score - home.score;
+        }
+        let temp = {
+          money_line: winner,
+          point_spread: point_spread,
+          total_points: parseInt(home.score) + parseInt(away.score),
+        };
+
+        let post = { bet_id: info.bet_id };
+
+        if (info.point_spread) {
+          let result = info.point_spread
+            .slice(0, info.point_spread.indexOf("("))
+            .trim();
+          if (result === temp.point_spread) {
+            post.point_spread = true;
+          } else {
+            post.point_spread = false;
+          }
+        }
+
+        if (info.total_points) {
+          let result = info.total_points
+            .slice(0, info.total_points.indexOf("("))
+            .trim();
+          if (result.charAt(0) === "O") {
+            if (result.slice(1) > temp.total_points) {
+              post.total_points = true;
+            }
+          } else if (result.charAt(0) === "U") {
+            if (result.slice(1) < temp.total_points) {
+              post.total_points = false;
+            }
+          }
+        }
+
+        if (info.money_line_team) {
+          if (info.money_line_team === temp.money_line) {
+            post.money_line = true;
+          } else {
+            post.money_line = false;
+          }
+        }
+
+        if (Object.values(post) !== false) {
+          post.payout = true;
+        } else {
+          post.payout = false;
+        }
+        let urladd = "https://sports-odds.herokuapp.com/addBetOutcome";
+
+        // let urladd = "http://127.0.0.1:5000/addBetOutcome";
+        console.log(post);
+        axios.post(urladd, post).then((res) => {
+          if (res.status === 200) {
+            let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
+            // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+            axios.get(url3).then((res) => {
+              if (res.status === 200) {
+                setAllBetsOutcome(res.data);
+                console.log(res.data);
+              }
+            });
+          }
+        });
+
+        // Do something with the matching object
+        break; // Exit the loop since we found a match
+      }
+    }
+  };
+
+  const findGame = () => {
+    axios
+      .get(
+        `https://site.api.espn.com/apis/site/v2/sports/${info.sport}/${info.league}/scoreboard?dates=${info.game_date}`
+      )
+      .then((res) => {
+        let oldGames = res.data.events;
+        findSpecifcGame(oldGames);
+      });
+  };
 
   const handleFirstNameChange = (event) => {
     setFirstName(event.target.value);
@@ -42,39 +141,24 @@ function Profile() {
     setUsername("");
   };
 
-  // function test(words) {
-  //   var n = words.split(" ");
-  //   return n[n.length - 1];
-  // }
-
-  // let teamName = test(betInfo[1]);
   useEffect(() => {
-    // let url2 = "https://sports-odds.herokuapp.com/seeBets";
-    // // let url2 = "http://127.0.0.1:5000/seeBets";
-    // axios.get(url2).then((res) => {
-    //   if (res.status === 200) {
-    //     setAllBets(res.data);
-    //   } else {
-    //     console.log("Did not work as planned");
-    //   }
-    // console.log(res);
-    // });
-    //////////////////
+    let url2 = "https://sports-odds.herokuapp.com/seeBets";
     // let url2 = "http://127.0.0.1:5000/seeBets";
-    // axios.get(url2).then((res) => {
-    //   if (res.status === 200) {
-    //     setAllBets(res.data);
-    //     // let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
-    //     let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
-    //     axios.get(url3).then((res) => {
-    //       if (res.status === 200) {
-    //         setAllBetsOutcome(res.data);
-    //       }
-    //     });
-    //   } else {
-    //     console.log("Did not work as planned");
-    //   }
-    // });
+    axios.get(url2).then((res) => {
+      if (res.status === 200) {
+        setAllBets(res.data);
+        let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
+        // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+        axios.get(url3).then((res) => {
+          if (res.status === 200) {
+            setAllBetsOutcome(res.data);
+          }
+        });
+      } else {
+        console.log("Did not work as planned");
+      }
+    });
+    console.log("Checking Length", allBetsOutcome.length, allBets.length);
   }, []);
 
   const handleSubmit = async (e) => {
@@ -161,6 +245,17 @@ function Profile() {
             <button type="submit">Save Changes</button>
           </form>
         </div>
+        {findFinal ? (
+          <div>
+            <button
+              onClick={() => {
+                findGame();
+              }}
+            >
+              Find Results
+            </button>
+          </div>
+        ) : null}
         {allBets ? (
           <>
             <h2 style={{ paddingTop: 50 }}>Your Bets</h2>
@@ -177,9 +272,22 @@ function Profile() {
               </thead>
               <tbody>
                 {allBets.map((bet, index) => {
-                  // let outcome = allBetsOutcome[index] || "TBD"
                   return (
-                    <tr key={bet.bet_id} className={styles.bet_table_row}>
+                    <tr
+                      onClick={() => {
+                        if (!allBetsOutcome[index]) {
+                          if (info) {
+                            setInfo("");
+                            setFindFinal(false);
+                          } else {
+                            setInfo(bet);
+                            setFindFinal(true);
+                          }
+                        }
+                      }}
+                      key={bet.bet_id}
+                      className={styles.bet_table_row}
+                    >
                       <td className={styles.bet_table_cell}>{bet.teams}</td>
                       <td className={styles.bet_table_cell}>
                         {!allBetsOutcome[index]?.point_spread ? (
@@ -244,7 +352,7 @@ function Profile() {
                               justifyContent: "center",
                             }}
                           >
-                            {bet.money_line}
+                            {bet.money_line} {bet.money_line_team}
                           </div>
                         ) : (
                           <div

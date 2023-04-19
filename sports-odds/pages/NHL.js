@@ -318,6 +318,8 @@ function NHL() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.total_points,
+                                          "nhl",
+                                          "hockey",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}

@@ -374,6 +374,8 @@ function WNBA() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.total_points,
+                                          "wnba",
+                                          "basketball",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}

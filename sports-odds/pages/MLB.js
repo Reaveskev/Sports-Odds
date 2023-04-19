@@ -329,6 +329,8 @@ function MLB() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.total_points,
+                                          "mlb",
+                                          "baseball",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}

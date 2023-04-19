@@ -8,9 +8,13 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
   const { betInfo, user, allBets, setAllBets } = useAppContext();
   const [potential, setPotential] = useState();
   const [moneyline, setMoneyline] = useState();
+  const [moneyline_team, setMoneyline_team] = useState();
   const [pointSpread, setPointSpread] = useState();
   const [totalPoints, setTotalPoints] = useState();
   const [betAmount, setbetAmount] = useState();
+  const [gameDate, setGameDate] = useState();
+  const [sport, setSport] = useState();
+  const [league, setLeague] = useState();
   const [message, setMessage] = useState();
 
   function handleBetAmountChange(event) {
@@ -21,65 +25,41 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
     var n = words.split(" ");
     return n[n.length - 1];
   }
-
-  let teams = betInfo[1] + " vs " + betInfo[7];
-
-  // let teamName = test(allBets[0].teams);
-  let matchingKey;
-  let matchingKey2;
-
+  let teams = betInfo[1] + " at " + betInfo[7];
   useEffect(() => {
-    // if (Object.keys(game_over_ids).length !== 0) {
-    //   for (const key in game_over_ids) {
-    //     if (game_over_ids[key].some((value) => value.includes(teamName))) {
-    //       matchingKey = key;
-    //       break;
-    //     }
-    //   }
-    // }
+    let today = new Date();
+    let yy = String(today.getFullYear());
+    let givenDate = betInfo[11];
+    givenDate = givenDate.slice(5, -9);
 
-    // if (Object.keys(game_ids).length !== 0) {
-    //   for (const key in game_ids) {
-    //     if (game_ids[key].some((value) => value.includes(teamName))) {
-    //       matchingKey2 = key;
-    //       break;
-    //     }
-    //   }
-    // }
-
-    if (Object.keys(completed).length !== 0) {
-      if (completed.games.some((obj) => obj.id === matchingKey)) {
-        let filteredData = completed.games.filter(
-          (obj) => obj.id === matchingKey
-        );
-
-        let game_over_stats = {
-          Team1: filteredData[0].team_one.name,
-          Team2: filteredData[0].team_two.name,
-          "Total score":
-            parseInt(filteredData[0].team_one.score) +
-            parseInt(filteredData[0].team_two.score),
-
-          "Point Spread":
-            parseInt(filteredData[0].team_one.score) -
-            parseInt(filteredData[0].team_two.score),
-          Winner:
-            parseInt(filteredData[0].team_one.score) >
-            parseInt(filteredData[0].team_two.score)
-              ? filteredData[0].team_one.name
-              : filteredData[0].team_two.name,
-        };
-      }
+    if (givenDate.length < 5) {
+      givenDate = "0" + givenDate;
+      let day = givenDate.slice(0, 2);
+      let month = givenDate.slice(-2);
+      givenDate = day + month;
+    } else {
+      day = givenDate.slice(0, 2);
+      month = givenDate.slice(-2);
+      givenDate = day + month;
     }
-  }, [game_over_ids, game_over_ids]);
+
+    let fullDate = yy + givenDate;
+    setGameDate(fullDate);
+    setLeague(betInfo[12]);
+    setSport(betInfo[13]);
+  }, []);
 
   const addBet = async (
     teams,
     moneyline,
+    moneyline_team,
     pointSpread,
     totalPoints,
     potential,
-    betAmount
+    betAmount,
+    gameDate,
+    league,
+    sport
   ) => {
     let url = "https://sports-odds.herokuapp.com/addBet";
     // let url = "http://127.0.0.1:5000/addBet";
@@ -88,10 +68,14 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
         .post(url, {
           teams: teams,
           moneyline: moneyline,
+          moneyline_team: moneyline_team,
           pointSpread: pointSpread,
           totalPoints: totalPoints,
           parlayPayout: potential,
           betAmount: betAmount,
+          gameDate: gameDate,
+          league: league,
+          sport: sport,
         })
         .then((res) => {
           if (res.status === 200) {
@@ -99,6 +83,7 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
             setTimeout(() => {
               setPotential();
               setMoneyline();
+              setMoneyline_team();
               setPointSpread();
               setTotalPoints();
               setbetAmount();
@@ -238,8 +223,10 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
                 onClick={() => {
                   if (moneyline === betInfo[3]) {
                     setMoneyline("");
+                    setMoneyline_team("");
                   } else {
                     setMoneyline(betInfo[3]);
+                    setMoneyline_team(test(betInfo[1]));
                   }
                 }}
                 checked={moneyline === betInfo[3]}
@@ -323,8 +310,10 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
                 onClick={() => {
                   if (moneyline === betInfo[9]) {
                     setMoneyline("");
+                    setMoneyline_team("");
                   } else {
                     setMoneyline(betInfo[9]);
+                    setMoneyline_team(test(betInfo[9]));
                   }
                 }}
                 checked={moneyline === betInfo[9]}
@@ -435,13 +424,17 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
             {user ? (
               <button
                 onClick={() => {
+                  console.log("Hello");
                   addBet(
                     teams,
                     moneyline,
+                    moneyline_team,
                     pointSpread,
                     totalPoints,
                     potential,
-                    betAmount
+                    betAmount,
+                    gameDate,
+                    league
                   );
                 }}
                 style={{ margin: 10, cursor: "pointer" }}

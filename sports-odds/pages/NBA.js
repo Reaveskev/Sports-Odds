@@ -66,6 +66,7 @@ function NBA() {
             // "http://127.0.0.1:5000/Odds/nba"
           )
           .then((res) => {
+            console.log(res.data);
             setUpcomingSportsOdds(res.data[0].Upcoming);
             setInprogressSportsOdds(res.data[1].Inprogress);
             setFinalSportsOdds(res.data[2].Final);
@@ -319,7 +320,7 @@ function NBA() {
                               <div className={styles.team_info}>
                                 <div className={styles.team_header}>
                                   <div
-                                    style={{ minWidth: 60, cursor: "pointer" }}
+                                    style={{ minWidth: 40, cursor: "pointer" }}
                                   >
                                     <AiIcon.AiFillPlusCircle
                                       onClick={() => {
@@ -336,13 +337,17 @@ function NBA() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.total_points,
+                                          "nba",
+                                          "basketball",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}
                                       color="green"
                                     />
                                   </div>
-                                  <p style={{ minWidth: 100 }}></p>
+                                  <p style={{ minWidth: 120 }}>
+                                    {game.away.time_left}
+                                  </p>
                                   <p style={{ minWidth: 72 }}>Money Line</p>
                                   <p style={{ minWidth: 120 }}>Point Spread</p>
                                   <p style={{ minWidth: 120 }}>Total Points</p>
@@ -400,7 +405,7 @@ function NBA() {
                               <div className={styles.team_info}>
                                 <div className={styles.team_header}>
                                   <div
-                                    style={{ minWidth: 60, cursor: "pointer" }}
+                                    style={{ minWidth: 40, cursor: "pointer" }}
                                   >
                                     <AiIcon.AiFillPlusCircle
                                       onClick={() => {
@@ -416,14 +421,16 @@ function NBA() {
                                           game.home.record,
                                           game.home.moneyline,
                                           game.home.point_spread,
-                                          game.home.total_points,
+                                          game.home.start_time,
                                         ]);
                                         setOpenBet(!openBet);
                                       }}
                                       color="green"
                                     />
                                   </div>
-                                  <p style={{ minWidth: 100 }}></p>
+                                  <p style={{ minWidth: 120 }}>
+                                    {game.away.start_time}
+                                  </p>
                                   <p style={{ minWidth: 72 }}>Money Line</p>
                                   <p style={{ minWidth: 120 }}>Point Spread</p>
                                   <p style={{ minWidth: 120 }}>Total Points</p>
@@ -476,7 +483,8 @@ function NBA() {
                         <>
                           <div className={styles.team_info}>
                             <div className={styles.team_header}>
-                              <p style={{ minWidth: 100 }}></p>
+                              <p style={{ minWidth: 40 }}></p>
+                              <p style={{ minWidth: 120 }}>Final</p>
                               <p style={{ minWidth: 72 }}>Money Line</p>
                               <p style={{ minWidth: 120 }}>Point Spread</p>
                               <p style={{ minWidth: 120 }}>Total Points</p>

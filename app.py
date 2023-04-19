@@ -3,22 +3,41 @@
 from flask import Flask, jsonify, send_from_directory, request, session
 from flask_cors import CORS
 from flask_mysqldb import MySQL
-from werkzeug.security import generate_password_hash, check_password_hash
 from bs4 import BeautifulSoup
 import mysql.connector
-# from dotenv import load_dotenv
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 # import MySQLdb.cursors
 import requests
 import os
 # import bcrypt
 
-# load_dotenv()
 
 app = Flask(__name__, static_folder='./sports-odds/out')
 
 
 app.debug = True
 cors = CORS(app, support_credentials=True)
+# Browser Driver
+
+
+# Local do these 
+# options = Options()
+# options.add_argument("--headless")
+# options.add_argument("--disable-dev-shm-usage")
+# driver = webdriver.Chrome(options=options)
+
+
+
+chrome_options = webdriver.ChromeOptions()
+chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--disable-dev-shm-usage")
+# chrome_options.add_argument("--no-sandbox")
+driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+
+
+
 
 
 # MySql ####################
@@ -30,11 +49,6 @@ app.config['MYSQL_DB'] = os.environ.get('DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
-# app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
-# app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-# app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
-# app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # app.config['MYSQL_USER'] = "root"
 # app.config['MYSQL_PASSWORD'] = "Upshaw123!"
@@ -123,12 +137,16 @@ def addBet():
     try:
         teams = request.json['teams']
         money_line = request.json.get('moneyline')
+        money_line_team = request.json.get('moneyline_team')
         point_spread = request.json.get('pointSpread')
         total_points = request.json.get('totalPoints')
+        game_date = request.json.get('gameDate')
         payout = request.json['parlayPayout']
         bet_amount = request.json['betAmount']
+        league = request.json['league']
+        sport = request.json['sport']
         cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO bets (teams, money_line, point_spread, total_points, payout, bet_amount, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s)',(teams, money_line, point_spread, total_points, payout, bet_amount, user_id))
+        cursor.execute('INSERT INTO bets (teams, money_line, money_line_team, point_spread, total_points, payout, bet_amount, game_date, league, sport, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s %s)',(teams, money_line, money_line_team, point_spread, total_points, payout, bet_amount, game_date, league, sport, user_id))
         mysql.connection.commit()
         cursor.close()
 
@@ -167,13 +185,13 @@ def addBetOutcome():
     if not user_id:
         return jsonify({"error":"Need user id"}), 401
     try:
-        money_line = request.json.get('moneyline')
-        point_spread = request.json.get('pointSpread')
-        total_points = request.json.get('totalPoints')
+        money_line = request.json.get('money_line')
+        point_spread = request.json.get('point_spread')
+        total_points = request.json.get('total_points')
         payout = request.json['payout']
         bet_id = request.json['bet_id']
         cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO bet_outcome (money_line, point_spread, total_points, payout, bet_id , user_id) VALUES (%s, %s, %s, %s, %s, %s, %s)',(money_line, point_spread, total_points, payout, bet_id , user_id))
+        cursor.execute('INSERT INTO bet_outcome (money_line, point_spread, total_points, payout, bet_id , user_id) VALUES (%s, %s, %s, %s, %s, %s)',(money_line, point_spread, total_points, payout, bet_id , user_id))
         mysql.connection.commit()
         cursor.close()
 
@@ -252,16 +270,20 @@ def scrape_Odds(league):
     sport = ["mlb", "nhl", "college-basketball", "nba", "nfl", "college-football", "wnba"]
     if league not in sport:
         return jsonify({'error': 'Input a valid sports league'}), 400
-        
+
+      
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
-    page_to_scrape = requests.get(url)
+   
+    driver.get(url)
+    driver.implicitly_wait(2)
+    html = driver.page_source 
 
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
+    # page_to_scrape = requests.get(url)
 
-    all_games = []
-
+    # soup = BeautifulSoup(page_to_scrape.text, "html.parser")
+    soup = BeautifulSoup(html, "html.parser")
 
     upcoming_games = []
 
@@ -295,11 +317,9 @@ def scrape_Odds(league):
 
 
 
-
     final_div = soup.findAll('div', class_=lambda c: c and 'FINAL' in c)
     inprogress_div = soup.findAll('div', class_=lambda c: c and 'IN_PROGRESS' in c)
     pregame_div = soup.findAll('div', class_=lambda c: c and 'PREGAME' in c)
-##############
 
     for x in final_div:
         final_teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
@@ -390,6 +410,7 @@ def scrape_Odds(league):
         inprogress_odds = x.findAll("span", {"class":"Lh(19px)"} )
         inprogress_away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
         inprogress_home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+        inprogress_time_span = x.find_all("span", {"class":"C(#6d7278) Fz(14px) smartphone_Fz(12px)"})
         
         inprogress_away_team_logo = []
         inprogress_home_team_logo = []
@@ -403,6 +424,14 @@ def scrape_Odds(league):
         inprogress_all_team_logos = []
         inprogress_home_odds = []
         inprogress_away_odds = []
+        inprogress_time = []
+
+
+
+        if inprogress_time_span:
+            for start in inprogress_time_span:
+                inprogress_time.append(start.text)
+                inprogress_time.append(start.text)
         
     
 
@@ -447,16 +476,16 @@ def scrape_Odds(league):
 
        
         counter = 0
-        for l, t, s, m1, p1, ps, t1, ts in zip(inprogress_all_team_logos, inprogress_teams_list, inprogress_score_list, inprogress_team_1_money_line, inprogress_team_1_point_spread, inprogress_team_1_point_spread_odd, inprogress_team_1_total_points, inprogress_team_1_total_points_odd):
+        for l, t, s, m1, p1, ps, t1, ts, time in zip(inprogress_all_team_logos, inprogress_teams_list, inprogress_score_list, inprogress_team_1_money_line, inprogress_team_1_point_spread, inprogress_team_1_point_spread_odd, inprogress_team_1_total_points, inprogress_team_1_total_points_odd, inprogress_time):
             if((counter % 2) == 0):
                 with_odds_p = p1 + ' ({})'.format(ps)
                 with_odds_t = t1 + ' ({})'.format(ts)
-                inprogress_away_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                inprogress_away_odds.append([l, t, s, m1, with_odds_p, with_odds_t, time])
                 counter += 1
             else:
                 with_odds_p = p1 + ' ({})'.format(ps)
                 with_odds_t = t1 + ' ({})'.format(ts)
-                inprogress_home_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                inprogress_home_odds.append([l, t, s, m1, with_odds_p, with_odds_t, time])
                 counter += 1
 
        
@@ -464,8 +493,8 @@ def scrape_Odds(league):
         for h, a in zip(inprogress_home_odds, inprogress_away_odds):
             
             ingames = {}
-            ingames['home'] = {"team" : h[1], "logo": h[0], "score":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5]}
-            ingames['away'] = {"team" : a[1], "logo": a[0], "score":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5]}
+            ingames['home'] = {"team" : h[1], "logo": h[0], "score":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5], 'time_left': h[6]}
+            ingames['away'] = {"team" : a[1], "logo": a[0], "score":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5], 'time_left': a[6]}
             
             inprogress_games.append(ingames)
 
@@ -477,8 +506,13 @@ def scrape_Odds(league):
         upcoming_odds = div.findAll("span", {"class":"Lh(19px)"} )
         upcoming_away_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
         upcoming_home_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
-        upcoming_start  = div.findAll("span", {"class":" Fz(14px) smartphone_Fz(12px) C(#828c93)"} )
-    
+        upcoming_start_elem = div.find('span', {'class': 'Fz(14px) smartphone_Fz(12px) C(#828c93)'})
+        if upcoming_start_elem:
+            upcoming_start = upcoming_start_elem.find_all('span')[1]
+        else:
+            break
+        
+        
         upcoming_away_team_logo = []
         upcoming_home_team_logo = []
         upcoming_team_1_money_line = []
@@ -493,10 +527,11 @@ def scrape_Odds(league):
         upcoming_records_list = []
         upcoming_start_time = []
 
+        if upcoming_start:
+            for start in upcoming_start:
+                upcoming_start_time.append(start.text)
+                upcoming_start_time.append(start.text)
 
-        for start in upcoming_start:
-            upcoming_start_time.append(start.text)
-            upcoming_start_time.append(start.text)
 
         for div_tag in upcoming_away_div_tags:
             img_tag = div_tag.find('img')
@@ -531,33 +566,36 @@ def scrape_Odds(league):
             upcoming_records_list.append(record.text)
 
         counter = 0
-        for l, t, s, m1, p1, ps, t1, ts in zip(upcoming_all_team_logos, upcoming_teams_list, upcoming_records_list, upcoming_team_1_money_line, upcoming_team_1_point_spread, upcoming_team_1_point_spread_odd, upcoming_team_1_total_points, upcoming_team_1_total_points_odd):
+        
+        for l, t, s, m1, p1, ps, t1, ts, time in zip(upcoming_all_team_logos, upcoming_teams_list, upcoming_records_list, upcoming_team_1_money_line, upcoming_team_1_point_spread, upcoming_team_1_point_spread_odd, upcoming_team_1_total_points, upcoming_team_1_total_points_odd, upcoming_start_time):
             if((counter % 2) == 0):
                 with_odds_p = p1 + ' ({})'.format(ps)
                 with_odds_t = t1 + ' ({})'.format(ts)
-                upcoming_away_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                upcoming_away_odds.append([l, t, s, m1, with_odds_p, with_odds_t, time])
                 counter += 1
             else:
                 with_odds_p = p1 + ' ({})'.format(ps)
                 with_odds_t = t1 + ' ({})'.format(ts)
-                upcoming_home_odds.append([l, t, s, m1, with_odds_p, with_odds_t])
+                upcoming_home_odds.append([l, t, s, m1, with_odds_p, with_odds_t, time])
                 counter += 1
         
 
         games = {}
         for h, a in zip(upcoming_home_odds, upcoming_away_odds):
-            games['home'] = {"team" : h[1], "logo": h[0], "record":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5]}
-            games['away'] = {"team" : a[1], "logo": a[0], "record":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5]}
+            games['home'] = {"team" : h[1], "logo": h[0], "record":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5], 'start_time': h[6]}
+            games['away'] = {"team" : a[1], "logo": a[0], "record":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5], 'start_time': a[6]}
             upcoming_games.append(games)
        
 
-
+    driver.quit()
+    print("The driver has been closed")
     Upcoming = {}
     Upcoming["Upcoming"] = upcoming_games
     Inprogress = {}
     Inprogress["Inprogress"] = inprogress_games
     Final = {}
     Final["Final"] = final_games
+    
     
     return jsonify(Upcoming,Inprogress,Final)
 
