@@ -282,7 +282,11 @@ def scrape_Odds(league):
     try:
        parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     except:
-        return jsonify({'sucess': "Offseason"}), 200
+        Upcoming = {}
+        Inprogress = {}
+        Final = {}
+        return jsonify(Upcoming,Inprogress,Final)
+        
         
    
 
