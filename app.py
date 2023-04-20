@@ -7,6 +7,9 @@ from bs4 import BeautifulSoup
 import mysql.connector
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 # import MySQLdb.cursors
 import requests
 import os
@@ -33,9 +36,6 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-
-
-
 
 
 # MySql ####################
@@ -273,11 +273,17 @@ def scrape_Odds(league):
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
-    
-    driver.get(url)
-    # driver.implicitly_wait(10)
 
+    driver.get(url)
+
+    wait = WebDriverWait(driver, 10)
+
+    parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     
+    # print(parent_elem)
+    # second_child_span = wait.until(EC.presence_of_element_located((By.XPATH, './span[1]', parent_elem))) 
+    
+    # print(second_child_span.text)
     html = driver.page_source 
 
     # page_to_scrape = requests.get(url)
@@ -508,9 +514,7 @@ def scrape_Odds(league):
         upcoming_home_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
         upcoming_start_elem = div.find('span', {'class': 'Fz(14px) smartphone_Fz(12px) C(#828c93)'})
         if upcoming_start_elem:
-            print(upcoming_start_elem)
             if(upcoming_start_elem.find_all('span')[1]):
-                print(upcoming_start_elem.find_all('span')[1])
                 upcoming_start = upcoming_start_elem.find_all('span')[1]
             else:
                 break  

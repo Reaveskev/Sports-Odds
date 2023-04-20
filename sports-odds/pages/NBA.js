@@ -21,69 +21,120 @@ function NBA() {
   const { setBetInfo, betInfo } = useAppContext();
 
   useEffect(() => {
-    axios
-      .get(
-        "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-      )
-      .then((res) => {
-        if (res.data.game_groups[0] === undefined) {
+    async function loadPageData() {
+      try {
+        const response1 = await axios.get(
+          "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+        );
+        const response2 = await axios.get(
+          "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
+        );
+        const response3 = await axios.get(
+          "https://sports-odds.herokuapp.com/Odds/nba"
+        );
+        const response4 = await axios.get(
+          "https://sports-odds.herokuapp.com/Sport_News/nba"
+        );
+
+        if (response1.data.game_groups[0] === undefined) {
           setoffseason(true);
         } else if (
-          res.data.game_groups[0].name === "In Progress" &&
-          res.data.game_groups[1].name === "Completed"
+          response1.data.game_groups[0].name === "In Progress" &&
+          response1.data.game_groups[1].name === "Completed"
         ) {
-          setInprogress(res.data.game_groups[0]);
-          setCompleted(res.data.game_groups[1]);
-          setUpcoming(res.data.game_groups[2]);
-        } else if (res.data.game_groups[0].name === "Completed") {
-          setCompleted(res.data.game_groups[0]);
-          setUpcoming(res.data.game_groups[1]);
+          setInprogress(response1.data.game_groups[0]);
+          setCompleted(response1.data.game_groups[1]);
+          setUpcoming(response1.data.game_groups[2]);
+        } else if (response1.data.game_groups[0].name === "Completed") {
+          setCompleted(response1.data.game_groups[0]);
+          setUpcoming(response1.data.game_groups[1]);
         } else if (
-          res.data.game_groups[0].name === "In Progress" &&
-          res.data.game_groups[1].name === "Upcoming"
+          response1.data.game_groups[0].name === "In Progress" &&
+          response1.data.game_groups[1].name === "Upcoming"
         ) {
-          setInprogress(res.data.game_groups[0]);
-          setUpcoming(res.data.game_groups[1]);
+          setInprogress(response1.data.game_groups[0]);
+          setUpcoming(response1.data.game_groups[1]);
         } else {
-          setUpcoming(res.data.game_groups[0]);
+          setUpcoming(response1.data.game_groups[0]);
         }
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
-          )
-          .then((res) => {
-            setNBANews(res.data.articles);
-          });
-      })
 
-      .then(() => {
-        axios
-          .get(
-            "https://sports-odds.herokuapp.com/Odds/nba"
+        setNBANews(response2.data.articles);
 
-            // "http://127.0.0.1:5000/Odds/nba"
-          )
-          .then((res) => {
-            console.log(res.data);
-            setUpcomingSportsOdds(res.data[0].Upcoming);
-            setInprogressSportsOdds(res.data[1].Inprogress);
-            setFinalSportsOdds(res.data[2].Final);
-          });
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://sports-odds.herokuapp.com/Sport_News/nba"
+        setUpcomingSportsOdds(response3.data[0].Upcoming);
+        setInprogressSportsOdds(response3.data[1].Inprogress);
+        setFinalSportsOdds(response3.data[2].Final);
 
-            // "http://127.0.0.1:5000/Sport_News/nba"
-          )
-          .then((res) => {
-            setNBANews2(res.data);
-            setLoading(false);
-          });
-      });
+        setNBANews2(response4.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadPageData();
+
+    // axios
+    //   .get(
+    //     "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+    //   )
+    //   .then((res) => {
+    //     if (res.data.game_groups[0] === undefined) {
+    //       setoffseason(true);
+    //     } else if (
+    //       res.data.game_groups[0].name === "In Progress" &&
+    //       res.data.game_groups[1].name === "Completed"
+    //     ) {
+    //       setInprogress(res.data.game_groups[0]);
+    //       setCompleted(res.data.game_groups[1]);
+    //       setUpcoming(res.data.game_groups[2]);
+    //     } else if (res.data.game_groups[0].name === "Completed") {
+    //       setCompleted(res.data.game_groups[0]);
+    //       setUpcoming(res.data.game_groups[1]);
+    //     } else if (
+    //       res.data.game_groups[0].name === "In Progress" &&
+    //       res.data.game_groups[1].name === "Upcoming"
+    //     ) {
+    //       setInprogress(res.data.game_groups[0]);
+    //       setUpcoming(res.data.game_groups[1]);
+    //     } else {
+    //       setUpcoming(res.data.game_groups[0]);
+    //     }
+    //   })
+    // .then(() => {
+    //   axios
+    //     .get(
+    //       "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
+    //     )
+    //     .then((res) => {
+    //       setNBANews(res.data.articles);
+    //     });
+    // })
+
+    // .then(() => {
+    //   axios
+    //     .get(
+    //       "https://sports-odds.herokuapp.com/Odds/nba"
+
+    //       // "http://127.0.0.1:5000/Odds/nba"
+    //     )
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       setUpcomingSportsOdds(res.data[0].Upcoming);
+    //       setInprogressSportsOdds(res.data[1].Inprogress);
+    //       setFinalSportsOdds(res.data[2].Final);
+    //     });
+    // })
+    // .then(() => {
+    //   axios
+    //     .get(
+    //       "https://sports-odds.herokuapp.com/Sport_News/nba"
+
+    //       // "http://127.0.0.1:5000/Sport_News/nba"
+    //     )
+    //     .then((res) => {
+    //       setNBANews2(res.data);
+    //       setLoading(false);
+    //     });
+    // });
   }, []);
 
   let game_ids = {};

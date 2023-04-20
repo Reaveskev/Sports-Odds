@@ -21,57 +21,109 @@ function NFL() {
   const { setBetInfo, betInfo } = useAppContext();
 
   useEffect(() => {
-    axios
-      .get(
-        "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-      )
-      .then((res) => {
-        if (res.data.game_groups[0] === undefined) {
-          setoffseason(true);
-        } else if (res.data.game_groups[0].name === "In Progress") {
-          setInprogress(res.data.game_groups[0]);
-          setCompleted(res.data.game_groups[1]);
-          setUpcoming(res.data.game_groups[2]);
-        } else if (res.data.game_groups[0].name === "Completed") {
-          setCompleted(res.data.game_groups[0]);
-          setUpcoming(res.data.game_groups[1]);
-        } else {
-          setUpcoming(res.data.game_groups[0]);
-        }
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
-          )
-          .then((res) => {
-            setNFLNews(res.data.articles);
-          });
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://sports-odds.herokuapp.com/Odds/nfl"
+    async function loadPageData() {
+      try {
+        const response1 = await axios.get(
+          "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+        );
+        const response2 = await axios.get(
+          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+        );
+        const response3 = await axios.get(
+          "https://sports-odds.herokuapp.com/Odds/nfl"
+        );
+        const response4 = await axios.get(
+          "https://sports-odds.herokuapp.com/Sport_News/nfl"
+        );
 
-            // "http://127.0.0.1:5000/Odds/nfl"
-          )
-          .then((res) => {
-            setUpcomingSportsOdds(res.data[0].Upcoming);
-            setInprogressSportsOdds(res.data[1].Inprogress);
-            setFinalSportsOdds(res.data[2].Final);
-          });
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://sports-odds.herokuapp.com/Sport_News/nfl"
-            // "http://127.0.0.1:5000/Sport_News/nfl"
-          )
-          .then((res) => {
-            setNFLNews2(res.data);
-            setLoading(false);
-          });
-      });
+        if (response1.data.game_groups[0] === undefined) {
+          setoffseason(true);
+        } else if (
+          response1.data.game_groups[0].name === "In Progress" &&
+          response1.data.game_groups[1].name === "Completed"
+        ) {
+          setInprogress(response1.data.game_groups[0]);
+          setCompleted(response1.data.game_groups[1]);
+          setUpcoming(response1.data.game_groups[2]);
+        } else if (response1.data.game_groups[0].name === "Completed") {
+          setCompleted(response1.data.game_groups[0]);
+          setUpcoming(response1.data.game_groups[1]);
+        } else if (
+          response1.data.game_groups[0].name === "In Progress" &&
+          response1.data.game_groups[1].name === "Upcoming"
+        ) {
+          setInprogress(response1.data.game_groups[0]);
+          setUpcoming(response1.data.game_groups[1]);
+        } else {
+          setUpcoming(response1.data.game_groups[0]);
+        }
+
+        setNFLNews(response2.data.articles);
+
+        setUpcomingSportsOdds(response3.data[0].Upcoming);
+        setInprogressSportsOdds(response3.data[1].Inprogress);
+        setFinalSportsOdds(response3.data[2].Final);
+
+        setNFLNews2(response4.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadPageData();
+
+    ///////////
+    // axios
+    //   .get(
+    //     "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+    //   )
+    //   .then((res) => {
+    //     if (res.data.game_groups[0] === undefined) {
+    //       setoffseason(true);
+    //     } else if (res.data.game_groups[0].name === "In Progress") {
+    //       setInprogress(res.data.game_groups[0]);
+    //       setCompleted(res.data.game_groups[1]);
+    //       setUpcoming(res.data.game_groups[2]);
+    //     } else if (res.data.game_groups[0].name === "Completed") {
+    //       setCompleted(res.data.game_groups[0]);
+    //       setUpcoming(res.data.game_groups[1]);
+    //     } else {
+    //       setUpcoming(res.data.game_groups[0]);
+    //     }
+    //   })
+    //   .then(() => {
+    //     axios
+    //       .get(
+    //         "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+    //       )
+    //       .then((res) => {
+    //         setNFLNews(res.data.articles);
+    //       });
+    //   })
+    //   .then(() => {
+    //     axios
+    //       .get(
+    //         "https://sports-odds.herokuapp.com/Odds/nfl"
+
+    //         // "http://127.0.0.1:5000/Odds/nfl"
+    //       )
+    //       .then((res) => {
+    //         setUpcomingSportsOdds(res.data[0].Upcoming);
+    //         setInprogressSportsOdds(res.data[1].Inprogress);
+    //         setFinalSportsOdds(res.data[2].Final);
+    //       });
+    //   })
+    //   .then(() => {
+    //     axios
+    //       .get(
+    //         "https://sports-odds.herokuapp.com/Sport_News/nfl"
+    //         // "http://127.0.0.1:5000/Sport_News/nfl"
+    //       )
+    //       .then((res) => {
+    //         setNFLNews2(res.data);
+    //         setLoading(false);
+    //       });
+    //   });
   }, []);
 
   return (

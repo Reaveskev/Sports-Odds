@@ -12,37 +12,64 @@ const CFB = () => {
   const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(
-        "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
-      )
-      .then((res) => {
-        setCFBnews(res.data.articles);
-        setLoading(false);
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://sports-odds.herokuapp.com/Odds/college-football"
+    async function loadPageData() {
+      try {
+        const response1 = await axios.get(
+          "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
+        );
+        const response2 = await axios.get(
+          "https://sports-odds.herokuapp.com/Odds/college-football"
+        );
+        const response3 = await axios.get(
+          "https://sports-odds.herokuapp.com/Sport_News/ncaa-football"
+        );
 
-            // "http://127.0.0.1:5000/Odds/college-football"
-          )
-          .then((res) => {
-            setUpcomingSportsOdds(res.data[0].Upcoming);
-            setInprogressSportsOdds(res.data[1].Inprogress);
-            setFinalSportsOdds(res.data[2].Final);
-          });
-      })
-      .then(() => {
-        axios
-          .get(
-            "https://sports-odds.herokuapp.com/Sport_News/ncaa-football"
-            // "http://127.0.0.1:5000/Sport_News/ncaa-football"
-          )
-          .then((res) => {
-            setCFBnews2(res.data);
-          });
-      });
+        setCFBnews(response1.data.articles);
+
+        setUpcomingSportsOdds(response2.data[0].Upcoming);
+        setInprogressSportsOdds(response2.data[1].Inprogress);
+        setFinalSportsOdds(response2.data[2].Final);
+        setCFBnews2(response3.data);
+
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    loadPageData();
+
+    // ///////////
+    // axios
+    //   .get(
+    //     "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
+    //   )
+    //   .then((res) => {
+    //     setCFBnews(res.data.articles);
+    //     setLoading(false);
+    //   })
+    //   .then(() => {
+    //     axios
+    //       .get(
+    //         "https://sports-odds.herokuapp.com/Odds/college-football"
+
+    //         // "http://127.0.0.1:5000/Odds/college-football"
+    //       )
+    //       .then((res) => {
+    //         setUpcomingSportsOdds(res.data[0].Upcoming);
+    //         setInprogressSportsOdds(res.data[1].Inprogress);
+    //         setFinalSportsOdds(res.data[2].Final);
+    //       });
+    //   })
+    //   .then(() => {
+    //   axios
+    //     .get(
+    //       "https://sports-odds.herokuapp.com/Sport_News/ncaa-football"
+    //       // "http://127.0.0.1:5000/Sport_News/ncaa-football"
+    //     )
+    //     .then((res) => {
+    //       setCFBnews2(res.data);
+    //     });
+    // });
   }, []);
 
   return (
