@@ -279,7 +279,7 @@ def scrape_Odds(league):
 
    
     
-    elements = driver. find_element(By.NAME, "odds-table-v2 odds-no-games") 
+    elements = driver. find_element(By.CLASS_NAME, "odds-table-v2 odds-no-games") 
    
 
     if not elements:
