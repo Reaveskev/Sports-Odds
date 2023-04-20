@@ -277,7 +277,7 @@ def scrape_Odds(league):
     driver.get(url)
     wait = WebDriverWait(driver, 10)
     
-    elements = driver.find_elements(By.CLASS_NAME, "empty-odds H(360px) D(f) Jc(c) Ai(c) Fld(c) Bd(row-border) Bdrs(8px) Mb(40px) smartphone_Mx(20px)")
+    elements = driver.find_element_by_class_name("odds-table-v2 odds-no-games") 
    
 
     if not elements:
