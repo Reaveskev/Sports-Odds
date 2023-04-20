@@ -323,7 +323,7 @@ function WNBA() {
                               <div className={styles.team_info}>
                                 <div className={styles.team_header}>
                                   <div
-                                    style={{ minWidth: 60, cursor: "pointer" }}
+                                    style={{ minWidth: 40, cursor: "pointer" }}
                                   >
                                     <AiIcon.AiFillPlusCircle
                                       onClick={() => {
@@ -408,7 +408,7 @@ function WNBA() {
                               <div className={styles.team_info}>
                                 <div className={styles.team_header}>
                                   <div
-                                    style={{ minWidth: 60, cursor: "pointer" }}
+                                    style={{ minWidth: 40, cursor: "pointer" }}
                                   >
                                     <AiIcon.AiFillPlusCircle
                                       onClick={() => {

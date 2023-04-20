@@ -280,21 +280,13 @@ def scrape_Odds(league):
 
    
     try:
-       parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
+        parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     except:
         Upcoming = {}
         Inprogress = {}
         Final = {}
         return jsonify(Upcoming,Inprogress,Final)
         
-        
-   
-
-
-    # if league in ["mlb", "nhl", "nba"]:
-    #     wait = WebDriverWait(driver, 10)
-
-    #     parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     
    
     html = driver.page_source 
