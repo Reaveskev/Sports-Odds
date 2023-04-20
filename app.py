@@ -275,12 +275,12 @@ def scrape_Odds(league):
 
 
     driver.get(url)
+    wait = WebDriverWait(driver, 10)
     
     elements = driver.find_elements(By.CLASS_NAME, "empty-odds H(360px) D(f) Jc(c) Ai(c) Fld(c) Bd(row-border) Bdrs(8px) Mb(40px) smartphone_Mx(20px)")
    
 
     if not elements:
-        wait = WebDriverWait(driver, 10)
         parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     else:
          return jsonify({'sucess': "Offseason"}), 200
