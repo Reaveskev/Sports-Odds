@@ -6,10 +6,7 @@ from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 import mysql.connector
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-# from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options
 # import MySQLdb.cursors
 import requests
 import os
@@ -25,17 +22,17 @@ cors = CORS(app, support_credentials=True)
 
 
 # Local do these 
-# options = Options()
-# options.add_argument("--headless")
-# options.add_argument("--disable-dev-shm-usage")
-# driver = webdriver.Chrome(options=options)
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--disable-dev-shm-usage")
+driver = webdriver.Chrome(options=options)
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+# chrome_options = webdriver.ChromeOptions()
+# chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--disable-dev-shm-usage")
+# chrome_options.add_argument("--no-sandbox")
+# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 
 
@@ -43,20 +40,20 @@ driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), c
 
 # MySql ####################
 
-app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-app.config['MYSQL_DB'] = os.environ.get('DB')
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-
-
-# app.config['MYSQL_USER'] = "root"
-# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
-# app.config['MYSQL_HOST'] = "localhost"
-# app.config['MYSQL_DB'] = "sports_odds"
+# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+# app.config['MYSQL_DB'] = os.environ.get('DB')
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# app.config['SECRET_KEY'] = 'mysecretkey'
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
+
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_DB'] = "sports_odds"
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = 'mysecretkey'
 
 
 mysql = MySQL(app)
@@ -276,8 +273,9 @@ def scrape_Odds(league):
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
-    driver.implicitly_wait(10)
+    
     driver.get(url)
+    # driver.implicitly_wait(10)
 
     
     html = driver.page_source 
@@ -509,9 +507,13 @@ def scrape_Odds(league):
         upcoming_away_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
         upcoming_home_div_tags  = div.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
         upcoming_start_elem = div.find('span', {'class': 'Fz(14px) smartphone_Fz(12px) C(#828c93)'})
-        if upcoming_start_elem != []:
-            print(upcoming_start)
-            upcoming_start = upcoming_start_elem.find_all('span')[1]
+        if upcoming_start_elem:
+            print(upcoming_start_elem)
+            if(upcoming_start_elem.find_all('span')[1]):
+                print(upcoming_start_elem.find_all('span')[1])
+                upcoming_start = upcoming_start_elem.find_all('span')[1]
+            else:
+                break  
         else:
             break
         
