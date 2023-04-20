@@ -340,13 +340,17 @@ function WNBA() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.total_points,
+                                          "wnba",
+                                          "basketball",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}
                                       color="green"
                                     />
                                   </div>
-                                  <p style={{ minWidth: 100 }}></p>
+                                  <p style={{ minWidth: 120 }}>
+                                    {game.away.time_left}
+                                  </p>
                                   <p style={{ minWidth: 72 }}>Money Line</p>
                                   <p style={{ minWidth: 120 }}>Point Spread</p>
                                   <p style={{ minWidth: 120 }}>Total Points</p>
@@ -429,7 +433,9 @@ function WNBA() {
                                       color="green"
                                     />
                                   </div>
-                                  <p style={{ minWidth: 100 }}></p>
+                                  <p style={{ minWidth: 120 }}>
+                                    {game.away.start_time}
+                                  </p>
                                   <p style={{ minWidth: 72 }}>Money Line</p>
                                   <p style={{ minWidth: 120 }}>Point Spread</p>
                                   <p style={{ minWidth: 120 }}>Total Points</p>

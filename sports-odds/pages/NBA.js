@@ -473,6 +473,8 @@ function NBA() {
                                           game.home.moneyline,
                                           game.home.point_spread,
                                           game.home.start_time,
+                                          "nba",
+                                          "basketball",
                                         ]);
                                         setOpenBet(!openBet);
                                       }}

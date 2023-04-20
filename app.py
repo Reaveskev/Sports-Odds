@@ -279,13 +279,13 @@ def scrape_Odds(league):
 
    
     try:
-        parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))  
+        element = driver.find_element(By.CLASS_NAME, "odds-table-v2 odds-no-games")
+        print(element)
+        if(element):
+            return jsonify({'sucess': "Offseason"}), 200
     except:
-        return jsonify({'sucess': "Offseason"}), 200
-        
+        parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
    
-
-
 
 
     # if league in ["mlb", "nhl", "nba"]:
@@ -293,10 +293,7 @@ def scrape_Odds(league):
 
     #     parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     
-    # print(parent_elem)
-    # second_child_span = wait.until(EC.presence_of_element_located((By.XPATH, './span[1]', parent_elem))) 
-    
-    # print(second_child_span.text)
+   
     html = driver.page_source 
 
     # page_to_scrape = requests.get(url)
