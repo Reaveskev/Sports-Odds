@@ -282,8 +282,8 @@ def scrape_Odds(league):
     if not elements:
         wait = WebDriverWait(driver, 10)
         parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
-
-
+    else:
+         return jsonify({'sucess': "Offseason"}), 200
 
 
 
