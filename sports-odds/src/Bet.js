@@ -53,7 +53,6 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
     setGameDate(fullDate);
     setLeague(betInfo[12]);
     setSport(betInfo[13]);
-    console.log(fullDate);
   }, []);
 
   const addBet = async (

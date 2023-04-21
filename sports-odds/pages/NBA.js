@@ -23,18 +23,18 @@ function NBA() {
   useEffect(() => {
     async function loadPageData() {
       try {
-        const response1 = await axios.get(
-          "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-        );
-        const response2 = await axios.get(
-          "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
-        );
-        const response3 = await axios.get(
-          "https://sports-odds.herokuapp.com/Odds/nba"
-        );
-        const response4 = await axios.get(
-          "https://sports-odds.herokuapp.com/Sport_News/nba"
-        );
+        const [response1, response2, response3, response4] = await Promise.all([
+          axios.get(
+            "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+          ),
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
+          ),
+          axios.get("https://site.api.espn.com/apis/site/v2/sports/Odds/nba"),
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/Sport_News/nba"
+          ),
+        ]);
 
         if (response1.data.game_groups[0] === undefined) {
           setoffseason(true);

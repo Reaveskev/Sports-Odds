@@ -23,18 +23,18 @@ function NFL() {
   useEffect(() => {
     async function loadPageData() {
       try {
-        const response1 = await axios.get(
-          "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-        );
-        const response2 = await axios.get(
-          "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
-        );
-        const response3 = await axios.get(
-          "https://sports-odds.herokuapp.com/Odds/nfl"
-        );
-        const response4 = await axios.get(
-          "https://sports-odds.herokuapp.com/Sport_News/nfl"
-        );
+        const [response1, response2, response3, response4] = await Promise.all([
+          axios.get(
+            "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+          ),
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
+          ),
+          axios.get("https://site.api.espn.com/apis/site/v2/sports/Odds/nfl"),
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/Sport_News/nfl"
+          ),
+        ]);
 
         if (response1.data.game_groups[0] === undefined) {
           setoffseason(true);

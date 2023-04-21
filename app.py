@@ -25,35 +25,36 @@ cors = CORS(app, support_credentials=True)
 
 
 # Local do these 
-# options = Options()
-# options.add_argument("--headless")
-# options.add_argument("--disable-dev-shm-usage")
-# driver = webdriver.Chrome(options=options)
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--no-sandbox")
+driver = webdriver.Chrome(options=options)
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+# chrome_options = webdriver.ChromeOptions()
+# chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--disable-dev-shm-usage")
+# chrome_options.add_argument("--no-sandbox")
+# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 
 # MySql ####################
 
-app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-app.config['MYSQL_DB'] = os.environ.get('DB')
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-
-
-# app.config['MYSQL_USER'] = "root"
-# app.config['MYSQL_PASSWORD'] = "Upshaw123!"
-# app.config['MYSQL_HOST'] = "localhost"
-# app.config['MYSQL_DB'] = "sports_odds"
+# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+# app.config['MYSQL_DB'] = os.environ.get('DB')
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# app.config['SECRET_KEY'] = 'mysecretkey'
+# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
+
+app.config['MYSQL_USER'] = "root"
+app.config['MYSQL_PASSWORD'] = "Upshaw123!"
+app.config['MYSQL_HOST'] = "localhost"
+app.config['MYSQL_DB'] = "sports_odds"
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = 'mysecretkey'
 
 
 mysql = MySQL(app)
@@ -269,16 +270,13 @@ def scrape_Odds(league):
     if league not in sport:
         return jsonify({'error': 'Input a valid sports league'}), 400
 
-          
-
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
 
     driver.get(url)
-    
     wait = WebDriverWait(driver, 1)
 
-   
+  
     try:
         parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     except:
@@ -286,9 +284,8 @@ def scrape_Odds(league):
         Inprogress = {}
         Final = {}
         return jsonify(Upcoming,Inprogress,Final)
-        
-    
-   
+
+ 
     html = driver.page_source 
 
     # page_to_scrape = requests.get(url)
