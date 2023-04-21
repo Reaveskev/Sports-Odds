@@ -23,88 +23,90 @@ function Profile() {
   } = useAppContext();
 
   const findSpecifcGame = (oldGames) => {
-    for (let i = 0; i < oldGames.length; i++) {
-      if (oldGames[i].name === info.teams) {
-        let home = oldGames[i].competitions[0].competitors[0];
-        let away = oldGames[i].competitions[0].competitors[1];
-        let winner;
-        let point_spread;
-        if (home.winner === true) {
-          winner = home.team.name;
-        } else {
-          winner = away.team.name;
-        }
-        if (info.money_line_team === home.team.name) {
-          point_spread = home.score - away.score;
-        } else {
-          point_spread = away.score - home.score;
-        }
-        let temp = {
-          money_line: winner,
-          point_spread: point_spread,
-          total_points: parseInt(home.score) + parseInt(away.score),
-        };
-
-        let post = { bet_id: info.bet_id };
-
-        if (info.point_spread) {
-          let result = info.point_spread
-            .slice(0, info.point_spread.indexOf("("))
-            .trim();
-          if (result === temp.point_spread) {
-            post.point_spread = true;
+    if (oldGames) {
+      for (let i = 0; i < oldGames.length; i++) {
+        if (oldGames[i].name === info.teams) {
+          let home = oldGames[i].competitions[0].competitors[0];
+          let away = oldGames[i].competitions[0].competitors[1];
+          let winner;
+          let point_spread;
+          if (home.winner === true) {
+            winner = home.team.name;
           } else {
-            post.point_spread = false;
+            winner = away.team.name;
           }
-        }
+          if (info.money_line_team === home.team.name) {
+            point_spread = home.score - away.score;
+          } else {
+            point_spread = away.score - home.score;
+          }
+          let temp = {
+            money_line: winner,
+            point_spread: point_spread,
+            total_points: parseInt(home.score) + parseInt(away.score),
+          };
 
-        if (info.total_points) {
-          let result = info.total_points
-            .slice(0, info.total_points.indexOf("("))
-            .trim();
-          if (result.charAt(0) === "O") {
-            if (result.slice(1) > temp.total_points) {
-              post.total_points = true;
-            }
-          } else if (result.charAt(0) === "U") {
-            if (result.slice(1) < temp.total_points) {
-              post.total_points = false;
+          let post = { bet_id: info.bet_id };
+
+          if (info.point_spread) {
+            let result = info.point_spread
+              .slice(0, info.point_spread.indexOf("("))
+              .trim();
+            if (result === temp.point_spread) {
+              post.point_spread = true;
+            } else {
+              post.point_spread = false;
             }
           }
-        }
 
-        if (info.money_line_team) {
-          if (info.money_line_team === temp.money_line) {
-            post.money_line = true;
-          } else {
-            post.money_line = false;
-          }
-        }
-
-        if (Object.values(post) !== false) {
-          post.payout = true;
-        } else {
-          post.payout = false;
-        }
-        let urladd = "https://sports-odds.herokuapp.com/addBetOutcome";
-
-        // let urladd = "http://127.0.0.1:5000/addBetOutcome";
-        console.log(post);
-        axios.post(urladd, post).then((res) => {
-          if (res.status === 200) {
-            let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
-            // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
-            axios.get(url3).then((res) => {
-              if (res.status === 200) {
-                setAllBetsOutcome(res.data);
-                console.log(res.data);
+          if (info.total_points) {
+            let result = info.total_points
+              .slice(0, info.total_points.indexOf("("))
+              .trim();
+            if (result.charAt(0) === "O") {
+              if (result.slice(1) > temp.total_points) {
+                post.total_points = true;
               }
-            });
+            } else if (result.charAt(0) === "U") {
+              if (result.slice(1) < temp.total_points) {
+                post.total_points = false;
+              }
+            }
           }
-        });
 
-        // Do something with the matching object
-        break; // Exit the loop since we found a match
+          if (info.money_line_team) {
+            if (info.money_line_team === temp.money_line) {
+              post.money_line = true;
+            } else {
+              post.money_line = false;
+            }
+          }
+
+          if (Object.values(post) !== false) {
+            post.payout = true;
+          } else {
+            post.payout = false;
+          }
+          let urladd = "https://sports-odds.herokuapp.com/addBetOutcome";
+
+          // let urladd = "http://127.0.0.1:5000/addBetOutcome";
+          console.log(post);
+          axios.post(urladd, post).then((res) => {
+            if (res.status === 200) {
+              let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
+              // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+              axios.get(url3).then((res) => {
+                if (res.status === 200) {
+                  setAllBetsOutcome(res.data);
+                  console.log(res.data);
+                }
+              });
+            }
+          });
+
+          // Do something with the matching object
+          break; // Exit the loop since we found a match
+        }
       }
     }
   };
@@ -158,7 +160,6 @@ function Profile() {
         console.log("Did not work as planned");
       }
     });
-    console.log("Checking Length", allBetsOutcome.length, allBets.length);
   }, []);
 
   const handleSubmit = async (e) => {
