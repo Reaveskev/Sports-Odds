@@ -41,12 +41,12 @@ driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), c
 
 # MySql ####################
 
-# app.config['MYSQL_USER'] = os.environ.get('DB_USER')
-# app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
-# app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
-# app.config['MYSQL_DB'] = os.environ.get('DB')
-# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-# app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['MYSQL_USER'] = os.environ.get('DB_USER')
+app.config['MYSQL_PASSWORD'] = os.environ.get('DB_PASSWORD')
+app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
+app.config['MYSQL_DB'] = os.environ.get('DB')
+app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 
 # app.config['MYSQL_USER'] = "root"
@@ -67,7 +67,33 @@ def catch_all(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
-    
+
+
+@app.route('/create_user', methods=['GET', 'POST'])
+def create_user():
+    if request.method == 'POST':
+        try:
+            username = request.json['username']
+            password = request.json['password']
+            f_name = request.json['f_name']
+            l_name = request.json['l_name']
+            cursor = mysql.connection.cursor()
+            cursor.execute('INSERT INTO user (username, password, f_name, l_name) VALUES (%s, %s, %s, %s)',(username, password, f_name, l_name ))
+            mysql.connection.commit()
+            cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
+            user = cursor.fetchone()
+            cursor.close()
+            if user:
+                 session['user_id'] = user['user_id']
+                 print('Logged in successfully.', 'success')
+                 return jsonify(user)
+            else:
+                return jsonify({'error': 'User not found'}), 401
+        except Exception as e: print(e)
+    else:
+        return print("Creating user error")
+
+
 ####################
 @app.route('/login_to_db', methods=['GET', 'POST'])
 def login():
@@ -79,6 +105,7 @@ def login():
             cursor = mysql.connection.cursor()
             cursor.execute('SELECT * FROM user WHERE username = %s AND password = %s', (username, password))
             # Fetch one record and return result
+            
             user = cursor.fetchone()
             cursor.close()
             if user:

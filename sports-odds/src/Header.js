@@ -26,20 +26,17 @@ function Header() {
   return (
     <div className={styles.navbar}>
       <div style={{ marginLeft: 10 }}>
-        <img
-          alt=""
-          style={{
-            left: 5,
-            position: "absolute",
-          }}
-          src="/out/Sports Odds-1.png"
-        />
-      </div>
-      <li className={styles.li}>
-        <Link className={styles.link} href="/">
-          Home
+        <Link href="/">
+          <img
+            alt=""
+            style={{
+              left: 10,
+              position: "absolute",
+            }}
+            src="/out/Sports Odds-1.png"
+          />
         </Link>
-      </li>
+      </div>
       <li className={styles.li}>
         <Link className={styles.link} href="/NFL">
           NFL
@@ -146,7 +143,7 @@ function Header() {
             className={styles.li}
           >
             <Link className={styles.link} href="/login">
-              Login
+              Login / Create Account
             </Link>
           </li>
         </div>
