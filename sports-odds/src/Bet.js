@@ -29,24 +29,31 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
   useEffect(() => {
     let today = new Date();
     let yy = String(today.getFullYear());
-    let givenDate = betInfo[11];
-    givenDate = givenDate.slice(5, -9);
-
+    let givenDate;
+    if (betInfo[11].length < 15) {
+      let day = String(today.getDate());
+      let month = String(today.getMonth() + 1);
+      givenDate = month + day;
+    } else {
+      givenDate = betInfo[11];
+      givenDate = givenDate.slice(5, -9);
+    }
     if (givenDate.length < 5) {
       givenDate = "0" + givenDate;
-      let day = givenDate.slice(0, 2);
-      let month = givenDate.slice(-2);
-      givenDate = day + month;
+      let month = givenDate.slice(0, 2);
+      let day = givenDate.slice(-2);
+      givenDate = month + day;
     } else {
-      day = givenDate.slice(0, 2);
-      month = givenDate.slice(-2);
-      givenDate = day + month;
+      month = givenDate.slice(0, 2);
+      day = givenDate.slice(-2);
+      givenDate = month + day;
     }
 
     let fullDate = yy + givenDate;
     setGameDate(fullDate);
     setLeague(betInfo[12]);
     setSport(betInfo[13]);
+    console.log(fullDate);
   }, []);
 
   const addBet = async (
