@@ -30,10 +30,8 @@ function NBA() {
           axios.get(
             "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
           ),
-          axios.get("https://site.api.espn.com/apis/site/v2/sports/Odds/nba"),
-          axios.get(
-            "https://site.api.espn.com/apis/site/v2/sports/Sport_News/nba"
-          ),
+          axios.get("https://sports-odds.herokuapp.com/Odds/nba"),
+          axios.get("https://sports-odds.herokuapp.com/Sport_News/nba"),
         ]);
 
         if (response1.data.game_groups[0] === undefined) {

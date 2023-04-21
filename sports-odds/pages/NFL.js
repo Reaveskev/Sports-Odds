@@ -30,10 +30,8 @@ function NFL() {
           axios.get(
             "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
           ),
-          axios.get("https://site.api.espn.com/apis/site/v2/sports/Odds/nfl"),
-          axios.get(
-            "https://site.api.espn.com/apis/site/v2/sports/Sport_News/nfl"
-          ),
+          axios.get("https://sports-odds.herokuapp.com/Odds/nfl"),
+          axios.get("https://sports-odds.herokuapp.com/Sport_News/nfl"),
         ]);
 
         if (response1.data.game_groups[0] === undefined) {
