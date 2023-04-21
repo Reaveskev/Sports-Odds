@@ -17,6 +17,7 @@ export default function Home() {
           http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
+        <link rel="shortcut icon" href="/out/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
