@@ -5,6 +5,7 @@ import Header from "@/src/Header";
 import * as AiIcon from "react-icons/Ai";
 import { useAppContext } from "@/src/GlobalContext";
 import Bet from "../src/Bet";
+import WhistleLoader from "@/src/Loading";
 
 function NBA() {
   const [loading, setLoading] = useState(true);
@@ -143,7 +144,7 @@ function NBA() {
       <Header />
       {loading ? (
         <>
-          <p>Data is loading...</p>
+          <WhistleLoader />
         </>
       ) : (
         <>

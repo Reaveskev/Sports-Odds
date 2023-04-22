@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
+import WhistleLoader from "@/src/Loading";
 
 const CFB = () => {
   const [CFBnews, setCFBnews] = useState([]);
@@ -77,7 +78,7 @@ const CFB = () => {
       <Header />
       {loading ? (
         <>
-          <p>Data is loading...</p>
+          <WhistleLoader />
         </>
       ) : (
         <>

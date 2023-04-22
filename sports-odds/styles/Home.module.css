@@ -100,3 +100,42 @@
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
   }
 }
+
+.whistle_container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.whistle {
+  animation: blow 2s infinite ease-in-out;
+  transform-origin: center bottom;
+  margin-bottom: 20px;
+}
+
+.text {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+@keyframes blow {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-30deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+  75% {
+    transform: rotate(30deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
+import WhistleLoader from "@/src/Loading";
 
 const MCBB = () => {
   const [MCBBnews, setMCBBnews] = useState([]);
@@ -23,7 +24,7 @@ const MCBB = () => {
       <Header />
       {loading ? (
         <>
-          <p>Data is loading...</p>
+          <WhistleLoader />
         </>
       ) : (
         <>
