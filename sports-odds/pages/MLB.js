@@ -21,114 +21,114 @@ function MLB() {
   const { setBetInfo, betInfo } = useAppContext();
 
   useEffect(() => {
-    async function loadPageData() {
-      try {
-        const [response1, response2, response3, response4] = await Promise.all([
-          axios.get(
-            "https://statmilk.bleacherreport.com/api/scores/carousel?league=MLB&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-          ),
-          axios.get(
-            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"
-          ),
-          axios.get("https://sports-odds.herokuapp.com/Odds/mlb"),
-          axios.get("https://sports-odds.herokuapp.com/Sport_News/mlb"),
-        ]);
+    // async function loadPageData() {
+    //   try {
+    //     const [response1, response2, response3, response4] = await Promise.all([
+    //       axios.get(
+    //         "https://statmilk.bleacherreport.com/api/scores/carousel?league=MLB&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+    //       ),
+    //       axios.get(
+    //         "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"
+    //       ),
+    //       axios.get("https://sports-odds.herokuapp.com/Odds/mlb"),
+    //       axios.get("https://sports-odds.herokuapp.com/Sport_News/mlb"),
+    //     ]);
 
-        if (response1.data.game_groups[0] === undefined) {
-          setoffseason(true);
-        } else if (
-          response1.data.game_groups[0].name === "In Progress" &&
-          response1.data.game_groups[1].name === "Completed"
-        ) {
-          setInprogress(response1.data.game_groups[0]);
-          setCompleted(response1.data.game_groups[1]);
-          setUpcoming(response1.data.game_groups[2]);
-        } else if (response1.data.game_groups[0].name === "Completed") {
-          setCompleted(response1.data.game_groups[0]);
-          setUpcoming(response1.data.game_groups[1]);
-        } else if (
-          response1.data.game_groups[0].name === "In Progress" &&
-          response1.data.game_groups[1].name === "Upcoming"
-        ) {
-          setInprogress(response1.data.game_groups[0]);
-          setUpcoming(response1.data.game_groups[1]);
-        } else {
-          setUpcoming(response1.data.game_groups[0]);
-        }
-
-        setMLBNews(response2.data.articles);
-
-        setUpcomingSportsOdds(response3.data[0].Upcoming);
-        setInprogressSportsOdds(response3.data[1].Inprogress);
-        setFinalSportsOdds(response3.data[2].Final);
-
-        setMLBNews2(response4.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    loadPageData();
-    ///////////////////////////
-    // axios
-    //   .get(
-    //     "https://statmilk.bleacherreport.com/api/scores/carousel?league=MLB&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-    //   )
-    //   .then((res) => {
-    //     if (res.data.game_groups[0] === undefined) {
+    //     if (response1.data.game_groups[0] === undefined) {
     //       setoffseason(true);
     //     } else if (
-    //       res.data.game_groups[0].name === "In Progress" &&
-    //       res.data.game_groups[1].name === "Completed"
+    //       response1.data.game_groups[0].name === "In Progress" &&
+    //       response1.data.game_groups[1].name === "Completed"
     //     ) {
-    //       setInprogress(res.data.game_groups[0]);
-    //       setCompleted(res.data.game_groups[1]);
-    //       setUpcoming(res.data.game_groups[2]);
-    //     } else if (res.data.game_groups[0].name === "Completed") {
-    //       setCompleted(res.data.game_groups[0]);
-    //       setUpcoming(res.data.game_groups[1]);
+    //       setInprogress(response1.data.game_groups[0]);
+    //       setCompleted(response1.data.game_groups[1]);
+    //       setUpcoming(response1.data.game_groups[2]);
+    //     } else if (response1.data.game_groups[0].name === "Completed") {
+    //       setCompleted(response1.data.game_groups[0]);
+    //       setUpcoming(response1.data.game_groups[1]);
     //     } else if (
-    //       res.data.game_groups[0].name === "In Progress" &&
-    //       res.data.game_groups[1].name === "Upcoming"
+    //       response1.data.game_groups[0].name === "In Progress" &&
+    //       response1.data.game_groups[1].name === "Upcoming"
     //     ) {
-    //       setInprogress(res.data.game_groups[0]);
-    //       setUpcoming(res.data.game_groups[1]);
+    //       setInprogress(response1.data.game_groups[0]);
+    //       setUpcoming(response1.data.game_groups[1]);
     //     } else {
-    //       setUpcoming(res.data.game_groups[0]);
+    //       setUpcoming(response1.data.game_groups[0]);
     //     }
-    //   })
-    //   .then(() => {
-    //     axios
-    //       .get(
-    //         "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"
-    //       )
-    //       .then((res) => {
-    //         setMLBNews(res.data.articles);
-    //       });
-    //   })
-    //   .then(() => {
-    //     axios
-    //       .get(
-    //         "https://sports-odds.herokuapp.com/Odds/mlb"
-    //         // "http://127.0.0.1:5000/Odds/mlb"
-    //       )
-    //       .then((res) => {
-    //         setUpcomingSportsOdds(res.data[0].Upcoming);
-    //         setInprogressSportsOdds(res.data[1].Inprogress);
-    //         setFinalSportsOdds(res.data[2].Final);
-    //       })
-    //       .then(() => {
-    //         axios
-    //           .get(
-    //             "https://sports-odds.herokuapp.com/Sport_News/mlb"
-    //             // "http://127.0.0.1:5000/Sport_News/mlb"
-    //           )
-    //           .then((res) => {
-    //             setMLBNews2(res.data);
-    //             setLoading(false);
-    //           });
-    //       });
-    //   });
+
+    //     setMLBNews(response2.data.articles);
+
+    //     setUpcomingSportsOdds(response3.data[0].Upcoming);
+    //     setInprogressSportsOdds(response3.data[1].Inprogress);
+    //     setFinalSportsOdds(response3.data[2].Final);
+
+    //     setMLBNews2(response4.data);
+    //     setLoading(false);
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
+    // loadPageData();
+    ///////////////////////////
+    axios
+      .get(
+        "https://statmilk.bleacherreport.com/api/scores/carousel?league=MLB&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+      )
+      .then((res) => {
+        if (res.data.game_groups[0] === undefined) {
+          setoffseason(true);
+        } else if (
+          res.data.game_groups[0].name === "In Progress" &&
+          res.data.game_groups[1].name === "Completed"
+        ) {
+          setInprogress(res.data.game_groups[0]);
+          setCompleted(res.data.game_groups[1]);
+          setUpcoming(res.data.game_groups[2]);
+        } else if (res.data.game_groups[0].name === "Completed") {
+          setCompleted(res.data.game_groups[0]);
+          setUpcoming(res.data.game_groups[1]);
+        } else if (
+          res.data.game_groups[0].name === "In Progress" &&
+          res.data.game_groups[1].name === "Upcoming"
+        ) {
+          setInprogress(res.data.game_groups[0]);
+          setUpcoming(res.data.game_groups[1]);
+        } else {
+          setUpcoming(res.data.game_groups[0]);
+        }
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"
+          )
+          .then((res) => {
+            setMLBNews(res.data.articles);
+          });
+      })
+      .then(() => {
+        axios
+          .get(
+            "https://sports-odds.herokuapp.com/Odds/mlb"
+            //         // "http://127.0.0.1:5000/Odds/mlb"
+          )
+          .then((res) => {
+            setUpcomingSportsOdds(res.data[0].Upcoming);
+            setInprogressSportsOdds(res.data[1].Inprogress);
+            setFinalSportsOdds(res.data[2].Final);
+          })
+          .then(() => {
+            axios
+              .get(
+                "https://sports-odds.herokuapp.com/Sport_News/mlb"
+                //             // "http://127.0.0.1:5000/Sport_News/mlb"
+              )
+              .then((res) => {
+                setMLBNews2(res.data);
+                setLoading(false);
+              });
+          });
+      });
   }, []);
 
   let game_ids = {};

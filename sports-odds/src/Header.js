@@ -143,7 +143,7 @@ function Header() {
             className={styles.li}
           >
             <Link className={styles.link} href="/login">
-              Login / Create Account
+              Login
             </Link>
           </li>
         </div>
