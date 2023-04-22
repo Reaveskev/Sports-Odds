@@ -30,6 +30,13 @@ function Profile() {
           let away = oldGames[i].competitions[0].competitors[1];
           let winner;
           let point_spread;
+
+          if (oldGames[i].status.type.completed !== true) {
+            alert("This game is not over yet. Please try again later!");
+            setInfo("");
+            setFindFinal(false);
+            break;
+          }
           if (home.winner === true) {
             winner = home.team.name;
           } else {
@@ -87,10 +94,23 @@ function Profile() {
           } else {
             post.payout = false;
           }
+
+          if (post.payout === true) {
+            let update_url = "https://sports-odds.herokuapp.com/update_money";
+            // let update_url = "http://127.0.0.1:5000/update_money";
+            let fake_money = user.fake_money + info.payout;
+            axios
+              .post(update_url, {
+                fake_money,
+              })
+              .then((res) => {
+                if (res.status === 200) setUser(res.data);
+              });
+          }
           let urladd = "https://sports-odds.herokuapp.com/addBetOutcome";
 
           // let urladd = "http://127.0.0.1:5000/addBetOutcome";
-          console.log(post);
+
           axios.post(urladd, post).then((res) => {
             if (res.status === 200) {
               let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
@@ -98,7 +118,6 @@ function Profile() {
               axios.get(url3).then((res) => {
                 if (res.status === 200) {
                   setAllBetsOutcome(res.data);
-                  console.log(res.data);
                 }
               });
             }
@@ -207,9 +226,12 @@ function Profile() {
       <div className={styles.profile_container}>
         <div className={styles.profile_header}>
           {user ? (
-            <h1>
-              {user.f_name} {user.l_name}
-            </h1>
+            <>
+              <h1>
+                {user.f_name} {user.l_name}
+              </h1>
+              <h3>Fake Money: ${user.fake_money}</h3>
+            </>
           ) : null}
         </div>
         <div className={styles.profile_body}>
@@ -249,6 +271,7 @@ function Profile() {
         {findFinal ? (
           <div>
             <button
+              className={styles.findGame}
               onClick={() => {
                 findGame();
               }}
@@ -259,7 +282,7 @@ function Profile() {
         ) : null}
         {allBets ? (
           <>
-            <h2 style={{ paddingTop: 50 }}>Your Bets</h2>
+            <h2 style={{ paddingTop: 20 }}>Your Bets</h2>
             <table className={styles.bet_table}>
               <thead>
                 <tr>
@@ -288,6 +311,13 @@ function Profile() {
                       }}
                       key={bet.bet_id}
                       className={styles.bet_table_row}
+                      style={{
+                        backgroundColor: info
+                          ? info.bet_id === bet.bet_id
+                            ? "lightgray"
+                            : null
+                          : null,
+                      }}
                     >
                       <td className={styles.bet_table_cell}>{bet.teams}</td>
                       <td className={styles.bet_table_cell}>
@@ -367,7 +397,7 @@ function Profile() {
                               style={{ marginRight: 10 }}
                               color="green"
                             />
-                            {bet.money_line}
+                            {bet.money_line} {bet.money_line_team}
                           </div>
                         )}
                       </td>
@@ -383,11 +413,7 @@ function Profile() {
                               justifyContent: "center",
                             }}
                           >
-                            {/* <RxIcon.RxCross2
-                              style={{ marginRight: 10 }}
-                              color="red"
-                            /> */}
-                            {bet.payout}
+                            ${bet.payout}
                           </div>
                         ) : (
                           <div
@@ -401,7 +427,7 @@ function Profile() {
                               style={{ marginRight: 10 }}
                               color="green"
                             />
-                            {bet.payout}
+                            ${bet.payout}
                           </div>
                         )}
                       </td>

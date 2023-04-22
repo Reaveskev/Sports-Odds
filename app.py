@@ -154,6 +154,32 @@ def update_info():
 
     return jsonify(updated_user)
 
+
+@app.route('/update_money', methods=['GET', 'POST'])
+def update_money():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
+    user = cur.fetchone()
+    cur.close()
+    if not user:
+        return jsonify({"error":"User does not exist"}), 401
+    if request.method == 'POST':
+
+        fake_money = request.json['fake_money']
+        cur = mysql.connection.cursor()
+        cur.execute('UPDATE user SET fake_money = %s WHERE user_id = %s', (fake_money,  user_id))
+        mysql.connection.commit()
+        cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
+        updated_user = cur.fetchone()
+        cur.close()
+        print('Profile fake money updated successfully.', 'success')
+            
+
+    return jsonify(updated_user)
+
 @app.route('/addBet', methods=['POST'])
 def addBet():
     user_id = session.get('user_id')
@@ -171,7 +197,7 @@ def addBet():
         league = request.json['league']
         sport = request.json['sport']
         cursor = mysql.connection.cursor()
-        cursor.execute('INSERT INTO bets (teams, money_line, money_line_team, point_spread, total_points, payout, bet_amount, game_date, league, sport, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s %s)',(teams, money_line, money_line_team, point_spread, total_points, payout, bet_amount, game_date, league, sport, user_id))
+        cursor.execute('INSERT INTO bets (teams, money_line, money_line_team, point_spread, total_points, payout, bet_amount, game_date, league, sport, user_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',(teams, money_line, money_line_team, point_spread, total_points, payout, bet_amount, game_date, league, sport, user_id))
         mysql.connection.commit()
         cursor.close()
 

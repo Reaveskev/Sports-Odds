@@ -4,8 +4,8 @@ import styles from "@/styles/bet.module.css";
 import { useAppContext } from "./GlobalContext";
 import * as AiIcon from "react-icons/Ai";
 
-const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
-  const { betInfo, user, allBets, setAllBets } = useAppContext();
+const Bet = ({ setOpenBet }) => {
+  const { betInfo, user, setUser, allBets, setAllBets } = useAppContext();
   const [potential, setPotential] = useState();
   const [moneyline, setMoneyline] = useState();
   const [moneyline_team, setMoneyline_team] = useState();
@@ -67,8 +67,24 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
     league,
     sport
   ) => {
+    if (moneyline === "") {
+      setMoneyline(null);
+      setMoneyline_team(null);
+    }
+    if (pointSpread === "") {
+      setPointSpread(null);
+    }
+    if (totalPoints === "") {
+      setTotalPoints(null);
+    }
     let url = "https://sports-odds.herokuapp.com/addBet";
     // let url = "http://127.0.0.1:5000/addBet";
+    if (betAmount > user.fake_money) {
+      alert(
+        `You are trying to bet more fake money than you have. Please try again with a lower bet amount. You have $${user.fake_money} available.`
+      );
+      return;
+    }
     try {
       const response = await axios
         .post(url, {
@@ -95,16 +111,27 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
               setbetAmount();
               setOpenBet(false);
             }, "3000");
+
             let url2 = "https://sports-odds.herokuapp.com/seeBets";
             // let url2 = "http://127.0.0.1:5000/seeBets";
 
             axios.get(url2).then((res) => {
               if (res.status === 200) {
                 setAllBets(res.data);
+                let update_url =
+                  "https://sports-odds.herokuapp.com/update_money";
+                // let update_url = "http://127.0.0.1:5000/update_money";
+                let fake_money = user.fake_money - betAmount;
+                console.log(fake_money);
+                axios
+                  .post(update_url, {
+                    fake_money,
+                  })
+                  .then((res) => {
+                    if (res.status === 200) setUser(res.data);
+                  });
               }
             });
-          } else {
-            console.log(res);
           }
         });
     } catch (error) {
@@ -151,7 +178,6 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
 
       let totalPointsOdds = parseInt(totalPoints.slice(-5, -1));
       if (isNaN(totalPointsOdds) !== true) {
-        console.log(totalPointsOdds);
         let totalPointsFactor;
         if (totalPointsOdds > 0) {
           totalPointsFactor = 1 + totalPointsOdds / 100;
@@ -163,7 +189,7 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
       }
     }
 
-    return setPotential("$" + parlayPayout.toFixed(2));
+    return setPotential(parlayPayout.toFixed(2));
   }
 
   return (
@@ -417,7 +443,7 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
           >
             Calculate
           </button>
-          <span style={{ color: "black" }}>Potential payout: {potential}</span>
+          <span style={{ color: "black" }}>Potential payout: ${potential}</span>
         </div>
         {potential ? (
           <div
@@ -430,7 +456,6 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
             {user ? (
               <button
                 onClick={() => {
-                  console.log("Hello");
                   addBet(
                     teams,
                     moneyline,
@@ -440,7 +465,8 @@ const Bet = ({ setOpenBet, game_ids, game_over_ids, completed }) => {
                     potential,
                     betAmount,
                     gameDate,
-                    league
+                    league,
+                    sport
                   );
                 }}
                 style={{ margin: 10, cursor: "pointer" }}

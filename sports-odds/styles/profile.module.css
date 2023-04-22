@@ -55,7 +55,9 @@
   text-align: center;
   line-height: 1.5;
   margin-top: 10px;
+  margin-bottom: 30px;
 }
+
 .bet_table_header {
   padding: 12px;
   text-align: center;
@@ -78,4 +80,14 @@
 
 .bet_table_row:hover {
   background-color: #f5f5f5;
+}
+
+.findGame {
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
