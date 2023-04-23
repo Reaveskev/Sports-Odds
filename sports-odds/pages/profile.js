@@ -98,7 +98,7 @@ function Profile() {
           if (post.payout === true) {
             let update_url = "https://sports-odds.herokuapp.com/update_money";
             // let update_url = "http://127.0.0.1:5000/update_money";
-            let fake_money = parseInt(user.fake_money) + info.payout;
+            let fake_money = user.fake_money + info.payout;
             axios
               .post(update_url, {
                 fake_money,
