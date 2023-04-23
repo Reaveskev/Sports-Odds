@@ -3,7 +3,7 @@
   <br>
   <a href="https://sports-odds.herokuapp.com/"><img src="https://github.com/Reaveskev/Sports-Odds/blob/main/sports-odds/public/Sports%20Odds-1.png" alt="SportsOdds" width="300"></a>
   <br>
-    <a href="https://sports-odds.herokuapp.com/"><img src="https://github.com/Reaveskev/Sports-Odds/blob/main/sports-odds/public/Sports_odds_preview.png" alt="preview" width="400"></a>
+    <a href="https://sports-odds.herokuapp.com/"><img src="https://github.com/Reaveskev/Sports-Odds/blob/main/sports-odds/public/Sport_odds_preview.png" alt="preview" width="400" height="300"></a>
 </h1>
 
 
