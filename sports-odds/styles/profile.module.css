@@ -122,8 +122,8 @@
   height: auto;
   text-align: center;
   font-family: Source Sans Pro, sans-serif;
-  overflow-x: scroll;
-  /* overflow: hidden; */
+  /* overflow-x: scroll; */
+  overflow: hidden;
   white-space: nowrap;
 }
 
@@ -157,6 +157,7 @@
     width: 100%;
     margin: 5px;
     font-size: 14px;
+    overflow-x: scroll;
   }
 }
 
@@ -164,6 +165,7 @@
   .table_div {
     margin: 0px;
     font-size: 12px;
+    overflow-x: scroll;
   }
 
   .bet_table {
