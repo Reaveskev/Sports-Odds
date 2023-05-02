@@ -42,10 +42,10 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 
 
-kla_tz = pytz.timezone('US/Pacific')
-chrome_options.add_argument("--user-data-dir=/tmp/foo")
-chrome_options.add_argument(f'--lang=en-US')
-chrome_options.add_argument(f'--timezone="{datetime.now(kla_tz).strftime("%z")}"')
+# kla_tz = pytz.timezone('US/Pacific')
+# chrome_options.add_argument("--user-data-dir=/tmp/foo")
+# chrome_options.add_argument(f'--lang=en-US')
+chrome_options.add_argument('--timezone=America/Los_Angeles')
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 
