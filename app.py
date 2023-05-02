@@ -45,15 +45,6 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 
-chrome_options.add_argument("--user-data-dir=/tmp/foo")
-
-# Set the language to English (United States)
-chrome_options.add_argument(f'--lang=en-US')
-
-# Set the timezone to the current time in the America/Los_Angeles timezone minus 7 hours
-chrome_options.add_argument(f'--timezone="{current_time.strftime("%z")}"')
-
-
 
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
