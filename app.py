@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
-import datetime
+from datetime import datetime
 import pytz
 # import bcrypt
 
