@@ -102,11 +102,7 @@
     flex-direction: row;
     align-items: center;
     z-index: 1;
-    /* display: flex;
-    background-color: #000;
-    position: fixed;
-    width: 100%;
-    justify-content: center; */
+    flex-direction: column;
   }
   .mobile_li {
     background-color: #000;

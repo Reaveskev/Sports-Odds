@@ -36,8 +36,6 @@ cors = CORS(app, support_credentials=True)
 # driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
 
 
-kla_tz = pytz.timezone('America/Los_Angeles')
-current_time = datetime.now(kla_tz) - timedelta(hours=7)
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
