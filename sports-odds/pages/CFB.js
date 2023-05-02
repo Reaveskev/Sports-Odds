@@ -38,39 +38,6 @@ const CFB = () => {
       }
     }
     loadPageData();
-
-    // ///////////
-    // axios
-    //   .get(
-    //     "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
-    //   )
-    //   .then((res) => {
-    //     setCFBnews(res.data.articles);
-    //     setLoading(false);
-    //   })
-    //   .then(() => {
-    //     axios
-    //       .get(
-    //         "https://sports-odds.herokuapp.com/Odds/college-football"
-
-    //         // "http://127.0.0.1:5000/Odds/college-football"
-    //       )
-    //       .then((res) => {
-    //         setUpcomingSportsOdds(res.data[0].Upcoming);
-    //         setInprogressSportsOdds(res.data[1].Inprogress);
-    //         setFinalSportsOdds(res.data[2].Final);
-    //       });
-    //   })
-    //   .then(() => {
-    //   axios
-    //     .get(
-    //       "https://sports-odds.herokuapp.com/Sport_News/ncaa-football"
-    //       // "http://127.0.0.1:5000/Sport_News/ncaa-football"
-    //     )
-    //     .then((res) => {
-    //       setCFBnews2(res.data);
-    //     });
-    // });
   }, []);
 
   return (
@@ -86,7 +53,7 @@ const CFB = () => {
             <p>It is currently the offseason.</p>
           </div>
           <div className={styles.news}>
-            <header className="newsHeader">CFB News</header>
+            <h1 className={styles.upcoming}>CFB News</h1>
             {CFBnews.map((news) => {
               return (
                 <div className={styles.newInfo} key={news.headline}>

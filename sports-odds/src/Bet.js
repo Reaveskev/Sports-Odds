@@ -122,13 +122,34 @@ const Bet = ({ setOpenBet }) => {
                   "https://sports-odds.herokuapp.com/update_money";
                 // let update_url = "http://127.0.0.1:5000/update_money";
                 let fake_money = user.fake_money - betAmount;
-                console.log(fake_money);
                 axios
                   .post(update_url, {
                     fake_money,
                   })
                   .then((res) => {
                     if (res.status === 200) setUser(res.data);
+                    const today = new Date();
+                    const day = String(today.getDate()).padStart(2, "0");
+                    const month = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+                    const year = today.getFullYear();
+
+                    const date = `${month}/${day}/${year}`;
+                    // let new_transaction =
+                    //   "http://127.0.0.1:5000/addTransaction";
+                    let new_transaction =
+                      "https://sports-odds.herokuapp.com/addTransaction";
+                    axios
+                      .post(new_transaction, {
+                        date: date,
+                        transaction_type: "Placed bet",
+                        transaction_amount: betAmount,
+                        money_in_account: fake_money,
+                      })
+                      .then((res) => {
+                        if (res.status === 200) {
+                          setAllTransactions(res.data);
+                        }
+                      });
                   });
               }
             });
@@ -194,18 +215,8 @@ const Bet = ({ setOpenBet }) => {
 
   return (
     <div className={styles.bets_container}>
-      <div
-        style={{
-          display: "block",
-          fontSize: 14,
-          backgroundColor: "white",
-          borderRadius: 10,
-          height: "auto",
-          width: 334,
-          margin: "15% auto",
-        }}
-      >
-        <span onClick={() => setOpenBet(false)} style={{ color: "black" }}>
+      <div className={styles.div_container}>
+        <span onClick={() => setOpenBet(false)} style={{ color: "white" }}>
           <AiIcon.AiFillCloseCircle
             style={{ margin: 10, cursor: "pointer" }}
             size={20}
@@ -222,7 +233,7 @@ const Bet = ({ setOpenBet }) => {
             <span style={{ color: "green" }}>{message}</span>
           </div>
         ) : null}
-        <div style={{ display: "flex", color: "black" }}>
+        <div style={{ display: "flex", color: "white" }}>
           <div style={{ padding: 15 }}>
             <div
               style={{
@@ -243,7 +254,7 @@ const Bet = ({ setOpenBet }) => {
                 {betInfo[1]}
               </div>
             </div>
-            {/* <div style={{ color: "black" }}>{betInfo[2]}</div>; */}
+
             <div
               style={{
                 padding: 5,
@@ -310,7 +321,7 @@ const Bet = ({ setOpenBet }) => {
               {betInfo[5]}
             </div>
           </div>
-          <div style={{ padding: 15, color: "black" }}>
+          <div style={{ padding: 15, color: "white" }}>
             <div
               style={{
                 display: "flex",
@@ -328,7 +339,7 @@ const Bet = ({ setOpenBet }) => {
                 {betInfo[7]}
               </div>
             </div>
-            {/* <div style={{ color: "black" }}>{betInfo[8]}</div> */}
+
             <div
               style={{
                 padding: 5,
@@ -398,7 +409,7 @@ const Bet = ({ setOpenBet }) => {
         </div>
         <span
           style={{
-            color: "black",
+            color: "white",
             padding: 10,
             display: "flex",
             justifyContent: "center",
@@ -415,7 +426,7 @@ const Bet = ({ setOpenBet }) => {
             justifyContent: "center",
           }}
         >
-          <span style={{ color: "black" }}>How much do you want to bet? $</span>
+          <span style={{ color: "white" }}>How much do you want to bet? $</span>
           <input
             className={styles.money_input}
             onChange={handleBetAmountChange}
@@ -443,7 +454,7 @@ const Bet = ({ setOpenBet }) => {
           >
             Calculate
           </button>
-          <span style={{ color: "black" }}>Potential payout: ${potential}</span>
+          <span style={{ color: "white" }}>Potential payout: ${potential}</span>
         </div>
         {potential ? (
           <div
@@ -474,7 +485,7 @@ const Bet = ({ setOpenBet }) => {
                 Add to bets
               </button>
             ) : (
-              <span style={{ color: "black", paddingBottom: 10 }}>
+              <span style={{ color: "white", paddingBottom: 10 }}>
                 Sign in to add bet to your account!
               </span>
             )}

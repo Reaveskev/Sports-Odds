@@ -4,6 +4,7 @@ import styles from "@/styles/profile.module.css";
 import Header from "@/src/Header";
 import { useAppContext } from "@/src/GlobalContext";
 import * as AiIcon from "react-icons/Ai";
+import Money_Change from "@/src/Money_change";
 
 function Profile() {
   const [firstName, setFirstName] = useState();
@@ -11,6 +12,8 @@ function Profile() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [info, setInfo] = useState();
+  const [update, setUpdate] = useState(false);
+  const [money, setMoney] = useState(false);
   const [findFinal, setFindFinal] = useState(false);
 
   const {
@@ -20,6 +23,8 @@ function Profile() {
     setAllBets,
     allBetsOutcome,
     setAllBetsOutcome,
+    setAllTransactions,
+    allTransactions,
   } = useAppContext();
 
   const findSpecifcGame = (oldGames) => {
@@ -105,6 +110,30 @@ function Profile() {
               })
               .then((res) => {
                 if (res.status === 200) setUser(res.data);
+                const today = new Date();
+                const day = String(today.getDate()).padStart(2, "0");
+                const month = String(today.getMonth() + 1).padStart(2, "0"); // January is 0!
+                const year = today.getFullYear();
+
+                const date = `${month}/${day}/${year}`;
+                // let new_transaction = "http://127.0.0.1:5000/addTransaction";
+
+                let new_transaction =
+                  "https://sports-odds.herokuapp.com/addTransaction";
+                axios
+                  .post(new_transaction, {
+                    date: date,
+                    transaction_type: "Won bet",
+                    transaction_amount: info.payout,
+                    money_in_account: fake_money,
+                  })
+                  .then((res) => {
+                    if (res.status === 200) {
+                      setAllTransactions(res.data);
+                      setInfo("");
+                      setFindFinal(false);
+                    }
+                  });
               });
           }
           let urladd = "https://sports-odds.herokuapp.com/addBetOutcome";
@@ -117,6 +146,7 @@ function Profile() {
               // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
               axios.get(url3).then((res) => {
                 if (res.status === 200) {
+                  console.log(res.data);
                   setAllBetsOutcome(res.data);
                 }
               });
@@ -173,6 +203,13 @@ function Profile() {
         axios.get(url3).then((res) => {
           if (res.status === 200) {
             setAllBetsOutcome(res.data);
+            let url4 = "https://sports-odds.herokuapp.com/getTransaction";
+            // let url4 = "http://127.0.0.1:5000/getTransaction";
+            axios.get(url4).then((res) => {
+              if (res.status === 200) {
+                setAllTransactions(res.data);
+              }
+            });
           }
         });
       } else {
@@ -210,6 +247,7 @@ function Profile() {
         .then((res) => {
           if (res.status === 200) {
             setUser(res.data);
+            setUpdate(!update);
           } else {
             setError("Invalid username or password!");
           }
@@ -227,47 +265,68 @@ function Profile() {
         <div className={styles.profile_header}>
           {user ? (
             <>
-              <h1>
+              <div className={styles.profile_title}>
+                <h1>Profile</h1>
+                <h5
+                  style={{ color: "#0047AB", cursor: "pointer" }}
+                  onClick={() => setUpdate(!update)}
+                >
+                  Edit?
+                </h5>
+              </div>
+              <h2>{user.username}</h2>
+              <h3>
                 {user.f_name} {user.l_name}
-              </h1>
+              </h3>
               <h3>Fake Money: ${user.fake_money}</h3>
+              <h4
+                style={{ color: "#0047AB", cursor: "pointer" }}
+                onClick={() => setMoney(!money)}
+              >
+                Deposit/Withdraw
+              </h4>
+              {money ? <Money_Change setMoney={setMoney} /> : null}
             </>
           ) : null}
         </div>
-        <div className={styles.profile_body}>
-          <form onSubmit={handleSubmit}>
-            <h2>Account Information</h2>
-            <label htmlFor="firstname">First Name:</label>
-            <input
-              type="text"
-              id="firstname"
-              value={firstName}
-              onChange={handleFirstNameChange}
-            />
-            <label htmlFor="lastname">Last Name:</label>
-            <input
-              type="text"
-              id="lastname"
-              value={lastName}
-              onChange={handleLastNameChange}
-            />
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              value={username}
-              onChange={handleUsernameChange}
-            />
-            <button type="submit">Save Changes</button>
-          </form>
-        </div>
+        {update ? (
+          <>
+            <div className={styles.profile_body}>
+              <form onSubmit={handleSubmit}>
+                <h2>Account Information</h2>
+                <label htmlFor="firstname">First Name:</label>
+                <input
+                  type="text"
+                  id="firstname"
+                  value={firstName}
+                  onChange={handleFirstNameChange}
+                />
+                <label htmlFor="lastname">Last Name:</label>
+                <input
+                  type="text"
+                  id="lastname"
+                  value={lastName}
+                  onChange={handleLastNameChange}
+                />
+                <label htmlFor="password">Password:</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                />
+                <label htmlFor="username">Username:</label>
+                <input
+                  type="text"
+                  id="username"
+                  value={username}
+                  onChange={handleUsernameChange}
+                />
+                <button type="submit">Save Changes</button>
+              </form>
+            </div>
+          </>
+        ) : null}
         {findFinal ? (
           <div>
             <button
@@ -281,7 +340,7 @@ function Profile() {
           </div>
         ) : null}
         {allBets ? (
-          <>
+          <div className={styles.table_div}>
             <h2 style={{ paddingTop: 20 }}>Your Bets</h2>
             <table className={styles.bet_table}>
               <thead>
@@ -314,7 +373,7 @@ function Profile() {
                       style={{
                         backgroundColor: info
                           ? info.bet_id === bet.bet_id
-                            ? "lightgray"
+                            ? "#424242"
                             : null
                           : null,
                       }}
@@ -436,7 +495,43 @@ function Profile() {
                 })}
               </tbody>
             </table>
-          </>
+          </div>
+        ) : null}
+        {allTransactions ? (
+          <div className={styles.table_div}>
+            <h2 style={{ paddingTop: 20 }}>Transaction History</h2>
+            <table className={styles.transaction_table}>
+              <thead>
+                <tr>
+                  <th className={styles.bet_table_header}>Date</th>
+                  <th className={styles.bet_table_header}>Type</th>
+                  <th className={styles.bet_table_header}>Amount</th>
+                  <th className={styles.bet_table_header}>Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allTransactions.map((transaction) => (
+                  <tr
+                    key={transaction.transaction_id}
+                    className={styles.bet_table_row}
+                  >
+                    <td className={styles.bet_table_cell}>
+                      {transaction.date}
+                    </td>
+                    <td className={styles.bet_table_cell}>
+                      {transaction.transaction_type}
+                    </td>
+                    <td className={styles.bet_table_cell}>
+                      {transaction.transaction_amount}
+                    </td>
+                    <td className={styles.bet_table_cell}>
+                      ${transaction.money_in_account}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : null}
       </div>
     </>

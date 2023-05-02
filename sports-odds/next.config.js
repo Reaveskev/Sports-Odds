@@ -3,23 +3,25 @@
 const nextConfig = {
   reactStrictMode: true,
   output: "export",
-  webpack: (config, options) => {
-    config.module.rules.push({
-      test: /\.csv$/,
-      loader: "csv-loader",
-      options: {
-        dynamicTyping: true,
-        header: true,
-        skipEmptyLines: true,
-      },
-    });
+  // webpack: (config, options) => {
+  //   config.module.rules.push({
+  //     test: /\.csv$/,
+  //     loader: "csv-loader",
+  //     options: {
+  //       dynamicTyping: true,
+  //       header: true,
+  //       skipEmptyLines: true,
+  //     },
+  //   });
 
-    return config;
-  },
-  images: {
-    loader: "akamai",
-    path: "/",
-  },
+  //   return config;
+
+  // },
+  // images: {
+  //   loader: "akamai",
+  //   path: "/",$
+
+  // },
   exportPathMap: async function (
     defaultPathMap,
     { dev, dir, outDir, distDir, buildId }

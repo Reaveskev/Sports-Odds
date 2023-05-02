@@ -10,6 +10,7 @@
   text-decoration: none;
   border-right: 1px solid #bbb;
   border-left: 1px solid #bbb;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .teamContainer {
@@ -17,6 +18,7 @@
   align-items: center;
   justify-content: space-between;
   margin-right: 10px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .logo {
@@ -38,6 +40,7 @@
   margin-left: 8px;
   margin-right: 8px;
   font-size: 12px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .record {
@@ -57,11 +60,11 @@
 }
 
 .scoreboard {
-  background-color: #333;
+  background-color: rgb(34, 34, 35);
   overflow: auto;
   display: flex;
   white-space: nowrap;
-  margin-top: 50px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .news {
@@ -72,10 +75,12 @@
   align-items: center;
   color: white;
   margin-top: 20px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .newInfo {
-  background-color: #333;
+  background-color: rgb(34, 34, 35);
+  box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
   height: auto;
   color: white;
   width: auto;
@@ -92,6 +97,7 @@
   text-align: center;
   overflow-wrap: break-word;
   inline-size: 670px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .Pic {
@@ -112,8 +118,7 @@
 }
 
 .odds {
-  /* background-color: #d1bbbb; */
-  width: 600px;
+  width: auto;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -123,40 +128,39 @@
   margin-top: 20px;
   border-radius: 12px;
   color: white;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .odds_div {
   display: flex;
   justify-content: center;
-  margin-bottom: 50px;
   color: lightgray;
 }
 
 .upcoming {
-  text-decoration: underline;
   margin: 20px 0 20px 0;
-  color: black;
+  color: white;
 }
 
 .team_info {
-  border: 1px solid #ccc;
-  background-color: #333;
+  background-color: rgb(34, 34, 35);
+  box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
   border-radius: 10px;
   padding-bottom: 10px;
   margin-bottom: 20px;
   color: white;
   display: flex;
   flex-direction: column;
-  width: 620px;
-  height: 175px;
+  width: auto;
+  height: auto;
   text-align: center;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .team_format {
   margin-bottom: 10px;
   color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -165,7 +169,6 @@
   margin-bottom: 10px;
   color: white;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -174,30 +177,262 @@
 }
 
 .team_info p:first-of-type {
-  min-width: 72px;
-  padding: 0 0 10px;
+  min-width: auto;
 }
 
 .team_info p {
-  min-width: 120px;
-  padding: 0 0 10px;
+  min-width: auto;
 }
 
 .name_record {
-  min-width: 150px;
+  min-width: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .odds_logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+  width: 35px;
+  height: 35px;
+  margin-right: 5px;
 }
 
 .name_logo {
   display: flex;
-  width: 180px;
   padding-left: 10px;
+  flex-direction: row;
+  align-items: center;
+}
+
+.standing_div {
+  width: 25%;
+  float: left;
+  padding-left: 5%;
+}
+
+.odds_container {
+  width: 25%;
+  float: left;
+  /* padding-right: 15%; */
+  padding-right: 5%;
+  white-space: nowrap;
+}
+
+.Standings {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-family: Source Sans Pro, sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.standings_title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.mobile_sports {
+  display: none;
+}
+
+.mobile_tab {
+  /* height: 20px; */
+  margin: 5px;
+  background-color: #222223;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  padding: 10px 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mobile_tab:active {
+  background-color: #181818;
+}
+
+/* Small screens (phones, 480px and below) */
+@media only screen and (max-width: 480px) {
+  .games {
+    width: 100%;
+    margin: 0;
+    border: none;
+  }
+
+  .teamContainer {
+    margin-right: 0;
+  }
+
+  .logo {
+    width: 20px;
+    height: 20px;
+  }
+
+  .time,
+  .date {
+    font-size: 8px;
+  }
+
+  .teamName {
+    margin: 0;
+    font-size: 10px;
+  }
+
+  .record {
+    padding-right: 5px;
+  }
+
+  .newInfo {
+    width: 100%;
+    border-radius: 0;
+    padding: 16px;
+    min-height: 300px;
+  }
+
+  .Pic {
+    height: 250px;
+    width: 90%;
+  }
+
+  .newsHeader {
+    font-size: x-large;
+  }
+
+  .odds {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .name_logo {
+    padding-left: 5px;
+  }
+
+  .test {
+    display: none;
+  }
+
+  .standing_div,
+  .new_div,
+  .odds_container {
+    width: 100% !important;
+    float: none !important;
+  }
+}
+
+/* Medium screens (tablets, 768px and below) */
+@media only screen and (max-width: 769px) {
+  .games {
+    width: calc(50% - 6px);
+    margin: 3px;
+  }
+
+  .newInfo {
+    width: 90%;
+  }
+
+  .Pic {
+    width: 90%;
+  }
+
+  .new_div,
+  .odds_container,
+  .standing_div {
+    width: 100% !important;
+    float: left !important;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .test {
+    display: none;
+  }
+
+  .mobile_sports {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .buttons_div {
+    display: flex;
+    position: absolute;
+  }
+  .mobile_tab {
+    /* height: 20px; */
+    margin: 5px;
+    background-color: #222223;
+    border: none;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .mobile_tab:active {
+    background-color: #181818;
+  }
+}
+
+@media only screen and (max-width: 1490px) {
+  .games {
+    width: calc(50% - 6px);
+    margin: 3px;
+  }
+
+  .Pic {
+    width: 90%;
+  }
+
+  .new_div,
+  .odds_container,
+  .standing_div {
+    width: 100% !important;
+    float: left !important;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .test {
+    display: none;
+  }
+
+  .mobile_sports {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .buttons_div {
+    display: flex;
+    position: absolute;
+  }
+  .mobile_tab {
+    /* height: 20px; */
+    margin: 5px;
+    background-color: #222223;
+    border: none;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .mobile_tab:active {
+    background-color: #181818;
+  }
 }

@@ -32,7 +32,7 @@ const MCBB = () => {
             <p>It is currently the offseason.</p>
           </div>
           <div className={styles.news}>
-            <header className="newsHeader">MCBB News</header>
+            <h1 className={styles.upcoming}>MCBB News</h1>
             {MCBBnews.map((news) => {
               return (
                 <div className={styles.newInfo} key={news.headline}>

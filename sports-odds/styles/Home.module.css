@@ -4,10 +4,11 @@
   justify-content: space-between;
   padding: 10px;
   min-height: 100vh;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 /* Mobile */
-@media (max-width: 700px) {
+/* @media (max-width: 700px) {
   .content {
     padding: 4rem;
   }
@@ -81,16 +82,16 @@
     );
     z-index: 1;
   }
-}
+} */
 
 /* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
+/* @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
   }
-}
+} */
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   .vercelLogo {
     filter: invert(1);
   }
@@ -99,7 +100,7 @@
   .thirteen img {
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
   }
-}
+} */
 
 .whistle_container {
   position: relative;
@@ -119,7 +120,8 @@
 .text {
   font-size: 18px;
   font-weight: bold;
-  color: black;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 @keyframes blow {
@@ -139,3 +141,34 @@
     transform: rotate(0deg) scale(1);
   }
 }
+
+/* @media only screen and (max-width: 768px) {
+  .main {
+    padding: 5px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .main {
+    padding: 0px;
+  }
+
+  .whistle_container {
+    height: auto;
+    padding: 50px 10px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .text {
+    font-size: 12px;
+  }
+} */

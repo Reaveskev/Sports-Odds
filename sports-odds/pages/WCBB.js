@@ -33,7 +33,7 @@ const WCBB = () => {
           </div>
 
           <div className={styles.news}>
-            <header className="newsHeader">WCBB News</header>
+            <h1 className={styles.upcoming}>WCBB News</h1>
             {WCBBnews.map((news) => {
               return (
                 <div className={styles.newInfo} key={news.headline}>

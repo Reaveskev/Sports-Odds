@@ -12,6 +12,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
+import datetime
+import pytz
 # import bcrypt
 
 
@@ -23,12 +25,15 @@ cors = CORS(app, support_credentials=True)
 # Browser Driver
 
 
+
+
 # Local do these 
 # options = Options()
 # options.add_argument("--headless")
 # options.add_argument("--disable-dev-shm-usage")
 # options.add_argument("--no-sandbox")
 # driver = webdriver.Chrome(options=options)
+# driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -36,6 +41,7 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
 
 
 # MySql ####################
@@ -279,6 +285,56 @@ def seeBetsOutcome():
 def not_found(err):  
     return app.send_static_file('404.html')
 
+@app.route('/addTransaction', methods=['POST'])
+def addTransaction():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    try:
+        date = request.json.get('date')
+        transaction_type = request.json.get('transaction_type')
+        transaction_amount = request.json.get('transaction_amount')
+        money_in_account = request.json['money_in_account']
+        cursor = mysql.connection.cursor()
+        cursor.execute('INSERT INTO transactions (date, transaction_type, transaction_amount, money_in_account , user_id) VALUES (%s, %s, %s, %s, %s)',(date, transaction_type, transaction_amount, money_in_account , user_id))
+        mysql.connection.commit()
+        cursor.execute('select * from transactions where user_id = %s',(user_id,))
+        transactions = cursor.fetchall()
+        cursor.close()
+
+        print('Retrieved all transactions', 'success')
+        return jsonify(transactions)
+
+        
+    
+    except KeyError:
+        return jsonify({'error': 'Missing required parameter(s)'}), 400
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to update bet'}), 500
+    
+@app.route('/getTransaction', methods=['GET'])
+def getTransaction():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('select * from transactions where user_id = %s',(user_id,))
+        transactions = cursor.fetchall()
+        cursor.close()
+
+        print('Retrieved all transactions', 'success')
+        return jsonify(transactions)
+    
+    except KeyError:
+        return jsonify({'error': 'Missing required parameter(s)'}), 400
+    
+    except Exception as e:
+        print(e)
+        return jsonify({'error': 'Failed to retrieve transactions'}), 500
+
 
 
 @app.route('/Sport_News/<sport>')
@@ -326,7 +382,8 @@ def scrape_Odds(league):
 
 
     driver.get(url)
-    wait = WebDriverWait(driver, 1)
+    wait = WebDriverWait(driver, 5)
+    
 
   
     try:
@@ -594,6 +651,8 @@ def scrape_Odds(league):
             for start in upcoming_start:
                 upcoming_start_time.append(start.text)
                 upcoming_start_time.append(start.text)
+                
+        
 
 
         for div_tag in upcoming_away_div_tags:
@@ -661,6 +720,66 @@ def scrape_Odds(league):
     
     
     return jsonify(Upcoming,Inprogress,Final)
+
+
+@app.route('/Sport_Standings/<sport>')
+def scrape_Standing(sport):
+    sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
+    if sport not in sports:
+        return jsonify({'error': 'Input a valid sports league'}), 400
+        
+    if sport == "mlb":
+        url = "https://sports.yahoo.com/mlb/standings/?selectedTab=EXPANDED"
+    elif sport == "nfl":
+        url = "https://sports.yahoo.com/nfl/standings/?selectedTab=PLAYOFFS"
+    elif sport == "nhl":
+        url = "https://sports.yahoo.com/nhl/standings/?selectedTab=CONFERENCE"
+    else:
+        url = 'https://sports.yahoo.com/{}/standings/'.format(sport)
+
+    
+    page_to_scrape = requests.get(url)
+
+    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
+
+    standings_data = []
+    standings_div = soup.findAll('table', {"class":'W(100%) Mb(20px)'})
+    
+    for x in standings_div:
+        conference = x.find("th",{"class":"Py(6px) Px(4px) Ta(end) Ta(start)!"} ).text
+        tbody =  x.find("tbody")
+        rows = tbody.find_all('tr')
+        
+        standings = []
+        
+        for row in rows:
+            spans = row.findAll("span")
+            if spans[0].find("img")['src'] != 'https://s.yimg.com/g/images/spaceball.gif':
+                img = spans[0].find("img")["src"]
+            else:
+                img = spans[0].find("img")["style"]
+            img_url = img.split('background-image:url(')[-1].split(')')[0]
+            champ_odds = spans[-1].text
+            team_name = spans[1].text
+            td = row.findAll("td")
+            if sport == "nhl":
+                wins = td[1].text
+                losses = td[2].text
+            else:
+                wins = td[0].text
+                losses = td[1].text
+            team_info = {"logo": img_url,
+                         "team_name": team_name,
+                         "wins": wins,
+                         "losses": losses,
+                         "championship_odds": champ_odds }
+            standings.append(team_info)
+            
+        conference_data = {"conference": conference, "teams": standings}
+        standings_data.append(conference_data)
+            
+    return jsonify(standings_data)
+ 
 
 
 

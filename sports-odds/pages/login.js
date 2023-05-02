@@ -14,15 +14,24 @@ function Login() {
   const [l_name, setL_name] = useState("");
   const [error, setError] = useState("");
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-  const { user, setUser, setAllBets, setAllBetsOutcome } = useAppContext();
+  const {
+    user,
+    setUser,
+    setAllBets,
+    setAllBetsOutcome,
+    setAllTransactions,
+    allTransactions,
+  } = useAppContext();
   let url = "https://sports-odds.herokuapp.com/login_to_db";
   let url2 = "https://sports-odds.herokuapp.com/seeBets";
   let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
   let url4 = "https://sports-odds.herokuapp.com/create_user";
+  let url5 = "https://sports-odds.herokuapp.com/getTransaction";
   // let url = "http://127.0.0.1:5000/login_to_db";
   // let url2 = "http://127.0.0.1:5000/seeBets";
   // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
   // let url4 = "http://127.0.0.1:5000/create_user";
+  // let url5 = "http://127.0.0.1:5000/getTransaction";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,6 +55,7 @@ function Login() {
         const response1 = await axios.post(url, { username, password });
         const response2 = await axios.get(url2);
         const response3 = await axios.get(url3);
+        const response4 = await axios.get(url5);
 
         if (response1.status === 200) {
           setUser(response1.data);
@@ -54,7 +64,11 @@ function Login() {
           setAllBets(response2.data);
         }
         if (response3.status === 200) {
+          console.log(response3.data);
           setAllBetsOutcome(response3.data);
+        }
+        if (response4.status === 200) {
+          setAllTransactions(response4.data);
           router.push("/");
         }
       } catch (error) {
@@ -65,97 +79,99 @@ function Login() {
   };
 
   return (
-    <div className={styles.login_container}>
+    <>
       <Header />
-      <h1>{isCreatingAccount ? "Create Account" : "Login"}</h1>
-      <form onSubmit={handleSubmit}>
-        {error && <p className={styles.error}>{error}</p>}
-        <div className={styles.form_control}>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-              setError("");
-            }}
-            required
-          />
-        </div>
-        <div className={styles.form_control}>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError("");
-            }}
-            required
-          />
-        </div>
-        {isCreatingAccount && (
-          <>
-            <div className={styles.form_control}>
-              <label htmlFor="first-name">First Name</label>
-              <input
-                type="text"
-                id="first-name"
-                placeholder="First Name"
-                value={f_name}
-                onChange={(e) => {
-                  setF_name(e.target.value);
-                  setError("");
-                }}
-                required
-              />
-            </div>
-            <div className={styles.form_control}>
-              <label htmlFor="last-name">Last Name</label>
-              <input
-                type="text"
-                id="last-name"
-                placeholder="Last Name"
-                value={l_name}
-                onChange={(e) => {
-                  setL_name(e.target.value);
-                  setError("");
-                }}
-                required
-              />
-            </div>
-          </>
-        )}
-        <button type="submit">
-          {isCreatingAccount ? "Create Account" : "Login"}
-        </button>
-        <div style={{ paddingTop: 30 }}>
-          <p>
-            {isCreatingAccount
-              ? "Already have an account?"
-              : "Don't have an account?"}{" "}
-            <button
-              type="button"
-              onClick={() => setIsCreatingAccount(!isCreatingAccount)}
-              style={{
-                background: "none",
-                border: "none",
-                margin: 0,
-                padding: 0,
-                fontWeight: "normal",
-                cursor: "pointer",
+      <div className={styles.login_container}>
+        <h1>{isCreatingAccount ? "Create Account" : "Login"}</h1>
+        <form onSubmit={handleSubmit}>
+          {error && <p className={styles.error}>{error}</p>}
+          <div className={styles.form_control}>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setError("");
               }}
-            >
-              {isCreatingAccount ? "Login" : "Create Account"}
-            </button>
-          </p>
-        </div>
-      </form>
-    </div>
+              required
+            />
+          </div>
+          <div className={styles.form_control}>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError("");
+              }}
+              required
+            />
+          </div>
+          {isCreatingAccount && (
+            <>
+              <div className={styles.form_control}>
+                <label htmlFor="first-name">First Name</label>
+                <input
+                  type="text"
+                  id="first-name"
+                  placeholder="First Name"
+                  value={f_name}
+                  onChange={(e) => {
+                    setF_name(e.target.value);
+                    setError("");
+                  }}
+                  required
+                />
+              </div>
+              <div className={styles.form_control}>
+                <label htmlFor="last-name">Last Name</label>
+                <input
+                  type="text"
+                  id="last-name"
+                  placeholder="Last Name"
+                  value={l_name}
+                  onChange={(e) => {
+                    setL_name(e.target.value);
+                    setError("");
+                  }}
+                  required
+                />
+              </div>
+            </>
+          )}
+          <button type="submit">
+            {isCreatingAccount ? "Create Account" : "Login"}
+          </button>
+          <div style={{ paddingTop: 30 }}>
+            <p>
+              {isCreatingAccount
+                ? "Already have an account?"
+                : "Don't have an account?"}{" "}
+              <button
+                className={styles.create}
+                onClick={() => setIsCreatingAccount(!isCreatingAccount)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  margin: 0,
+                  padding: 0,
+                  fontWeight: "lighter",
+                  cursor: "pointer",
+                }}
+              >
+                {isCreatingAccount ? "Login" : "Create Account"}
+              </button>
+            </p>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }
 

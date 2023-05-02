@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .profile_header {
@@ -11,6 +13,13 @@
   flex-direction: column;
   padding: 20px;
   padding-top: 100px;
+}
+
+.profile_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
 }
 
 .profile_body {
@@ -39,7 +48,8 @@
 
 .profile_body button[type="submit"] {
   padding: 10px;
-  background-color: #333;
+  background-color: rgb(34, 34, 35);
+  box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -48,14 +58,22 @@
 
 .bet_table {
   border-collapse: collapse;
-  width: 100%;
   max-width: 800px;
-  margin: 0 auto;
   font-size: 16px;
   text-align: center;
   line-height: 1.5;
-  margin-top: 10px;
-  margin-bottom: 30px;
+  margin: 30px;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.transaction_table {
+  border-collapse: collapse;
+  max-width: 800px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+  margin: 30px;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .bet_table_header {
@@ -63,6 +81,7 @@
   text-align: center;
   border: 1px solid #ddd;
   background-color: #f5f5f5;
+  color: black;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -74,20 +93,81 @@
   border: 1px solid #ddd;
 }
 
-.bet_table_row:nth_child(even) {
-  background-color: #f9f9f9;
-}
-
 .bet_table_row:hover {
-  background-color: #f5f5f5;
+  background-color: #2a2a2a;
 }
 
 .findGame {
   padding: 10px;
   margin-top: 15px;
-  background-color: #333;
+  background-color: rgb(34, 34, 35);
+  box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.table_div {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-family: Source Sans Pro, sans-serif;
+  overflow-x: scroll;
+  /* overflow: hidden; */
+  white-space: nowrap;
+}
+
+@media (max-width: 769px) {
+  .profile_title {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile_title h1 {
+    margin-bottom: 10px;
+  }
+
+  .profile_title button {
+    margin-top: 10px;
+  }
+
+  .bet_table {
+    margin: 10px;
+    font-size: 12px;
+  }
+
+  .bet_table_header,
+  .bet_table_cell {
+    padding: 8px;
+  }
+
+  .table_div {
+    width: 100%;
+    margin: 5px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table_div {
+    margin: 0px;
+    font-size: 12px;
+  }
+
+  .bet_table {
+    margin: 5px;
+    font-size: 8px;
+  }
 }

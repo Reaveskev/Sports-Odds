@@ -7,6 +7,7 @@ export function AppWrapper({ children }) {
   const [betInfo, setBetInfo] = useState();
   const [allBets, setAllBets] = useState();
   const [allBetsOutcome, setAllBetsOutcome] = useState();
+  const [allTransactions, setAllTransactions] = useState();
 
   let sharedState = {
     user,
@@ -17,6 +18,8 @@ export function AppWrapper({ children }) {
     setAllBets,
     allBetsOutcome,
     setAllBetsOutcome,
+    allTransactions,
+    setAllTransactions,
   };
 
   return (

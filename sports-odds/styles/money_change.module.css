@@ -1,0 +1,111 @@
+.betting_account {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-family: Source Sans Pro, sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.betting_account h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.betting_account p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.betting_account label {
+  margin-right: 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.betting_account input {
+  margin-right: 10px;
+  padding: 5px;
+  font-size: 18px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.betting_account button {
+  padding: 5px 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.betting_account button:hover {
+  background-color: #3e8e41;
+}
+
+/* @media screen and (max-width: 768px) {
+  .betting_account {
+    font-size: 16px;
+  }
+
+  .betting_account h1 {
+    font-size: 20px;
+  }
+
+  .betting_account p {
+    font-size: 16px;
+  }
+
+  .betting_account label {
+    font-size: 16px;
+  }
+
+  .betting_account input {
+    font-size: 16px;
+  }
+
+  .betting_account button {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .betting_account {
+    font-size: 14px;
+  }
+
+  .betting_account h1 {
+    font-size: 18px;
+  }
+
+  .betting_account p {
+    font-size: 14px;
+  }
+
+  .betting_account label {
+    font-size: 14px;
+  }
+
+  .betting_account input {
+    font-size: 14px;
+  }
+
+  .betting_account button {
+    font-size: 14px;
+    padding: 3px 6px;
+  }
+} */
