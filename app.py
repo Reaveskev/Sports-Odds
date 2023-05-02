@@ -40,8 +40,15 @@ chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
+
+
+la_tz = pytz.timezone('America/Los_Angeles')
+chrome_options.add_argument("--user-data-dir=/tmp/foo")
+chrome_options.add_argument(f'--lang=en-US')
+chrome_options.add_argument(f'--timezone="{datetime.now(la_tz).strftime("%z")}"')
+
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
+# driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
 
 
 # MySql ####################
