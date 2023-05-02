@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 # import bcrypt
 
@@ -35,17 +35,26 @@ cors = CORS(app, support_credentials=True)
 # driver = webdriver.Chrome(options=options)
 # driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
 
+
+kla_tz = pytz.timezone('America/Los_Angeles')
+current_time = datetime.now(kla_tz) - timedelta(hours=7)
+
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 
+chrome_options.add_argument("--user-data-dir=/tmp/foo")
 
-# kla_tz = pytz.timezone('US/Pacific')
-# chrome_options.add_argument("--user-data-dir=/tmp/foo")
-# chrome_options.add_argument(f'--lang=en-US')
-chrome_options.add_argument('--timezone=America/Los_Angeles')
+# Set the language to English (United States)
+chrome_options.add_argument(f'--lang=en-US')
+
+# Set the timezone to the current time in the America/Los_Angeles timezone minus 7 hours
+chrome_options.add_argument(f'--timezone="{current_time.strftime("%z")}"')
+
+
+
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 
