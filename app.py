@@ -42,10 +42,14 @@ chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 
 
-la_tz = pytz.timezone('America/Los_Angeles')
+kla_tz = pytz.timezone('America/Los_Angeles')
 chrome_options.add_argument("--user-data-dir=/tmp/foo")
+
+# Set the language to English (United States)
 chrome_options.add_argument(f'--lang=en-US')
-chrome_options.add_argument(f'--timezone="{datetime.now(la_tz).strftime("%z")}"')
+
+# Set the timezone to the current time in the America/Los_Angeles timezone
+chrome_options.add_argument(f'--timezone="{datetime.now(kla_tz).strftime("%z")}"')
 
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 # driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
