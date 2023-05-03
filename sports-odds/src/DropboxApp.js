@@ -21,8 +21,6 @@ const DropboxApp = () => {
     }
     setUploading(true);
 
-    console.log(accessToken);
-
     const headers = {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "application/octet-stream",
