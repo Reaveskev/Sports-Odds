@@ -19,7 +19,7 @@
 </p>
 
 ## Summary
-The website provides up-to-date sports news, game odds, current standingds, and a platform for users to create accounts and bet on games using fake money. It sources this information from multiple APIs and also scrapes pages to ensure users have access to the latest information. Users can create an account to participate in the platform's betting features and enjoy a risk-free betting experience. Users will have access to the latest news, odds and potential payouts without having an account.
+The website provides up-to-date sports news, game odds, current standings, and a platform for users to create accounts and bet on games using fake money. It sources this information from multiple APIs and also scrapes pages to ensure users have access to the latest information. Users can create an account to participate in the platform's betting features and enjoy a risk-free betting experience. Users will have access to the latest news, odds and potential payouts without having an account.
 
 
 
