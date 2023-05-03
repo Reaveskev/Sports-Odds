@@ -64,7 +64,6 @@ app.config['DROPBOX_ACCESS_TOKEN'] = os.environ.get('DROPBOX_ACCESS_TOKEN')
 # app.config['MYSQL_DB'] = "sports_odds"
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # app.config['SECRET_KEY'] = 'mysecretkey'
-# app.config['DROPBOX_ACCESS_TOKEN'] = ""
 
 
 mysql = MySQL(app)
