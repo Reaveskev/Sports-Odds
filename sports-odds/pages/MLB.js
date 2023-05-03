@@ -70,9 +70,11 @@ function MLB() {
             axios.get(
               "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news"
             ),
-            axios.get("https://sports-odds.herokuapp.com/Odds/mlb"),
-            axios.get("https://sports-odds.herokuapp.com/Sport_News/mlb"),
-            axios.get("https://sports-odds.herokuapp.com/Sport_Standings/mlb"),
+            axios.get("https://sports-odds.herokuapp.com/api/Odds/mlb"),
+            axios.get("https://sports-odds.herokuapp.com/api/Sport_News/mlb"),
+            axios.get(
+              "https://sports-odds.herokuapp.com/api/Sport_Standings/mlb"
+            ),
           ]);
 
         if (response1.data.game_groups[0] === undefined) {

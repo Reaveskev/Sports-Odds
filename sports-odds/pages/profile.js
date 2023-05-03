@@ -103,8 +103,9 @@ function Profile() {
           }
 
           if (post.payout === true) {
-            let update_url = "https://sports-odds.herokuapp.com/update_money";
-            // let update_url = "http://127.0.0.1:5000/update_money";
+            let update_url =
+              "https://sports-odds.herokuapp.com/api/update_money";
+            // let update_url = "http://127.0.0.1:5000/api/update_money";
             let fake_money = user.fake_money + info.payout;
             axios
               .post(update_url, {
@@ -118,10 +119,10 @@ function Profile() {
                 const year = today.getFullYear();
 
                 const date = `${month}/${day}/${year}`;
-                // let new_transaction = "http://127.0.0.1:5000/addTransaction";
+                // let new_transaction = "http://127.0.0.1:5000/api/addTransaction";
 
                 let new_transaction =
-                  "https://sports-odds.herokuapp.com/addTransaction";
+                  "https://sports-odds.herokuapp.com/api/addTransaction";
                 axios
                   .post(new_transaction, {
                     date: date,
@@ -138,14 +139,14 @@ function Profile() {
                   });
               });
           }
-          let urladd = "https://sports-odds.herokuapp.com/addBetOutcome";
+          let urladd = "https://sports-odds.herokuapp.com/api/addBetOutcome";
 
-          // let urladd = "http://127.0.0.1:5000/addBetOutcome";
+          // let urladd = "http://127.0.0.1:5000/api/addBetOutcome";
 
           axios.post(urladd, post).then((res) => {
             if (res.status === 200) {
-              let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
-              // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+              let url3 = "https://sports-odds.herokuapp.com/api/seeBetsOutcome";
+              // let url3 = "http://127.0.0.1:5000/api/seeBetsOutcome";
               axios.get(url3).then((res) => {
                 if (res.status === 200) {
                   setAllBetsOutcome(res.data);
@@ -194,18 +195,18 @@ function Profile() {
   };
 
   useEffect(() => {
-    let url2 = "https://sports-odds.herokuapp.com/seeBets";
-    // let url2 = "http://127.0.0.1:5000/seeBets";
+    let url2 = "https://sports-odds.herokuapp.com/api/seeBets";
+    // let url2 = "http://127.0.0.1:5000/api/seeBets";
     axios.get(url2).then((res) => {
       if (res.status === 200) {
         setAllBets(res.data);
-        let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
-        // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
+        let url3 = "https://sports-odds.herokuapp.com/api/seeBetsOutcome";
+        // let url3 = "http://127.0.0.1:5000/api/seeBetsOutcome";
         axios.get(url3).then((res) => {
           if (res.status === 200) {
             setAllBetsOutcome(res.data);
-            let url4 = "https://sports-odds.herokuapp.com/getTransaction";
-            // let url4 = "http://127.0.0.1:5000/getTransaction";
+            let url4 = "https://sports-odds.herokuapp.com/api/getTransaction";
+            // let url4 = "http://127.0.0.1:5000/api/getTransaction";
             axios.get(url4).then((res) => {
               if (res.status === 200) {
                 setAllTransactions(res.data);
@@ -221,8 +222,8 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let url = "https://sports-odds.herokuapp.com/update_info";
-    // let url = "http://127.0.0.1:5000/update_info";
+    let url = "https://sports-odds.herokuapp.com/api/update_info";
+    // let url = "http://127.0.0.1:5000/api/update_info";
 
     try {
       if (username === "") {

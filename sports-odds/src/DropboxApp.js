@@ -5,98 +5,81 @@ import { useAppContext } from "./GlobalContext";
 
 const DropboxApp = () => {
   const { setUser } = useAppContext();
-  const accessToken = process.env.REACT_APP_DROPBOX_ACCESS_TOKEN;
-  console.log("variable", accessToken);
-  console.log("whole line", process.env.REACT_APP_DROPBOX_ACCESS_TOKEN);
   const [uploading, setUploading] = useState(false);
+  ////
   const [file, setFile] = useState(null);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
-  };
-
-  const handleUpload = () => {
-    if (!file) {
-      return;
-    }
+  async function handleUpload(event) {
+    event.preventDefault();
     setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    // let dropBox = "http://127.0.0.1:5000/api/dropbox/upload";
+    let dropBox = "https://sports-odds.herokuapp.com/api/dropbox/upload";
+    const response = await axios.post(dropBox, formData);
 
-    const headers = {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/octet-stream",
-      "Dropbox-API-Arg": `{"path": "/${file.name}", "mode": "add", "autorename": true, "mute": false}`,
-    };
+    // const data = await response.json();
+    const data = response.data;
 
-    console.log(file);
+    let oldimage = data.url;
+
+    const image = oldimage.replace("dl=0", "raw=1");
+    let update_url = "https://sports-odds.herokuapp.com/api/update_image";
+    // let update_url = "http://127.0.0.1:5000/update_image";
 
     axios
-      .post("https://content.dropboxapi.com/2/files/upload", file, { headers })
-      .then((response) => {
-        console.log(response);
-        axios
-          .post(
-            "https://api.dropboxapi.com/2/sharing/create_shared_link",
-            { path: response.data.path_display },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((sharedLinkResponse) => {
-            if (sharedLinkResponse.data.url) {
-              let oldimage = sharedLinkResponse.data.url;
-              const image = oldimage.replace("dl=0", "raw=1");
-              let update_url = "https://sports-odds.herokuapp.com/update_image";
-              // let update_url = "http://127.0.0.1:5000/update_image";
-
-              axios
-                .post(update_url, {
-                  image,
-                })
-                .then((res) => {
-                  if (res.status === 200) setUser(res.data);
-                  setUploading(false);
-                });
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-            setUploading(false);
-          });
+      .post(update_url, {
+        image,
       })
-      .catch((error) => {
-        console.error(error);
+      .then((res) => {
+        if (res.status === 200) setUser(res.data);
         setUploading(false);
       });
-  };
+  }
+
+  function handleFileChange(event) {
+    setFile(event.target.files[0]);
+  }
 
   return (
     <div className={styles.container}>
-      <input
-        type="file"
-        name="file"
-        id="file"
-        className={styles.fileInput}
-        onChange={handleFileChange}
-        disabled={uploading}
-      />
-      <label htmlFor="file" className={styles.uploadLabel}>
-        Choose a file
-      </label>
-      {file && (
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <p className={styles.fileUrl}>Upload {file.name}?</p>{" "}
-        </div>
-      )}
-      <button
-        className={styles.uploadButton}
-        onClick={handleUpload}
-        disabled={!file || uploading}
+      <form
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+        onSubmit={handleUpload}
       >
-        {uploading ? "Uploading..." : "Upload"}
-      </button>
+        <input
+          type="file"
+          name="file"
+          id="file"
+          className={styles.fileInput}
+          onChange={handleFileChange}
+          disabled={uploading}
+        />
+        <label htmlFor="file" className={styles.uploadLabel}>
+          Choose a file
+        </label>
+        {file && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <p className={styles.fileUrl}>Upload {file.name}?</p>{" "}
+          </div>
+        )}
+        <button
+          className={styles.uploadButton}
+          onClick={handleUpload}
+          disabled={!file || uploading}
+        >
+          {uploading ? "Uploading..." : "Upload"}
+        </button>
+      </form>
     </div>
   );
 };

@@ -22,16 +22,16 @@ function Login() {
     setAllTransactions,
     allTransactions,
   } = useAppContext();
-  let url = "https://sports-odds.herokuapp.com/login_to_db";
-  let url2 = "https://sports-odds.herokuapp.com/seeBets";
-  let url3 = "https://sports-odds.herokuapp.com/seeBetsOutcome";
-  let url4 = "https://sports-odds.herokuapp.com/create_user";
-  let url5 = "https://sports-odds.herokuapp.com/getTransaction";
-  // let url = "http://127.0.0.1:5000/login_to_db";
-  // let url2 = "http://127.0.0.1:5000/seeBets";
-  // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
-  // let url4 = "http://127.0.0.1:5000/create_user";
-  // let url5 = "http://127.0.0.1:5000/getTransaction";
+  let url = "https://sports-odds.herokuapp.com/api/login_to_db";
+  let url2 = "https://sports-odds.herokuapp.com/api/seeBets";
+  let url3 = "https://sports-odds.herokuapp.com/api/seeBetsOutcome";
+  let url4 = "https://sports-odds.herokuapp.com/api/create_user";
+  let url5 = "https://sports-odds.herokuapp.com/api/getTransaction";
+  // let url = "http://127.0.0.1:5000/api/login_to_db";
+  // let url2 = "http://127.0.0.1:5000/api/seeBets";
+  // let url3 = "http://127.0.0.1:5000/api/seeBetsOutcome";
+  // let url4 = "http://127.0.0.1:5000/api/create_user";
+  // let url5 = "http://127.0.0.1:5000/api/getTransaction";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

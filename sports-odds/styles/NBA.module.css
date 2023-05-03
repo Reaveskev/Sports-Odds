@@ -267,11 +267,11 @@
 
 /* Small screens (phones, 480px and below) */
 @media only screen and (max-width: 480px) {
-  .games {
+  /* .games {
     width: 100%;
     margin: 0;
     border: none;
-  }
+  } */
 
   .teamContainer {
     margin-right: 0;
@@ -335,10 +335,10 @@
 
 /* Medium screens (tablets, 768px and below) */
 @media only screen and (max-width: 769px) {
-  .games {
+  /* .games {
     width: calc(50% - 6px);
     margin: 3px;
-  }
+  } */
 
   .newInfo {
     width: 90%;
@@ -389,10 +389,10 @@
 }
 
 @media only screen and (max-width: 1490px) {
-  .games {
+  /* .games {
     width: calc(50% - 6px);
     margin: 3px;
-  }
+  } */
 
   .Pic {
     width: 90%;

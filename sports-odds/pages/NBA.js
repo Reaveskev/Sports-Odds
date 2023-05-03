@@ -69,12 +69,14 @@ function NBA() {
             axios.get(
               "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
             ),
-            axios.get("https://sports-odds.herokuapp.com/Odds/nba"),
-            axios.get("https://sports-odds.herokuapp.com/Sport_News/nba"),
-            axios.get("https://sports-odds.herokuapp.com/Sport_Standings/nba"),
-            // axios.get("http://127.0.0.1:5000/Odds/nba"),
-            // axios.get("http://127.0.0.1:5000/Sport_News/nba"),
-            // axios.get("http://127.0.0.1:5000/Sport_Standings/nba"),
+            axios.get("https://sports-odds.herokuapp.com/api/Odds/nba"),
+            axios.get("https://sports-odds.herokuapp.com/api/Sport_News/nba"),
+            axios.get(
+              "https://sports-odds.herokuapp.com/api/Sport_Standings/nba"
+            ),
+            // axios.get("http://127.0.0.1:5000/api/Odds/nba"),
+            // axios.get("http://127.0.0.1:5000/api/Sport_News/nba"),
+            // axios.get("http://127.0.0.1:5000/api/Sport_Standings/nba"),
           ]);
 
         if (response1.data.game_groups[0] === undefined) {

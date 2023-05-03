@@ -12,8 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
-from datetime import datetime, timedelta
-import pytz
+import dropbox
 # import bcrypt
 
 
@@ -56,6 +55,7 @@ app.config['MYSQL_HOST'] = os.environ.get('DB_HOST')
 app.config['MYSQL_DB'] = os.environ.get('DB')
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['DROPBOX_ACCESS_TOKEN'] = os.environ.get('DROPBOX_ACCESS_TOKEN')
 
 
 # app.config['MYSQL_USER'] = "root"
@@ -64,6 +64,7 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # app.config['MYSQL_DB'] = "sports_odds"
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # app.config['SECRET_KEY'] = 'mysecretkey'
+# app.config['DROPBOX_ACCESS_TOKEN'] = ""
 
 
 mysql = MySQL(app)
@@ -78,7 +79,7 @@ def catch_all(path):
         return send_from_directory(app.static_folder, 'index.html')
 
 
-@app.route('/create_user', methods=['GET', 'POST'])
+@app.route('/api/create_user', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'POST':
         try:
@@ -104,7 +105,7 @@ def create_user():
 
 
 ####################
-@app.route('/login_to_db', methods=['GET', 'POST'])
+@app.route('/api/login_to_db', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         try:
@@ -128,13 +129,13 @@ def login():
     else:
         return print("Please login")
 
-@app.route('/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST'])
 def logout():
     session.pop('user_id', None)
     print('Logged out successfully.', 'success')
     return jsonify({'success': 'Logged out successfully.'}), 200 
 
-@app.route('/update_info', methods=['GET', 'POST'])
+@app.route('/api/update_info', methods=['GET', 'POST'])
 def update_info():
     user_id = session.get('user_id')
     if not user_id:
@@ -165,7 +166,7 @@ def update_info():
     return jsonify(updated_user)
 
 
-@app.route('/update_money', methods=['GET', 'POST'])
+@app.route('/api/update_money', methods=['GET', 'POST'])
 def update_money():
     user_id = session.get('user_id')
     if not user_id:
@@ -191,7 +192,7 @@ def update_money():
     return jsonify(updated_user)
 
 
-@app.route('/update_image', methods=['GET', 'POST'])
+@app.route('/api/update_image', methods=['GET', 'POST'])
 def update_image():
     user_id = session.get('user_id')
     if not user_id:
@@ -216,7 +217,7 @@ def update_image():
 
     return jsonify(updated_user)
 
-@app.route('/addBet', methods=['POST'])
+@app.route('/api/addBet', methods=['POST'])
 def addBet():
     user_id = session.get('user_id')
     if not user_id:
@@ -247,7 +248,7 @@ def addBet():
         return jsonify({'error': 'Failed to add bet'}), 500
    
 
-@app.route('/seeBets', methods=['GET'])
+@app.route('/api/seeBets', methods=['GET'])
 def seeBets():
     user_id = session.get('user_id')
     if not user_id:
@@ -266,7 +267,7 @@ def seeBets():
         return jsonify({'error': 'Failed to get bets'}), 500
     
 
-@app.route('/addBetOutcome', methods=['POST'])
+@app.route('/api/addBetOutcome', methods=['POST'])
 def addBetOutcome():
     user_id = session.get('user_id')
     if not user_id:
@@ -292,7 +293,7 @@ def addBetOutcome():
         return jsonify({'error': 'Failed to update bet'}), 500
    
 
-@app.route('/seeBetsOutcome', methods=['GET'])
+@app.route('/api/seeBetsOutcome', methods=['GET'])
 def seeBetsOutcome():
     user_id = session.get('user_id')
     if not user_id:
@@ -315,7 +316,7 @@ def seeBetsOutcome():
 def not_found(err):  
     return app.send_static_file('404.html')
 
-@app.route('/addTransaction', methods=['POST'])
+@app.route('/api/addTransaction', methods=['POST'])
 def addTransaction():
     user_id = session.get('user_id')
     if not user_id:
@@ -344,7 +345,7 @@ def addTransaction():
         print(e)
         return jsonify({'error': 'Failed to update bet'}), 500
     
-@app.route('/getTransaction', methods=['GET'])
+@app.route('/api/getTransaction', methods=['GET'])
 def getTransaction():
     user_id = session.get('user_id')
     if not user_id:
@@ -367,7 +368,7 @@ def getTransaction():
 
 
 
-@app.route('/Sport_News/<sport>')
+@app.route('/api/Sport_News/<sport>')
 def scrape_News(sport):
     sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
     if sport not in sports:
@@ -402,7 +403,26 @@ def scrape_News(sport):
     return jsonify(news_list)
 
 
-@app.route('/Odds/<league>')
+
+@app.route('/api/dropbox/upload', methods=['POST'])
+def dropbox_upload():
+    try:
+        dbx = dropbox.Dropbox(app.config['DROPBOX_ACCESS_TOKEN'])
+        file = request.files['file']
+        filename = file.filename
+        file_bytes = file.read()
+        response = dbx.files_upload(file_bytes, f"/{filename}", mode=dropbox.files.WriteMode.overwrite)
+        shared_link = dbx.sharing_create_shared_link_with_settings(response.path_display)
+        return jsonify({'url': shared_link.url})
+    
+    except dropbox.exceptions.AuthError:
+        return jsonify({'error': 'Invalid Dropbox access token'})
+    
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+
+@app.route('/api/Odds/<league>')
 def scrape_Odds(league):
     sport = ["mlb", "nhl", "college-basketball", "nba", "nfl", "college-football", "wnba"]
     if league not in sport:
@@ -752,7 +772,7 @@ def scrape_Odds(league):
     return jsonify(Upcoming,Inprogress,Final)
 
 
-@app.route('/Sport_Standings/<sport>')
+@app.route('/api/Sport_Standings/<sport>')
 def scrape_Standing(sport):
     sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
     if sport not in sports:

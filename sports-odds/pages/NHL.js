@@ -71,13 +71,13 @@ function NHL() {
           "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news"
         );
         const response3 = await axios.get(
-          "https://sports-odds.herokuapp.com/Odds/nhl"
+          "https://sports-odds.herokuapp.com/api/Odds/nhl"
         );
         const response4 = await axios.get(
-          "https://sports-odds.herokuapp.com/Sport_News/nhl"
+          "https://sports-odds.herokuapp.com/api/Sport_News/nhl"
         );
         const response5 = await axios.get(
-          "https://sports-odds.herokuapp.com/Sport_Standings/nhl"
+          "https://sports-odds.herokuapp.com/api/Sport_Standings/nhl"
         );
         if (response1.data.game_groups[0] === undefined) {
           setoffseason(true);
