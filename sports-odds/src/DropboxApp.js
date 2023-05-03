@@ -5,9 +5,9 @@ import { useAppContext } from "./GlobalContext";
 
 const DropboxApp = () => {
   const { setUser } = useAppContext();
-  const accessToken = process.env.DROPBOX_ACCESS_TOKEN;
+  const accessToken = process.env.REACT_APP_DROPBOX_ACCESS_TOKEN;
   console.log("variable", accessToken);
-  console.log("whole line", process.env.DROPBOX_ACCESS_TOKEN);
+  console.log("whole line", process.env.REACT_APP_DROPBOX_ACCESS_TOKEN);
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState(null);
 
