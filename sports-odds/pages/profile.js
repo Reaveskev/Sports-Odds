@@ -5,6 +5,7 @@ import Header from "@/src/Header";
 import { useAppContext } from "@/src/GlobalContext";
 import * as AiIcon from "react-icons/Ai";
 import Money_Change from "@/src/Money_change";
+import DropboxApp from "@/src/DropboxApp";
 
 function Profile() {
   const [firstName, setFirstName] = useState();
@@ -14,6 +15,7 @@ function Profile() {
   const [info, setInfo] = useState();
   const [update, setUpdate] = useState(false);
   const [money, setMoney] = useState(false);
+
   const [findFinal, setFindFinal] = useState(false);
 
   const {
@@ -146,7 +148,6 @@ function Profile() {
               // let url3 = "http://127.0.0.1:5000/seeBetsOutcome";
               axios.get(url3).then((res) => {
                 if (res.status === 200) {
-                  console.log(res.data);
                   setAllBetsOutcome(res.data);
                 }
               });
@@ -274,6 +275,17 @@ function Profile() {
                   Edit?
                 </h5>
               </div>
+              {user.image === null ? (
+                <img
+                  height={225}
+                  width={225}
+                  alt="default"
+                  src={"/out/default.png"}
+                />
+              ) : (
+                <img height={225} width={225} alt="avatar" src={user.image} />
+              )}
+
               <h2>{user.username}</h2>
               <h3>
                 {user.f_name} {user.l_name}
@@ -289,6 +301,7 @@ function Profile() {
             </>
           ) : null}
         </div>
+
         {update ? (
           <>
             <div className={styles.profile_body}>
@@ -325,8 +338,10 @@ function Profile() {
                 <button type="submit">Save Changes</button>
               </form>
             </div>
+            <DropboxApp />
           </>
         ) : null}
+
         {findFinal ? (
           <div>
             <button

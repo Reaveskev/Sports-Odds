@@ -64,7 +64,6 @@ function Login() {
           setAllBets(response2.data);
         }
         if (response3.status === 200) {
-          console.log(response3.data);
           setAllBetsOutcome(response3.data);
         }
         if (response4.status === 200) {

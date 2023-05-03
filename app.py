@@ -190,6 +190,32 @@ def update_money():
 
     return jsonify(updated_user)
 
+
+@app.route('/update_image', methods=['GET', 'POST'])
+def update_image():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error":"Need user id"}), 401
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
+    user = cur.fetchone()
+    cur.close()
+    if not user:
+        return jsonify({"error":"User does not exist"}), 401
+    if request.method == 'POST':
+
+        image = request.json['image']
+        cur = mysql.connection.cursor()
+        cur.execute('UPDATE user SET image = %s WHERE user_id = %s', (image,  user_id))
+        mysql.connection.commit()
+        cur.execute('SELECT * FROM user WHERE user_id = %s', (user_id,))
+        updated_user = cur.fetchone()
+        cur.close()
+        print('Profile image updated successfully.', 'success')
+            
+
+    return jsonify(updated_user)
+
 @app.route('/addBet', methods=['POST'])
 def addBet():
     user_id = session.get('user_id')
