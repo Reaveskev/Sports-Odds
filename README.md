@@ -41,6 +41,7 @@ The website provides up-to-date sports news, game odds, current standingds, and 
 ![flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 ![selenium](https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white)
+![dropbox](https://img.shields.io/badge/Dropbox-%233B4D98.svg?style=for-the-badge&logo=Dropbox&logoColor=white)
 ![github](https://img.shields.io/badge/Github_Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white)
 ![npm](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 ![pip](https://img.shields.io/badge/Pip-ffaa00?style=for-the-badge&logo=pip&logoColor=white)
