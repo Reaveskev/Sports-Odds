@@ -19,7 +19,7 @@ const DropboxApp = () => {
     }
     setUploading(true);
 
-    const accessToken = process.env.accessToken;
+    const accessToken = process.env.DROPBOX_ACCESS_TOKEN;
     console.log(accessToken);
 
     const headers = {
