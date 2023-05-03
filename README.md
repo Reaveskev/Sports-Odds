@@ -28,7 +28,7 @@ The website provides up-to-date sports news, game odds, current standingds, and 
 * See Live Scores
 * Sports News
   - See latest news for the NFL, NBA, WNBA, MLB, NHL, and some more.
- * Current Standings
+* Current Standings
   - See the current standings for sports in season.
 * See Sport odds
   - Place bets with fake money on money line, spread and total points.
