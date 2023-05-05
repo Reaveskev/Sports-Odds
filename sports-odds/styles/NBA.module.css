@@ -306,14 +306,15 @@
 
 /* Small screens (phones, 480px and below) */
 @media only screen and (max-width: 480px) {
-  /* .games {
+  .games {
     width: 100%;
-    margin: 0;
-    border: none;
-  } */
-
+    /* height: auto; */
+    /* margin: 3px 0; */
+    /* border: none;  */
+  }
+  /* 
   .teamContainer {
-    margin-right: 0;
+    margin-right: 10px;
   }
 
   .logo {
@@ -333,7 +334,7 @@
 
   .record {
     padding-right: 5px;
-  }
+  } */
 
   .newInfo {
     width: 100%;

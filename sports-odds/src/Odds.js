@@ -61,7 +61,7 @@ const Odds = ({
                           ></p>
                           <p
                             style={{
-                              minWidth: "auto",
+                              minWidth: 90,
                               fontSize: 10,
                               paddingRight: 15,
                               paddingLeft: 10,
