@@ -8,12 +8,13 @@ const Odds = ({
   inprogressSportsOdds,
   finalSportsOdds,
   upcomingSportsOdds,
+  featuredSportsOdds,
   abbrev,
   sport,
   league,
 }) => {
   const [openBet, setOpenBet] = useState(false);
-  const { setBetInfo, betInfo } = useAppContext();
+  const { setBetInfo } = useAppContext();
 
   const findAbbrv = (abbrev, away_team, home_team) => {
     let away_abbrv = "";
@@ -34,10 +35,118 @@ const Odds = ({
   };
 
   return (
-    <div className={styles.odds_container}>
+    <div
+      className={styles.odds_container}
+      style={{
+        width: featuredSportsOdds ? "auto" : "25%",
+        paddingRight: featuredSportsOdds ? 0 : "5%",
+      }}
+    >
       <div className={styles.odds_div}>
         <div className={styles.odds}>
-          {inprogressSportsOdds.length > 0 ? (
+          {featuredSportsOdds ? (
+            <>
+              <h1 className={styles.upcoming}>Featured Game Odds</h1>
+              <div className={styles.featured_odds}>
+                {featuredSportsOdds.map((game) => {
+                  return (
+                    <>
+                      <div className={styles.featured_info}>
+                        <span>{game.home.title}</span>
+                        <div className={styles.team_header}>
+                          <p
+                            style={{
+                              minWidth: 35,
+                            }}
+                          ></p>
+                          <p
+                            style={{
+                              minWidth: "auto",
+                              fontSize: 10,
+                              paddingRight: 15,
+                              paddingLeft: 10,
+                            }}
+                          >
+                            {game.away.time_left}
+                          </p>
+                          <p style={{ minWidth: 45 }}>Money</p>
+                          <p style={{ minWidth: 75 }}>Spread</p>
+                          <p style={{ minWidth: 90 }}>Total</p>
+                        </div>
+                        <div className={styles.team_format}>
+                          <div className={styles.name_logo}>
+                            <img
+                              alt=""
+                              className={styles.odds_logo}
+                              src={game.away.logo}
+                            />
+                            <h4>{game.away.team}</h4>
+                            <div className={styles.name_record}>
+                              <span
+                                style={{
+                                  paddingLeft: 5,
+                                }}
+                              >
+                                {game.away.score}
+                              </span>
+                            </div>
+                          </div>
+                          <p style={{ minWidth: 45 }}>{game.away.moneyline}</p>
+                          <p
+                            style={{
+                              minWidth: 70,
+                              paddingRight: 15,
+                              paddingLeft: 10,
+                            }}
+                          >
+                            {game.away.point_spread}
+                          </p>
+                          <p style={{ minWidth: 93 }}>
+                            {game.away.total_points}
+                          </p>
+                        </div>
+
+                        <div className={styles.team_format}>
+                          <div className={styles.name_logo}>
+                            <img
+                              alt=""
+                              className={styles.odds_logo}
+                              src={game.home.logo}
+                            />
+                            <h4>{game.home.team}</h4>
+                            <div className={styles.name_record}>
+                              <span
+                                style={{
+                                  paddingLeft: 5,
+                                }}
+                              >
+                                {game.home.score}
+                              </span>
+                            </div>
+                          </div>
+                          <p style={{ minWidth: 45 }}>{game.home.moneyline}</p>
+                          <p
+                            style={{
+                              minWidth: 70,
+                              paddingRight: 15,
+                              paddingLeft: 10,
+                            }}
+                          >
+                            {game.home.point_spread}
+                          </p>
+                          <p style={{ minWidth: 93 }}>
+                            {game.home.total_points}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
+              </div>
+            </>
+          ) : null}
+
+          {inprogressSportsOdds ? (
             <>
               <h1 className={styles.upcoming}>Live Game Odds</h1>
               {inprogressSportsOdds.map((game) => {
@@ -157,7 +266,7 @@ const Odds = ({
               })}
             </>
           ) : null}
-          {upcomingSportsOdds.length > 0 ? (
+          {upcomingSportsOdds ? (
             <>
               <h1 className={styles.upcoming}>Upcoming Game Odds</h1>
               {upcomingSportsOdds.map((game) => {
@@ -287,169 +396,179 @@ const Odds = ({
               })}
             </>
           ) : null}
-          {finalSportsOdds.length > 0 ? (
-            <h1 className={styles.upcoming}>Game Final Odds</h1>
+          {finalSportsOdds ? (
+            <>
+              <h1 className={styles.upcoming}>Game Final Odds</h1>
+              {finalSportsOdds.map((game) => {
+                let home_team = game.home.team;
+                let away_team = game.away.team;
+                [away_team, home_team] = findAbbrv(
+                  abbrev,
+                  away_team,
+                  home_team
+                );
+                return (
+                  <>
+                    <div className={styles.team_info}>
+                      <div className={styles.team_header}>
+                        <p
+                          style={{
+                            minWidth: 100,
+                            fontSize: 10,
+                            paddingRight: 15,
+                            paddingLeft: 10,
+                          }}
+                        >
+                          Final
+                        </p>
+                        <p style={{ minWidth: 45 }}>Money</p>
+                        <p style={{ minWidth: 75 }}>Spread</p>
+                        <p style={{ minWidth: 93 }}>Total</p>
+                      </div>
+                      <div className={styles.team_format}>
+                        <div className={styles.name_logo}>
+                          <img
+                            alt=""
+                            className={styles.odds_logo}
+                            src={game.away.logo}
+                          />
+                          <h4>{away_team}</h4>
+                          <div className={styles.name_record}>
+                            <span
+                              style={{
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                              }}
+                            >
+                              {game.away.score}
+                            </span>
+                          </div>
+                        </div>
+                        {game.away.moneyline.length > 5 ? (
+                          <p style={{ minWidth: 45 }}>
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 5 }}
+                              color="green"
+                            />
+                            {game.away.moneyline.slice(5)}
+                          </p>
+                        ) : (
+                          <p style={{ minWidth: 45 }}>{game.away.moneyline}</p>
+                        )}
+                        {game.away.point_spread.length > 5 ? (
+                          <p style={{ minWidth: 75 }}>
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 5 }}
+                              color="green"
+                            />
+                            {game.away.point_spread.slice(5)}
+                          </p>
+                        ) : (
+                          <p style={{ minWidth: 75 }}>
+                            {game.away.point_spread}
+                          </p>
+                        )}
+
+                        {game.away.total_points.length > 8 ? (
+                          <p style={{ minWidth: 93 }}>
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 5 }}
+                              color="green"
+                            />
+                            {game.away.total_points.slice(5)}
+                          </p>
+                        ) : (
+                          <>
+                            (
+                            {"basketball" !== sport &&
+                            game.away.total_points.length > 4 ? (
+                              <p style={{ minWidth: 93 }}>
+                                {game.away.total_points.slice(4)}
+                              </p>
+                            ) : (
+                              <p style={{ minWidth: 93 }}>
+                                {game.away.total_points}
+                              </p>
+                            )}
+                            )
+                          </>
+                        )}
+                      </div>
+
+                      <div className={styles.team_format}>
+                        <div className={styles.name_logo}>
+                          <img
+                            alt=""
+                            className={styles.odds_logo}
+                            src={game.home.logo}
+                          />
+                          <h4>{home_team}</h4>
+                          <div className={styles.name_record}>
+                            <span
+                              style={{
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                              }}
+                            >
+                              {game.home.score}
+                            </span>
+                          </div>
+                        </div>
+                        {game.home.moneyline.length > 5 ? (
+                          <p style={{ minWidth: 45 }}>
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 5 }}
+                              color="green"
+                            />
+                            {game.home.moneyline.slice(5)}
+                          </p>
+                        ) : (
+                          <p style={{ minWidth: 45 }}>{game.home.moneyline}</p>
+                        )}
+                        {game.home.point_spread.length > 5 ? (
+                          <p style={{ minWidth: 75 }}>
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 5 }}
+                              color="green"
+                            />
+                            {game.home.point_spread.slice(5)}
+                          </p>
+                        ) : (
+                          <p style={{ minWidth: 75 }}>
+                            {game.home.point_spread}
+                          </p>
+                        )}
+                        {game.home.total_points.length > 8 ? (
+                          <p style={{ minWidth: 93 }}>
+                            <AiIcon.AiFillCheckCircle
+                              style={{ marginRight: 5 }}
+                              color="green"
+                            />
+                            {game.home.total_points.slice(5)}
+                          </p>
+                        ) : (
+                          <>
+                            (
+                            {"basketball" !== sport &&
+                            game.home.total_points.length > 4 ? (
+                              <p style={{ minWidth: 93 }}>
+                                {game.home.total_points.slice(4)}
+                              </p>
+                            ) : (
+                              <p style={{ minWidth: 93 }}>
+                                {game.home.total_points}
+                              </p>
+                            )}
+                            )
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                );
+              })}
+            </>
           ) : null}
-          {finalSportsOdds.map((game) => {
-            let home_team = game.home.team;
-            let away_team = game.away.team;
-            [away_team, home_team] = findAbbrv(abbrev, away_team, home_team);
-            return (
-              <>
-                <div className={styles.team_info}>
-                  <div className={styles.team_header}>
-                    <p
-                      style={{
-                        minWidth: 100,
-                        fontSize: 10,
-                        paddingRight: 15,
-                        paddingLeft: 10,
-                      }}
-                    >
-                      Final
-                    </p>
-                    <p style={{ minWidth: 45 }}>Money</p>
-                    <p style={{ minWidth: 75 }}>Spread</p>
-                    <p style={{ minWidth: 93 }}>Total</p>
-                  </div>
-                  <div className={styles.team_format}>
-                    <div className={styles.name_logo}>
-                      <img
-                        alt=""
-                        className={styles.odds_logo}
-                        src={game.away.logo}
-                      />
-                      <h4>{away_team}</h4>
-                      <div className={styles.name_record}>
-                        <span
-                          style={{
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                          }}
-                        >
-                          {game.away.score}
-                        </span>
-                      </div>
-                    </div>
-                    {game.away.moneyline.length > 5 ? (
-                      <p style={{ minWidth: 45 }}>
-                        <AiIcon.AiFillCheckCircle
-                          style={{ marginRight: 5 }}
-                          color="green"
-                        />
-                        {game.away.moneyline.slice(5)}
-                      </p>
-                    ) : (
-                      <p style={{ minWidth: 45 }}>{game.away.moneyline}</p>
-                    )}
-                    {game.away.point_spread.length > 5 ? (
-                      <p style={{ minWidth: 75 }}>
-                        <AiIcon.AiFillCheckCircle
-                          style={{ marginRight: 5 }}
-                          color="green"
-                        />
-                        {game.away.point_spread.slice(5)}
-                      </p>
-                    ) : (
-                      <p style={{ minWidth: 75 }}>{game.away.point_spread}</p>
-                    )}
-
-                    {game.away.total_points.length > 8 ? (
-                      <p style={{ minWidth: 93 }}>
-                        <AiIcon.AiFillCheckCircle
-                          style={{ marginRight: 5 }}
-                          color="green"
-                        />
-                        {game.away.total_points.slice(5)}
-                      </p>
-                    ) : (
-                      <>
-                        (
-                        {"basketball" !== sport &&
-                        game.away.total_points.length > 4 ? (
-                          <p style={{ minWidth: 93 }}>
-                            {game.away.total_points.slice(4)}
-                          </p>
-                        ) : (
-                          <p style={{ minWidth: 93 }}>
-                            {game.away.total_points}
-                          </p>
-                        )}
-                        )
-                      </>
-                    )}
-                  </div>
-
-                  <div className={styles.team_format}>
-                    <div className={styles.name_logo}>
-                      <img
-                        alt=""
-                        className={styles.odds_logo}
-                        src={game.home.logo}
-                      />
-                      <h4>{home_team}</h4>
-                      <div className={styles.name_record}>
-                        <span
-                          style={{
-                            paddingLeft: 5,
-                            paddingRight: 5,
-                          }}
-                        >
-                          {game.home.score}
-                        </span>
-                      </div>
-                    </div>
-                    {game.home.moneyline.length > 5 ? (
-                      <p style={{ minWidth: 45 }}>
-                        <AiIcon.AiFillCheckCircle
-                          style={{ marginRight: 5 }}
-                          color="green"
-                        />
-                        {game.home.moneyline.slice(5)}
-                      </p>
-                    ) : (
-                      <p style={{ minWidth: 45 }}>{game.home.moneyline}</p>
-                    )}
-                    {game.home.point_spread.length > 5 ? (
-                      <p style={{ minWidth: 75 }}>
-                        <AiIcon.AiFillCheckCircle
-                          style={{ marginRight: 5 }}
-                          color="green"
-                        />
-                        {game.home.point_spread.slice(5)}
-                      </p>
-                    ) : (
-                      <p style={{ minWidth: 75 }}>{game.home.point_spread}</p>
-                    )}
-                    {game.home.total_points.length > 8 ? (
-                      <p style={{ minWidth: 93 }}>
-                        <AiIcon.AiFillCheckCircle
-                          style={{ marginRight: 5 }}
-                          color="green"
-                        />
-                        {game.home.total_points.slice(5)}
-                      </p>
-                    ) : (
-                      <>
-                        (
-                        {"basketball" !== sport &&
-                        game.home.total_points.length > 4 ? (
-                          <p style={{ minWidth: 93 }}>
-                            {game.home.total_points.slice(4)}
-                          </p>
-                        ) : (
-                          <p style={{ minWidth: 93 }}>
-                            {game.home.total_points}
-                          </p>
-                        )}
-                        )
-                      </>
-                    )}
-                  </div>
-                </div>
-              </>
-            );
-          })}
 
           {openBet ? <Bet setOpenBet={setOpenBet} /> : null}
         </div>

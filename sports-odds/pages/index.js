@@ -1,8 +1,6 @@
 import Head from "next/head";
-import { Inter } from "next/font/google";
-import styles from "@/styles/Home.module.css";
 import Header from "@/src/Header";
-const inter = Inter({ subsets: ["latin"] });
+import HomePage from "./HomePage";
 
 export default function Home() {
   return (
@@ -26,9 +24,8 @@ export default function Home() {
         />
       </Head>
       <Header />
-
-      <main className={styles.main}>
-        <div className={styles.description}></div>
+      <main>
+        <HomePage />
       </main>
     </div>
   );

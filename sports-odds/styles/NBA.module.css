@@ -100,6 +100,16 @@
   font-family: "Source Sans Pro", sans-serif;
 }
 
+.welcome {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  place-content: center space-between;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  inline-size: 670px;
+}
+
 .Pic {
   height: 325px;
   width: 575px;
@@ -129,6 +139,35 @@
   border-radius: 12px;
   color: white;
   font-family: "Source Sans Pro", sans-serif;
+}
+
+.featured_odds {
+  width: auto;
+  display: flex;
+  /* flex-direction: row; */
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  border-radius: 12px;
+  color: white;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.featured_info {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin: 10px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-family: Source Sans Pro, sans-serif;
 }
 
 .odds_div {
@@ -335,10 +374,10 @@
 
 /* Medium screens (tablets, 768px and below) */
 @media only screen and (max-width: 769px) {
-  /* .games {
-    width: calc(50% - 6px);
-    margin: 3px;
-  } */
+  .welcome {
+    inline-size: 100%;
+    padding: 16px;
+  }
 
   .newInfo {
     width: 90%;

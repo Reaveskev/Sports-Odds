@@ -13,8 +13,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
 import dropbox
-# import bcrypt
-
 
 app = Flask(__name__, static_folder='./sports-odds/out')
 
@@ -25,14 +23,12 @@ cors = CORS(app, support_credentials=True)
 
 
 
-
 # Local do these 
 # options = Options()
 # options.add_argument("--headless")
 # options.add_argument("--disable-dev-shm-usage")
 # options.add_argument("--no-sandbox")
 # driver = webdriver.Chrome(options=options)
-# driver.execute_script("Intl.DateTimeFormat().resolvedOptions().timeZone = 'America/Los_Angeles';")
 
 
 
@@ -421,6 +417,142 @@ def dropbox_upload():
         return jsonify({'error': str(e)})
 
 
+
+
+@app.route('/api/featured')
+def scrape_featured_Odd():
+    
+
+    url = "https://sports.yahoo.com/featured/odds/"
+    driver.get(url)
+    wait = WebDriverWait(driver, 5)
+
+    try:
+        parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(12px) C(#828c93)"]')))
+    except:
+        return jsonify([])
+    
+    html = driver.page_source 
+
+    soup = BeautifulSoup(html, "html.parser")
+    
+
+    featured_odds = soup.findAll("div",{"class":"ys-featured-odds-odds-container D(f) Jc(sb) Flw(w) Pos(r) Mx(-5px)"} )
+
+    featured_games = []
+
+    for x in featured_odds:
+        title = x.findAll("div",{"class":"Mb(12px) Mx(20px) Mt(20px) YahooSans-Semibold Fz(12px) smartphone_Mx(0)"} )
+        teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
+        record = x.findAll("span",{"class":"C(dimmed-text) Fz(12px)"} )
+        score = x.findAll("span",{"class":"Fw(800) D(n) D(ib)!--medPhone Fl(end) Pend(10px)"} )
+        odds = x.findAll("span", {"class":"Lh(12px)"} )
+        away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
+        home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+        payout_Odd = x.findAll("span", {"class":"C($c-fuji-shark) Fw(400)! Pstart(4px) D(b) Fz(10px) Lh(8px) Pstart(0)!"} )
+        start_time = x.find_all('span', {'class': 'Fz(12px) C(#828c93)'})
+
+        title_list = []
+        away_team_logo = []
+        home_team_logo = []
+        team_1_money_line = []
+        team_1_point_spread = []
+        team_1_point_spread_odd = []
+        team_1_total_points = []
+        team_1_total_points_odd = []
+        teams_list = []
+        score_list = []
+        all_team_logos = []
+        home_odds = []
+        away_odds = []
+        time = []
+        score_record = record + score
+
+
+        firstCount = 0
+        for soup in payout_Odd:
+            firstCount += 1
+            if firstCount == 1:
+                    team_1_point_spread_odd.append(soup.text)
+            elif firstCount == 2:
+                    firstCount = 0
+                    team_1_total_points_odd.append(soup.text)
+           
+        
+        count = 0
+        for soup in odds:
+            count += 1
+            if count == 1:
+                    team_1_money_line.append(soup.text)
+            elif count == 2:
+                    team_1_point_spread.append(soup.text)
+            elif count == 3:
+                    count = 0
+                    team_1_total_points.append(soup.text)
+            
+
+
+        if title:
+            for x in title:
+                title_list.append(x.text)
+                title_list.append(x.text)
+
+        
+        if start_time:
+             for i in start_time:
+               time.append(i.text)
+               time.append(i.text)
+        
+        
+        for div_tag in away_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            away_team_logo.append(img_src)
+
+    
+        for div_tag in home_div_tags:
+            img_tag = div_tag.find('img')
+            img_src = img_tag['src']
+            home_team_logo.append(img_src)
+
+        
+        for i in range(len(away_team_logo)):
+           all_team_logos.append(away_team_logo[i])
+           all_team_logos.append(home_team_logo[i])
+            
+        
+        for team, record in zip(teams,score_record ):
+           teams_list.append(team.text)
+           score_list.append(record.text)
+
+
+        counter = 0
+        for h, l, t, s, m1, p1, ps, t1, ts, time in zip(title_list, all_team_logos,teams_list,score_list,team_1_money_line,team_1_point_spread,team_1_point_spread_odd,team_1_total_points,team_1_total_points_odd,time):
+            if((counter % 2) == 0):
+                with_odds_p = p1 + ' ({})'.format(ps)
+                with_odds_t = t1 + ' ({})'.format(ts)
+                away_odds.append([l, t, s, m1, with_odds_p, with_odds_t, time, h])
+                counter += 1
+            else:
+                with_odds_p = p1 + ' ({})'.format(ps)
+                with_odds_t = t1 + ' ({})'.format(ts)
+                home_odds.append([l, t, s, m1, with_odds_p, with_odds_t, time, h])
+                counter += 1
+
+        
+        for h, a in zip(home_odds,away_odds):
+            
+            ingames = {}
+            ingames['home'] = {"team" : h[1], "logo": h[0], "score":  h[2], "moneyline":  h[3], 'point_spread': h[4],  'total_points': h[5], 'time_left': h[6], "title": h[7]}
+            ingames['away'] = {"team" : a[1], "logo": a[0], "score":  a[2], "moneyline":  a[3], 'point_spread': a[4],  'total_points': a[5], 'time_left': a[6], "title": a[7]}
+            
+            
+            featured_games.append(ingames)
+    
+    return jsonify(featured_games)
+
+
+
 @app.route('/api/Odds/<league>')
 def scrape_Odds(league):
     sport = ["mlb", "nhl", "college-basketball", "nba", "nfl", "college-football", "wnba"]
@@ -446,9 +578,6 @@ def scrape_Odds(league):
  
     html = driver.page_source 
 
-    # page_to_scrape = requests.get(url)
-
-    # soup = BeautifulSoup(page_to_scrape.text, "html.parser")
     soup = BeautifulSoup(html, "html.parser")
 
     upcoming_games = []
