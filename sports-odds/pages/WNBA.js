@@ -35,8 +35,10 @@ function WNBA() {
           axios.get(
             "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/news"
           ),
-          axios.get("https://sports-odds.herokuapp.com/Odds/wnba"),
-          axios.get("https://sports-odds.herokuapp.com/Sport_Standings/wnba"),
+          axios.get("https://sports-odds.herokuapp.com/api/Odds/wnba"),
+          axios.get(
+            "https://sports-odds.herokuapp.com/api/Sport_Standings/wnba"
+          ),
         ]);
 
         if (response1.data.game_groups[0] === undefined) {
@@ -112,16 +114,15 @@ function WNBA() {
                 {WNBANews.map((news) => {
                   return (
                     <div className={styles.newInfo} key={news.headline}>
-                      <header>{news.headline}</header>
-                      <a href={news.links.web.href}>
+                      <a href={news.links.web.href} className={styles.new_a}>
                         <img
                           className={styles.Pic}
                           height={325}
-                          width={575}
                           alt=""
                           src={news.images[0].url}
                         />
                       </a>
+                      <header style={{ fontSize: 22 }}>{news.headline}</header>
                       <p>{news.description}</p>
                     </div>
                   );
@@ -190,16 +191,15 @@ function WNBA() {
             {WNBANews.map((news) => {
               return (
                 <div className={styles.newInfo} key={news.headline}>
-                  <header>{news.headline}</header>
-                  <a href={news.links.web.href}>
+                  <a href={news.links.web.href} className={styles.new_a}>
                     <img
                       className={styles.Pic}
                       height={325}
-                      width={575}
                       alt=""
                       src={news.images[0].url}
                     />
                   </a>
+                  <header style={{ fontSize: 22 }}>{news.headline}</header>
                   <p>{news.description}</p>
                 </div>
               );

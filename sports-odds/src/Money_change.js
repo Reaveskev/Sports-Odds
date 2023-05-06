@@ -19,8 +19,8 @@ function Money_Change({ setMoney }) {
 
   const handleDeposit = () => {
     if (depositAmount > 0) {
-      let update_url = "https://sports-odds.herokuapp.com/update_money";
-      // let update_url = "http://127.0.0.1:5000/update_money";
+      let update_url = "https://sports-odds.herokuapp.com/api/update_money";
+      // let update_url = "http://127.0.0.1:5000/api/update_money";
       let fake_money = user.fake_money + parseFloat(depositAmount);
       axios
         .post(update_url, {
@@ -30,8 +30,8 @@ function Money_Change({ setMoney }) {
           if (res.status === 200) setUser(res.data);
 
           let new_transaction =
-            "https://sports-odds.herokuapp.com/addTransaction";
-          // let new_transaction = "http://127.0.0.1:5000/addTransaction";
+            "https://sports-odds.herokuapp.com/api/addTransaction";
+          // let new_transaction = "http://127.0.0.1:5000/api/addTransaction";
           axios
             .post(new_transaction, {
               date: date,
@@ -53,8 +53,8 @@ function Money_Change({ setMoney }) {
 
   const handleWithdraw = () => {
     if (withdrawAmount > 0 && balance >= withdrawAmount) {
-      let update_url = "https://sports-odds.herokuapp.com/update_money";
-      // let update_url = "http://127.0.0.1:5000/update_money";
+      let update_url = "https://sports-odds.herokuapp.com/api/update_money";
+      // let update_url = "http://127.0.0.1:5000/api/update_money";
       let fake_money = user.fake_money - parseFloat(withdrawAmount);
       axios
         .post(update_url, {
@@ -63,8 +63,8 @@ function Money_Change({ setMoney }) {
         .then((res) => {
           if (res.status === 200) setUser(res.data);
           let new_transaction =
-            "https://sports-odds.herokuapp.com/addTransaction";
-          // let new_transaction = "http://127.0.0.1:5000/addTransaction";
+            "https://sports-odds.herokuapp.com/api/addTransaction";
+          // let new_transaction = "http://127.0.0.1:5000/api/addTransaction";
           axios
             .post(new_transaction, {
               date: date,

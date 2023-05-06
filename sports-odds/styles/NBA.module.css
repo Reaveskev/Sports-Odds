@@ -110,9 +110,12 @@
   inline-size: 670px;
 }
 
+.new_a {
+  width: 100%;
+}
 .Pic {
   height: 325px;
-  width: 575px;
+  width: 100%;
 }
 
 .newsHeader {

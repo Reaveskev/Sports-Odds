@@ -25,7 +25,7 @@ const DropboxApp = () => {
 
     const image = oldimage.replace("dl=0", "raw=1");
     let update_url = "https://sports-odds.herokuapp.com/api/update_image";
-    // let update_url = "http://127.0.0.1:5000/update_image";
+    // let update_url = "http://127.0.0.1:5000/api/update_image";
 
     axios
       .post(update_url, {

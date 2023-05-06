@@ -77,8 +77,8 @@ const Bet = ({ setOpenBet }) => {
     if (totalPoints === "") {
       setTotalPoints(null);
     }
-    let url = "https://sports-odds.herokuapp.com/addBet";
-    // let url = "http://127.0.0.1:5000/addBet";
+    let url = "https://sports-odds.herokuapp.com/api/addBet";
+    // let url = "http://127.0.0.1:5000/api/addBet";
     if (betAmount > user.fake_money) {
       alert(
         `You are trying to bet more fake money than you have. Please try again with a lower bet amount. You have $${user.fake_money} available.`
@@ -112,15 +112,15 @@ const Bet = ({ setOpenBet }) => {
               setOpenBet(false);
             }, "3000");
 
-            let url2 = "https://sports-odds.herokuapp.com/seeBets";
-            // let url2 = "http://127.0.0.1:5000/seeBets";
+            let url2 = "https://sports-odds.herokuapp.com/api/seeBets";
+            // let url2 = "http://127.0.0.1:5000/api/seeBets";
 
             axios.get(url2).then((res) => {
               if (res.status === 200) {
                 setAllBets(res.data);
                 let update_url =
-                  "https://sports-odds.herokuapp.com/update_money";
-                // let update_url = "http://127.0.0.1:5000/update_money";
+                  "https://sports-odds.herokuapp.com/api/update_money";
+                // let update_url = "http://127.0.0.1:5000/api/update_money";
                 let fake_money = user.fake_money - betAmount;
                 axios
                   .post(update_url, {
@@ -135,9 +135,9 @@ const Bet = ({ setOpenBet }) => {
 
                     const date = `${month}/${day}/${year}`;
                     // let new_transaction =
-                    //   "http://127.0.0.1:5000/addTransaction";
+                    //   "http://127.0.0.1:5000/api/addTransaction";
                     let new_transaction =
-                      "https://sports-odds.herokuapp.com/addTransaction";
+                      "https://sports-odds.herokuapp.com/api/addTransaction";
                     axios
                       .post(new_transaction, {
                         date: date,

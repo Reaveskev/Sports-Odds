@@ -155,16 +155,15 @@ function NFL() {
                 {NFLNews.map((news) => {
                   return (
                     <div className={styles.newInfo} key={news.headline}>
-                      <header>{news.headline}</header>
-                      <a href={news.links.web.href}>
+                      <a href={news.links.web.href} className={styles.new_a}>
                         <img
                           className={styles.Pic}
                           height={325}
-                          width={575}
                           alt=""
                           src={news.images[0].url}
                         />
                       </a>
+                      <header style={{ fontSize: 22 }}>{news.headline}</header>
                       <p>{news.description}</p>
                     </div>
                   );
@@ -173,16 +172,15 @@ function NFL() {
                 {NFLNews2.map((news) => {
                   return (
                     <div className={styles.newInfo} key={news.headline}>
-                      <header>{news.headline}</header>
-                      <a href={news.links}>
+                      <a href={news.links} className={styles.new_a}>
                         <img
                           className={styles.Pic}
                           height={325}
-                          width={575}
                           alt=""
                           src={news.image}
                         />
                       </a>
+                      <header style={{ fontSize: 22 }}>{news.headline}</header>
                       <p>{news.description}</p>
                     </div>
                   );
@@ -251,16 +249,15 @@ function NFL() {
             {NFLNews.map((news) => {
               return (
                 <div className={styles.newInfo} key={news.headline}>
-                  <header>{news.headline}</header>
-                  <a href={news.links.web.href}>
+                  <a href={news.links.web.href} className={styles.new_a}>
                     <img
                       className={styles.Pic}
                       height={325}
-                      width={575}
                       alt=""
                       src={news.images[0].url}
                     />
                   </a>
+                  <header style={{ fontSize: 22 }}>{news.headline}</header>
                   <p>{news.description}</p>
                 </div>
               );
@@ -269,16 +266,15 @@ function NFL() {
             {NFLNews2.map((news) => {
               return (
                 <div className={styles.newInfo} key={news.headline}>
-                  <header>{news.headline}</header>
-                  <a href={news.links}>
+                  <a href={news.links} className={styles.new_a}>
                     <img
                       className={styles.Pic}
                       height={325}
-                      width={575}
                       alt=""
                       src={news.image}
                     />
                   </a>
+                  <header style={{ fontSize: 22 }}>{news.headline}</header>
                   <p>{news.description}</p>
                 </div>
               );

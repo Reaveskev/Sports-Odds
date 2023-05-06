@@ -10,8 +10,8 @@ function Header() {
   const { user, setUser } = useAppContext();
 
   const handleLogout = () => {
-    let url = "https://sports-odds.herokuapp.com/logout";
-    // let url = "http://127.0.0.1:5000/logout";
+    let url = "https://sports-odds.herokuapp.com/api/logout";
+    // let url = "http://127.0.0.1:5000/api/logout";
     try {
       axios.post(url).then((res) => {
         if (res.status === 200) {
