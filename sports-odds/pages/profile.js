@@ -119,7 +119,8 @@ function Profile() {
                 const year = today.getFullYear();
 
                 const date = `${month}/${day}/${year}`;
-                // let new_transaction = "http://127.0.0.1:5000/api/addTransaction";
+                // let new_transaction =
+                //   "http://127.0.0.1:5000/api/addTransaction";
 
                 let new_transaction =
                   "https://sports-odds.herokuapp.com/api/addTransaction";
@@ -304,43 +305,53 @@ function Profile() {
         </div>
 
         {update ? (
-          <>
-            <div className={styles.profile_body}>
-              <form onSubmit={handleSubmit}>
-                <h2>Account Information</h2>
-                <label htmlFor="firstname">First Name:</label>
-                <input
-                  type="text"
-                  id="firstname"
-                  value={firstName}
-                  onChange={handleFirstNameChange}
-                />
-                <label htmlFor="lastname">Last Name:</label>
-                <input
-                  type="text"
-                  id="lastname"
-                  value={lastName}
-                  onChange={handleLastNameChange}
-                />
-                <label htmlFor="password">Password:</label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <label htmlFor="username">Username:</label>
-                <input
-                  type="text"
-                  id="username"
-                  value={username}
-                  onChange={handleUsernameChange}
-                />
-                <button type="submit">Save Changes</button>
-              </form>
+          <div className={styles.update_container}>
+            <div className={styles.update_div_container}>
+              <div className={styles.profile_body}>
+                <form onSubmit={handleSubmit}>
+                  <div className={styles.update_header}>
+                    <h2>Account Information</h2>
+                    <span
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setUpdate(false)}
+                    >
+                      cancel
+                    </span>
+                  </div>
+                  <label htmlFor="firstname">First Name:</label>
+                  <input
+                    type="text"
+                    id="firstname"
+                    value={firstName}
+                    onChange={handleFirstNameChange}
+                  />
+                  <label htmlFor="lastname">Last Name:</label>
+                  <input
+                    type="text"
+                    id="lastname"
+                    value={lastName}
+                    onChange={handleLastNameChange}
+                  />
+                  <label htmlFor="password">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
+                  />
+                  <label htmlFor="username">Username:</label>
+                  <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={handleUsernameChange}
+                  />
+                  <button type="submit">Save Changes</button>
+                </form>
+              </div>
+              <DropboxApp />
             </div>
-            <DropboxApp />
-          </>
+          </div>
         ) : null}
 
         {findFinal ? (
@@ -355,6 +366,7 @@ function Profile() {
             </button>
           </div>
         ) : null}
+
         {allBets ? (
           <div className={styles.table_div}>
             <h2 style={{ paddingTop: 20 }}>Your Bets</h2>

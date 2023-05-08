@@ -16,8 +16,6 @@ function Header() {
       axios.post(url).then((res) => {
         if (res.status === 200) {
           setUser(null);
-        } else {
-          console.log(res);
         }
       });
     } catch (error) {

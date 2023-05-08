@@ -42,7 +42,7 @@ const HomePage = () => {
 
         let gamesObj = { games: gamesArr };
         setInprogress(gamesObj);
-        console.log(response1.data);
+
         setFeaturedSportsOdds(response2.data);
         setLoading(false);
       } catch (error) {
