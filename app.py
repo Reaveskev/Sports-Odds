@@ -423,7 +423,8 @@ def scrape_featured_Odd():
 
     url = "https://sports.yahoo.com/featured/odds/"
     driver.get(url)
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, .1)
+    # wait = WebDriverWait(driver, 5)
 
     try:
         parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(12px) C(#828c93)"]')))
@@ -561,7 +562,8 @@ def scrape_Odds(league):
 
 
     driver.get(url)
-    wait = WebDriverWait(driver, 5)
+    wait = WebDriverWait(driver, .1)
+    #  wait = WebDriverWait(driver, 5)
     
 
   
