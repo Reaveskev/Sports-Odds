@@ -27,6 +27,28 @@
   margin: 15% auto;
 }
 
+.calc_button {
+  margin: 10px;
+  cursor: pointer;
+  background-color: #393939;
+  border: none;
+  padding: 5px;
+  color: #fff;
+  border-radius: 12px;
+}
+
+.addbutton {
+  margin: 10;
+  cursor: pointer;
+  margin: 10px;
+  cursor: pointer;
+  background-color: #393939;
+  border: none;
+  padding: 5px;
+  color: #fff;
+  border-radius: 12px;
+}
+
 /* @media only screen and (max-width: 769px) {
   .div_container {
     width: 90%;

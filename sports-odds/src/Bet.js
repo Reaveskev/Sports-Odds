@@ -30,12 +30,12 @@ const Bet = ({ setOpenBet }) => {
     let today = new Date();
     let yy = String(today.getFullYear());
     let givenDate;
-    if (betInfo[11].length < 15) {
+    if (betInfo[12].length < 15) {
       let day = String(today.getDate());
       let month = String(today.getMonth() + 1);
       givenDate = month + day;
     } else {
-      givenDate = betInfo[11];
+      givenDate = betInfo[12];
       givenDate = givenDate.slice(5, -9);
     }
     if (givenDate.length < 5) {
@@ -51,8 +51,8 @@ const Bet = ({ setOpenBet }) => {
 
     let fullDate = yy + givenDate;
     setGameDate(fullDate);
-    setLeague(betInfo[12]);
-    setSport(betInfo[13]);
+    setLeague(betInfo[13]);
+    setSport(betInfo[14]);
   }, []);
 
   const addBet = async (
@@ -442,7 +442,7 @@ const Bet = ({ setOpenBet }) => {
           }}
         >
           <button
-            style={{ margin: 10, cursor: "pointer" }}
+            className={styles.calc_button}
             onClick={() =>
               calculateParlayPayout(
                 betAmount,
@@ -480,7 +480,7 @@ const Bet = ({ setOpenBet }) => {
                     sport
                   );
                 }}
-                style={{ margin: 10, cursor: "pointer" }}
+                className={styles.addbutton}
               >
                 Add to bets
               </button>
