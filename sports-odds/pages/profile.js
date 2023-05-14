@@ -11,7 +11,6 @@ function Profile() {
   const [lastName, setLastName] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [counter, setCounter] = useState(0);
   const [info, setInfo] = useState();
   const [update, setUpdate] = useState(false);
   const [money, setMoney] = useState(false);
@@ -261,12 +260,13 @@ function Profile() {
   };
 
   const [currentPage, setCurrentPage] = useState(0);
+  const [currentTransPage, setCurrentTransPage] = useState(0);
   const pageSize = 5;
 
-  const getCurrentData = () => {
-    const start = currentPage * pageSize;
+  const getCurrentData = (data, page) => {
+    const start = page * pageSize;
     const end = start + pageSize;
-    return allBets.slice(start, end);
+    return data.slice(start, end);
   };
 
   const handlePrevPage = () => {
@@ -275,6 +275,14 @@ function Profile() {
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handleTransPrevPage = () => {
+    setCurrentTransPage((prevPage) => prevPage - 1);
+  };
+
+  const handleTransNextPage = () => {
+    setCurrentTransPage((prevPage) => prevPage + 1);
   };
 
   return (
@@ -398,11 +406,11 @@ function Profile() {
                 </tr>
               </thead>
               <tbody>
-                {allBets.map((bet, index) => {
+                {getCurrentData(allBets, currentPage).map((bet) => {
                   return (
                     <tr
                       onClick={() => {
-                        if (!allBetsOutcome[index]) {
+                        if (!allBetsOutcome[bet.bet_id - 1]) {
                           if (info) {
                             setInfo("");
                             setFindFinal(false);
@@ -424,7 +432,7 @@ function Profile() {
                     >
                       <td className={styles.bet_table_cell}>{bet.teams}</td>
                       <td className={styles.bet_table_cell}>
-                        {allBetsOutcome[index] === undefined ? (
+                        {allBetsOutcome[bet.bet_id - 1] === undefined ? (
                           <div className={styles.game_unfinished}>
                             {bet.point_spread}
                           </div>
@@ -432,7 +440,8 @@ function Profile() {
                           <div
                             className={styles.game_unfinished}
                             style={{
-                              color: !allBetsOutcome[index]?.point_spread
+                              color: !allBetsOutcome[bet.bet_id - 1]
+                                ?.point_spread
                                 ? "red"
                                 : "green",
                             }}
@@ -442,7 +451,7 @@ function Profile() {
                         )}
                       </td>
                       <td className={styles.bet_table_cell}>
-                        {allBetsOutcome[index] === undefined ? (
+                        {allBetsOutcome[bet.bet_id - 1] === undefined ? (
                           <div className={styles.game_unfinished}>
                             {bet.total_points}
                           </div>
@@ -450,7 +459,8 @@ function Profile() {
                           <div
                             className={styles.game_unfinished}
                             style={{
-                              color: !allBetsOutcome[index]?.total_points
+                              color: !allBetsOutcome[bet.bet_id - 1]
+                                ?.total_points
                                 ? "red"
                                 : "green",
                             }}
@@ -460,7 +470,7 @@ function Profile() {
                         )}
                       </td>
                       <td className={styles.bet_table_cell}>
-                        {allBetsOutcome[index] === undefined ? (
+                        {allBetsOutcome[bet.bet_id - 1] === undefined ? (
                           <div className={styles.game_unfinished}>
                             {bet.money_line} {bet.money_line_team}
                           </div>
@@ -468,7 +478,7 @@ function Profile() {
                           <div
                             className={styles.game_unfinished}
                             style={{
-                              color: !allBetsOutcome[index]?.money_line
+                              color: !allBetsOutcome[bet.bet_id - 1]?.money_line
                                 ? "red"
                                 : "green",
                             }}
@@ -481,7 +491,7 @@ function Profile() {
                         ${bet.bet_amount}
                       </td>
                       <td className={styles.bet_table_cell}>
-                        {allBetsOutcome[index] === undefined ? (
+                        {allBetsOutcome[bet.bet_id - 1] === undefined ? (
                           <div className={styles.game_unfinished}>
                             ${bet.payout}
                           </div>
@@ -489,7 +499,7 @@ function Profile() {
                           <div
                             className={styles.game_unfinished}
                             style={{
-                              color: !allBetsOutcome[index]?.payout
+                              color: !allBetsOutcome[bet.bet_id - 1]?.payout
                                 ? "red"
                                 : "green",
                             }}
@@ -503,7 +513,7 @@ function Profile() {
                 })}
               </tbody>
             </table>
-            {/* <div className={styles.pagination}>
+            <div className={styles.pagination}>
               <button onClick={handlePrevPage} disabled={currentPage === 0}>
                 Previous
               </button>
@@ -518,7 +528,7 @@ function Profile() {
               >
                 Next
               </button>
-            </div> */}
+            </div>
           </div>
         ) : null}
         {allTransactions ? (
@@ -534,27 +544,50 @@ function Profile() {
                 </tr>
               </thead>
               <tbody>
-                {allTransactions.map((transaction) => (
-                  <tr
-                    key={transaction.transaction_id}
-                    className={styles.bet_table_row}
-                  >
-                    <td className={styles.bet_table_cell}>
-                      {transaction.date}
-                    </td>
-                    <td className={styles.bet_table_cell}>
-                      {transaction.transaction_type}
-                    </td>
-                    <td className={styles.bet_table_cell}>
-                      {transaction.transaction_amount}
-                    </td>
-                    <td className={styles.bet_table_cell}>
-                      ${transaction.money_in_account}
-                    </td>
-                  </tr>
-                ))}
+                {getCurrentData(allTransactions, currentTransPage).map(
+                  (transaction) => (
+                    <tr
+                      key={transaction.transaction_id}
+                      className={styles.bet_table_row}
+                    >
+                      <td className={styles.bet_table_cell}>
+                        {transaction.date}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        {transaction.transaction_type}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        {transaction.transaction_amount}
+                      </td>
+                      <td className={styles.bet_table_cell}>
+                        ${transaction.money_in_account}
+                      </td>
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
+            <div className={styles.pagination}>
+              <button
+                onClick={handleTransPrevPage}
+                disabled={currentTransPage === 0}
+              >
+                Previous
+              </button>
+              <span className={styles.pageNumber}>
+                Page {currentTransPage + 1} of
+                {Math.ceil(allTransactions.length / pageSize)}
+              </span>
+              <button
+                onClick={handleTransNextPage}
+                disabled={
+                  currentTransPage ===
+                  Math.ceil(allTransactions.length / pageSize) - 1
+                }
+              >
+                Next
+              </button>
+            </div>
           </div>
         ) : null}
       </div>
