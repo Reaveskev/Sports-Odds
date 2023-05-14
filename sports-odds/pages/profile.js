@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/profile.module.css";
 import Header from "@/src/Header";
 import { useAppContext } from "@/src/GlobalContext";
-import * as AiIcon from "react-icons/Ai";
 import Money_Change from "@/src/Money_change";
 import DropboxApp from "@/src/DropboxApp";
 
@@ -12,10 +11,10 @@ function Profile() {
   const [lastName, setLastName] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [counter, setCounter] = useState(0);
   const [info, setInfo] = useState();
   const [update, setUpdate] = useState(false);
   const [money, setMoney] = useState(false);
-
   const [findFinal, setFindFinal] = useState(false);
 
   const {
@@ -261,6 +260,23 @@ function Profile() {
     clearAll();
   };
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageSize = 5;
+
+  const getCurrentData = () => {
+    const start = currentPage * pageSize;
+    const end = start + pageSize;
+    return allBets.slice(start, end);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
   return (
     <>
       <Header />
@@ -408,82 +424,55 @@ function Profile() {
                     >
                       <td className={styles.bet_table_cell}>{bet.teams}</td>
                       <td className={styles.bet_table_cell}>
-                        {!allBetsOutcome[index]?.point_spread ? (
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
+                        {allBetsOutcome[index] === undefined ? (
+                          <div className={styles.game_unfinished}>
                             {bet.point_spread}
                           </div>
                         ) : (
                           <div
+                            className={styles.game_unfinished}
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              color: !allBetsOutcome[index]?.point_spread
+                                ? "red"
+                                : "green",
                             }}
                           >
-                            <AiIcon.AiFillCheckCircle
-                              style={{ marginRight: 10 }}
-                              color="green"
-                            />
                             {bet.point_spread}
                           </div>
                         )}
                       </td>
                       <td className={styles.bet_table_cell}>
-                        {!allBetsOutcome[index]?.total_points ? (
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
+                        {allBetsOutcome[index] === undefined ? (
+                          <div className={styles.game_unfinished}>
                             {bet.total_points}
                           </div>
                         ) : (
                           <div
+                            className={styles.game_unfinished}
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              color: !allBetsOutcome[index]?.total_points
+                                ? "red"
+                                : "green",
                             }}
                           >
-                            <AiIcon.AiFillCheckCircle
-                              style={{ marginRight: 10 }}
-                              color="green"
-                            />
                             {bet.total_points}
                           </div>
                         )}
                       </td>
                       <td className={styles.bet_table_cell}>
-                        {!allBetsOutcome[index]?.money_line ? (
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
+                        {allBetsOutcome[index] === undefined ? (
+                          <div className={styles.game_unfinished}>
                             {bet.money_line} {bet.money_line_team}
                           </div>
                         ) : (
                           <div
+                            className={styles.game_unfinished}
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              color: !allBetsOutcome[index]?.money_line
+                                ? "red"
+                                : "green",
                             }}
                           >
-                            <AiIcon.AiFillCheckCircle
-                              style={{ marginRight: 10 }}
-                              color="green"
-                            />
                             {bet.money_line} {bet.money_line_team}
                           </div>
                         )}
@@ -492,28 +481,19 @@ function Profile() {
                         ${bet.bet_amount}
                       </td>
                       <td className={styles.bet_table_cell}>
-                        {!allBetsOutcome[index]?.payout ? (
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
+                        {allBetsOutcome[index] === undefined ? (
+                          <div className={styles.game_unfinished}>
                             ${bet.payout}
                           </div>
                         ) : (
                           <div
+                            className={styles.game_unfinished}
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
+                              color: !allBetsOutcome[index]?.payout
+                                ? "red"
+                                : "green",
                             }}
                           >
-                            <AiIcon.AiFillCheckCircle
-                              style={{ marginRight: 10 }}
-                              color="green"
-                            />
                             ${bet.payout}
                           </div>
                         )}
@@ -523,6 +503,22 @@ function Profile() {
                 })}
               </tbody>
             </table>
+            {/* <div className={styles.pagination}>
+              <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                Previous
+              </button>
+              <span className={styles.pageNumber}>
+                Page {currentPage + 1} of {Math.ceil(allBets.length / pageSize)}
+              </span>
+              <button
+                onClick={handleNextPage}
+                disabled={
+                  currentPage === Math.ceil(allBets.length / pageSize) - 1
+                }
+              >
+                Next
+              </button>
+            </div> */}
           </div>
         ) : null}
         {allTransactions ? (

@@ -38,14 +38,19 @@ const Bet = ({ setOpenBet }) => {
       givenDate = betInfo[12];
       givenDate = givenDate.slice(5, -9);
     }
-    if (givenDate.length < 5) {
+    if (givenDate[4] === ",") {
+      givenDate = "0" + givenDate;
+      let month = givenDate.slice(0, 2);
+      let day = givenDate.slice(-3, -1);
+      givenDate = month + day;
+    } else if (givenDate.length < 5) {
       givenDate = "0" + givenDate;
       let month = givenDate.slice(0, 2);
       let day = givenDate.slice(-2);
       givenDate = month + day;
     } else {
-      month = givenDate.slice(0, 2);
-      day = givenDate.slice(-2);
+      let month = givenDate.slice(0, 2);
+      let day = givenDate.slice(-2);
       givenDate = month + day;
     }
 
@@ -77,6 +82,7 @@ const Bet = ({ setOpenBet }) => {
     if (totalPoints === "") {
       setTotalPoints(null);
     }
+
     let url = "https://sports-odds.herokuapp.com/api/addBet";
     // let url = "http://127.0.0.1:5000/api/addBet";
     if (betAmount > user.fake_money) {
@@ -356,7 +362,7 @@ const Bet = ({ setOpenBet }) => {
                     setMoneyline_team("");
                   } else {
                     setMoneyline(betInfo[9]);
-                    setMoneyline_team(test(betInfo[9]));
+                    setMoneyline_team(test(betInfo[7]));
                   }
                 }}
                 checked={moneyline === betInfo[9]}

@@ -2,7 +2,6 @@ import { useState } from "react";
 import axios from "axios";
 import styles from "./Header.module.css";
 import Link from "next/link";
-import * as FiIcons from "react-icons/fi";
 import { useAppContext } from "./GlobalContext";
 function Header() {
   const [seeMore, setSeeMore] = useState(false);

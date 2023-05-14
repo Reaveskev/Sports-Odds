@@ -15,6 +15,42 @@
   padding-top: 100px;
 }
 
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pageNumber {
+  margin: 0 10px;
+  font-size: 14px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 14px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #f2f2f2;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #d6d6d6;
+}
+
+.game_unfinished {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .profile_title {
   display: flex;
   align-items: center;
