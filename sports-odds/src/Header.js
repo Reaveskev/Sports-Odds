@@ -88,6 +88,11 @@ function Header() {
             ) : null}
           </div>
         </li>
+        <li className={styles.li}>
+          <Link className={styles.link} href="/SportsTrivia">
+            Sports Trivia
+          </Link>
+        </li>
 
         {user ? (
           <div className={styles.login_or_profile}>
@@ -187,6 +192,11 @@ function Header() {
                 </div>
               ) : null}
             </div>
+          </li>
+          <li className={styles.li}>
+            <Link className={styles.link} href="/SportsTrivia">
+              Sports Trivia
+            </Link>
           </li>
 
           {user ? (

@@ -14,14 +14,8 @@ function Login() {
   const [l_name, setL_name] = useState("");
   const [error, setError] = useState("");
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
-  const {
-    user,
-    setUser,
-    setAllBets,
-    setAllBetsOutcome,
-    setAllTransactions,
-    allTransactions,
-  } = useAppContext();
+  const { setUser, setAllBets, setAllBetsOutcome, setAllTransactions } =
+    useAppContext();
   let url = "https://sports-odds.herokuapp.com/api/login_to_db";
   let url2 = "https://sports-odds.herokuapp.com/api/seeBets";
   let url3 = "https://sports-odds.herokuapp.com/api/seeBetsOutcome";

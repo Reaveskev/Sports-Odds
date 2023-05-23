@@ -147,7 +147,6 @@
 .featured_odds {
   width: auto;
   display: flex;
-  /* flex-direction: row; */
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
@@ -256,7 +255,6 @@
 .odds_container {
   width: 25%;
   float: left;
-  /* padding-right: 15%; */
   padding-right: 5%;
   white-space: nowrap;
 }
@@ -291,7 +289,6 @@
 }
 
 .mobile_tab {
-  /* height: 20px; */
   margin: 5px;
   background-color: #222223;
   border: none;
@@ -303,6 +300,10 @@
   transition: background-color 0.3s ease;
 }
 
+.mobile_tab:hover {
+  background-color: #363637;
+}
+
 .mobile_tab:active {
   background-color: #181818;
 }
@@ -311,33 +312,7 @@
 @media only screen and (max-width: 480px) {
   .games {
     width: 100%;
-    /* height: auto; */
-    /* margin: 3px 0; */
-    /* border: none;  */
   }
-  /* 
-  .teamContainer {
-    margin-right: 10px;
-  }
-
-  .logo {
-    width: 20px;
-    height: 20px;
-  }
-
-  .time,
-  .date {
-    font-size: 8px;
-  }
-
-  .teamName {
-    margin: 0;
-    font-size: 10px;
-  }
-
-  .record {
-    padding-right: 5px;
-  } */
 
   .newInfo {
     width: 100%;
@@ -368,6 +343,11 @@
     display: none;
   }
 
+  .odds_container {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
   .standing_div,
   .new_div,
   .odds_container {
@@ -396,8 +376,8 @@
   .standing_div {
     width: 100% !important;
     float: left !important;
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
   }
 
   .test {
@@ -414,7 +394,6 @@
     position: absolute;
   }
   .mobile_tab {
-    /* height: 20px; */
     margin: 5px;
     background-color: #222223;
     border: none;
@@ -432,11 +411,6 @@
 }
 
 @media only screen and (max-width: 1490px) {
-  /* .games {
-    width: calc(50% - 6px);
-    margin: 3px;
-  } */
-
   .Pic {
     width: 100%;
   }
@@ -446,8 +420,8 @@
   .standing_div {
     width: 100% !important;
     float: left !important;
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
   }
 
   .test {
@@ -464,7 +438,6 @@
     position: absolute;
   }
   .mobile_tab {
-    /* height: 20px; */
     margin: 5px;
     background-color: #222223;
     border: none;

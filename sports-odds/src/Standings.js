@@ -6,7 +6,7 @@ const Standings = ({ standings }) => {
     <div className={styles.standing_div}>
       <div className={styles.news}>
         <h1 className={styles.upcoming}>Standings</h1>
-        <div style={{ width: 350 }} className={styles.Standings}>
+        <div className={styles.Standings}>
           {standings ? (
             <div>
               {standings.map((conference, i) => (
@@ -27,11 +27,6 @@ const Standings = ({ standings }) => {
                       style={{ width: 80, marginRight: 10, fontWeight: "bold" }}
                     >
                       Wins/Losses
-                    </p>
-                    <p
-                      style={{ width: 90, marginRight: 10, fontWeight: "bold" }}
-                    >
-                      Champion Odds
                     </p>
                   </div>
                   <ul>
@@ -61,14 +56,6 @@ const Standings = ({ standings }) => {
                           }}
                         >
                           W: {team.wins}/ L: {team.losses}
-                        </span>
-                        <span
-                          style={{
-                            marginRight: 15,
-                            width: 90,
-                          }}
-                        >
-                          Odds: {team.championship_odds}
                         </span>
                       </li>
                     ))}

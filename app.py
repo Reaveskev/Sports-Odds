@@ -4,6 +4,7 @@ from flask import Flask, jsonify, send_from_directory, request, session
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
+from flask import g
 import mysql.connector
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -21,8 +22,6 @@ app.debug = True
 cors = CORS(app, support_credentials=True)
 # Browser Driver
 
-
-
 # Local do these 
 # options = Options()
 # options.add_argument("--headless")
@@ -38,8 +37,6 @@ chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
-
-
 
 # MySql ####################
 
@@ -420,7 +417,7 @@ def dropbox_upload():
 @app.route('/api/featured')
 def scrape_featured_Odd():
     
-
+    
     url = "https://sports.yahoo.com/featured/odds/"
     driver.get(url)
     wait = WebDriverWait(driver, .1)
@@ -554,13 +551,14 @@ def scrape_featured_Odd():
 
 @app.route('/api/Odds/<league>')
 def scrape_Odds(league):
+    
     sport = ["mlb", "nhl", "college-basketball", "nba", "nfl", "college-football", "wnba"]
     if league not in sport:
         return jsonify({'error': 'Input a valid sports league'}), 400
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
 
-
+  
     driver.get(url)
     wait = WebDriverWait(driver, .1)
     #  wait = WebDriverWait(driver, 5)
@@ -888,15 +886,13 @@ def scrape_Odds(league):
        
 
     # driver.quit()
-    print("The driver has been closed")
     Upcoming = {}
     Upcoming["Upcoming"] = upcoming_games
     Inprogress = {}
     Inprogress["Inprogress"] = inprogress_games
     Final = {}
     Final["Final"] = final_games
-    
-    
+
     return jsonify(Upcoming,Inprogress,Final)
 
 
@@ -927,7 +923,7 @@ def scrape_Standing(sport):
         conference = x.find("th",{"class":"Py(6px) Px(4px) Ta(end) Ta(start)!"} ).text
         tbody =  x.find("tbody")
         rows = tbody.find_all('tr')
-        
+   
         standings = []
         
         for row in rows:
@@ -937,7 +933,7 @@ def scrape_Standing(sport):
             else:
                 img = spans[0].find("img")["style"]
             img_url = img.split('background-image:url(')[-1].split(')')[0]
-            champ_odds = spans[-1].text
+            
             team_name = spans[1].text
             td = row.findAll("td")
             if sport == "nhl":
@@ -950,12 +946,13 @@ def scrape_Standing(sport):
                          "team_name": team_name,
                          "wins": wins,
                          "losses": losses,
-                         "championship_odds": champ_odds }
+                         }
             standings.append(team_info)
             
         conference_data = {"conference": conference, "teams": standings}
         standings_data.append(conference_data)
-            
+
+       
     return jsonify(standings_data)
  
 

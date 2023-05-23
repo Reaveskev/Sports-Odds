@@ -143,6 +143,7 @@ function Profile() {
           // let urladd = "http://127.0.0.1:5000/api/addBetOutcome";
 
           axios.post(urladd, post).then((res) => {
+            console.log(post);
             if (res.status === 200) {
               let url3 = "https://sports-odds.herokuapp.com/api/seeBetsOutcome";
               // let url3 = "http://127.0.0.1:5000/api/seeBetsOutcome";

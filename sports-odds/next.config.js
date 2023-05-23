@@ -38,6 +38,7 @@ const nextConfig = {
       "/WCBB": { page: "/WCBB" },
       "/login": { page: "/login" },
       "/profile": { page: "/profile" },
+      "/SportsTrivia": { page: "/SportsTrivia" },
     };
   },
 };
