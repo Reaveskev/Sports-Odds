@@ -111,7 +111,6 @@ const SportsTrivia = () => {
             className={styles.form_select}
             onChange={(e) => {
               setDifficulty(e.target.value);
-              console.log(difficulty);
             }}
           >
             <option value="">Any Difficulty</option>
@@ -127,7 +126,6 @@ const SportsTrivia = () => {
             value={questionType}
             onChange={(e) => {
               setQuestionType(e.target.value);
-              console.log(questionType);
             }}
           >
             <option value="">Any Type</option>

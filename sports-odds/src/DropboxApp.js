@@ -19,11 +19,13 @@ const DropboxApp = () => {
     const response = await axios.post(dropBox, formData);
 
     // const data = await response.json();
+
     const data = response.data;
 
     let oldimage = data.url;
 
     const image = oldimage.replace("dl=0", "raw=1");
+
     let update_url = "https://sports-odds.herokuapp.com/api/update_image";
     // let update_url = "http://127.0.0.1:5000/api/update_image";
 
