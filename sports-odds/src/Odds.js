@@ -324,7 +324,7 @@ const Odds = ({
                                     game.home.record,
                                     game.home.moneyline,
                                     game.home.point_spread,
-                                    game.home.point_spread,
+                                    game.home.total_points,
                                     game.home.start_time,
                                     league,
                                     sport,

@@ -4,7 +4,6 @@ from flask import Flask, jsonify, send_from_directory, request, session
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
-from flask import g
 import mysql.connector
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -52,7 +51,7 @@ app.config['DROPBOX_ACCESS_TOKEN'] = os.environ.get('DROPBOX_ACCESS_TOKEN')
 # app.config['MYSQL_USER'] = "root"
 # app.config['MYSQL_PASSWORD'] = "Upshaw123!"
 # app.config['MYSQL_HOST'] = "localhost"
-# app.config['MYSQL_DB'] = "sports_odds"
+# app.config['MYSQL_DB'] = "sports_odds"s
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # app.config['SECRET_KEY'] = 'mysecretkey'
 

@@ -108,6 +108,7 @@ const Bet = ({ setOpenBet }) => {
         .then((res) => {
           if (res.status === 200) {
             setMessage("Your bet has been added to your account!");
+
             setTimeout(() => {
               setPotential();
               setMoneyline();
