@@ -121,9 +121,9 @@ function NFL() {
     <div>
       <Header />
       {loading ? (
-        <>
+        <div style={{ height: "100vh", important: true }}>
           <WhistleLoader />
-        </>
+        </div>
       ) : (
         <>
           <div style={offseason ? { justifyContent: "center" } : null}>

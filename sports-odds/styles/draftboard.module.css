@@ -1,0 +1,196 @@
+.draft_board_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.draft_board_pick {
+  background: lightgrey;
+  width: 143px;
+  height: 83px;
+  /* border-radius: 5px; */
+}
+
+.draft_board_pick_div {
+  display: flex;
+  align-items: center;
+  background: lightgrey;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  justify-content: center;
+  flex-direction: column;
+}
+.draft_board_table th,
+.draft_board_table td {
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+}
+
+.draft_board_table th {
+  background-color: #f2f2f2;
+}
+
+.player_options {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.player_options li {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.player_options li:hover {
+  background-color: #eaf5ff;
+}
+
+.player_options li.hovered_player {
+  background-color: #c5d9e8;
+}
+
+.draft_board_container {
+  display: flex;
+  margin: 20px;
+}
+
+.draft_board_table {
+  flex: 1 1 80%;
+  margin-right: 10px;
+}
+
+.available_players {
+  flex: 1 1 20%;
+  display: flex;
+  color: #fff;
+  margin-right: 10px;
+  background: #222223;
+  flex-direction: column;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  border-radius: 12px;
+  align-items: center;
+}
+
+.scrollable {
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid rgb(241, 241, 241);
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: rgb(69, 68, 68);
+}
+
+.position_buttons {
+  width: 30px;
+  margin: 0 5px 0 5px;
+  cursor: pointer;
+}
+
+.rank_vs_adp {
+  cursor: pointer;
+}
+
+.button_div {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 10px 0;
+}
+
+.listitems {
+  padding: 2px 0 2px 0;
+}
+
+.search {
+  width: 156px;
+  margin: 10px 0 10px 0;
+}
+
+.align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.selected_team_players ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.selected_team_players li {
+  list-style-type: none;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.selected_team_players h5 {
+  margin: 5px 0;
+}
+
+.selected_team_players h4 {
+  padding-bottom: 10px;
+}
+
+/* Additional Styles (Modify as needed) */
+.selected_team_players {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 15px;
+  border-radius: 4px;
+}
+
+.selected_team_players ul {
+  padding-left: 20px;
+}
+
+.team_dropdown {
+  margin: 10px 0;
+}
+
+.selected {
+  background-color: #605e5e !important;
+  color: white;
+}
+
+.FF_formContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.FF_label {
+  padding-right: 10px;
+}
+
+.FF_button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.FF_button:hover {
+  background-color: #0056b3;
+}
+
+.FF_input {
+  margin-right: 10px;
+  text-align: center;
+  max-width: 50px;
+}

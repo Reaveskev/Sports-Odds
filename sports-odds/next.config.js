@@ -39,6 +39,7 @@ const nextConfig = {
       "/login": { page: "/login" },
       "/profile": { page: "/profile" },
       "/SportsTrivia": { page: "/SportsTrivia" },
+      "/FF": { page: "/FF" },
     };
   },
 };

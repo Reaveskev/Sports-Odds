@@ -55,9 +55,9 @@ const HomePage = () => {
   return (
     <div>
       {loading ? (
-        <>
+        <div style={{ height: "100vh", important: true }}>
           <WhistleLoader />
-        </>
+        </div>
       ) : (
         <>
           {inprogress ? (

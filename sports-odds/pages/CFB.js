@@ -44,9 +44,9 @@ const CFB = () => {
     <div>
       <Header />
       {loading ? (
-        <>
+        <div style={{ height: "100vh", important: true }}>
           <WhistleLoader />
-        </>
+        </div>
       ) : (
         <>
           <div className={styles.offseason}>
