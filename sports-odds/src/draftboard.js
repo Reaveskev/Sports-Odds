@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/draftboard.module.css";
 import axios from "axios";
+import * as FaIcons from "react-icons/fa";
+import * as AiIcons from "react-icons/ai";
 import WhistleLoader from "@/src/Loading";
 
 const DraftBoard = ({ numPlayers, numRounds }) => {
@@ -19,29 +21,113 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
   const [sortByRank, setSortByRank] = useState(true);
   const [sortByADP, setSortByADP] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [seePlayers, setSeePlayers] = useState(true);
+  const [seeRoster, setSeeRosters] = useState(false);
+  const [seeWishlist, setSeeWishlist] = useState(false);
+  const [wishlist, setWishlist] = useState([]);
 
   const positionSlots = ["QB", "RB", "WR", "TE", "K", "DST"];
 
   const url =
     "https://us-central1-fantasy-football-389122.cloudfunctions.net/Google_sheet";
 
+  ////
+  const getPlayerStatsByPosition = (position, data) => {
+    switch (position.toLowerCase()) {
+      case "qb":
+        return data.slice(0, 9);
+      case "k":
+        return data.slice(0, 6);
+      case "def":
+        return data.slice(0, 7);
+      case "rb":
+        return data.slice(0, 8);
+      default:
+        // For WR, TE
+        return data.slice(0, 10);
+    }
+  };
+
+  ///
+
   useEffect(() => {
     axios
       .get(url)
       .then((response) => {
         const data = response.data;
-        const fetchedPlayers = data.map(
-          ([rank, name, position, team, adp, bye]) => [
-            parseInt(rank),
-            name,
-            position,
-            team,
-            parseInt(adp),
-            bye,
-          ]
+
+        // const fetchedPlayers = data.map(
+        //   ([rank, name, position, team, adp, bye]) => [
+        //     parseInt(rank),
+        //     name,
+        //     position,
+        //     team,
+        //     parseInt(adp),
+        //     bye,
+        //   ]
+        // );
+        const formattedPlayers = data.map(
+          ([rank, name, position, team, adp, bye, ...statsAndProjections]) => {
+            let stats;
+            let projections;
+            if (position === "RB" || position === "QB") {
+              statsAndProjections.splice(-2);
+              stats = getPlayerStatsByPosition(
+                position,
+                statsAndProjections.slice(0, 9)
+              );
+              projections = statsAndProjections.slice(8, -1); // Get projections from index 8 to second to last element
+            } else if (position === "WR" || position === "TE") {
+              stats = getPlayerStatsByPosition(
+                position,
+                statsAndProjections.slice(0, 9)
+              );
+              projections = statsAndProjections.slice(9, -1); // Get projections from index 9 to second to last element
+            } else if (position === "K") {
+              statsAndProjections.splice(-2);
+              stats = getPlayerStatsByPosition(
+                position,
+                statsAndProjections.slice(0, 6)
+              );
+              projections = statsAndProjections.slice(6, -1); // Get projections from index 9 to second to last element
+            } else {
+              statsAndProjections.splice(-2);
+              stats = getPlayerStatsByPosition(
+                position,
+                statsAndProjections.slice(0, 9)
+              );
+              projections = statsAndProjections.slice(9, -1); // Get projections from index 9 to second to last element
+            }
+
+            const outlook = statsAndProjections[statsAndProjections.length - 1]; // Get the last element as outlook
+
+            return {
+              rank: parseInt(rank),
+              name,
+              position,
+              team,
+              adp: parseInt(adp),
+              bye,
+              stats: Object.fromEntries(
+                stats.map((stat, index) => [`stat${index + 1}`, stat])
+              ),
+              projections: Object.fromEntries(
+                projections.map((projection, index) => [
+                  `projection${index + 1}`,
+                  projection,
+                ])
+              ),
+              outlook,
+            };
+          }
         );
+
+        console.log(formattedPlayers);
+
+        ////////
         setLoading(false);
-        setAvailablePlayers(fetchedPlayers);
+        setAvailablePlayers(formattedPlayers);
+        // setAvailablePlayers(fetchedPlayers);
       })
       .catch((error) => {
         console.error(error);
@@ -151,6 +237,10 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
         bye: selectedPlayerInfo[5],
       },
     ]);
+    // Remove the selected player from the wishlist
+    setWishlist((prevWishlist) =>
+      prevWishlist.filter((p) => p[1] !== selectedPlayer)
+    );
     buttonPressed();
     handleNextTurn();
     setSelectedPlayer("");
@@ -170,6 +260,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
       if (nextRoundIndex >= numRounds) {
         setIsDraftFinished(true);
         alert("Reached the end of the draft 1");
+        return;
         // Perform any necessary actions or handle end of draft logic here
       }
 
@@ -191,7 +282,9 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
     const filterAvailablePlayers = () => {
       const allPlayers = [
         ...availablePlayers,
-        ...draftedPlayers.map((player) => [player, "", ""]),
+        ...(draftedPlayers.length > 0
+          ? draftedPlayers.map((player) => player.player)
+          : []),
       ];
 
       let sortedPlayers;
@@ -236,109 +329,356 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
     player[1].toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  ///
+
+  const handleAddToWishlist = (playerInfo) => {
+    if (wishlist.some((p) => p[1] === playerInfo[1])) {
+      setWishlist((prevWishlist) =>
+        prevWishlist.filter((p) => p[1] !== playerInfo[1])
+      );
+    } else {
+      setWishlist((prevWishlist) => [...prevWishlist, playerInfo]);
+    }
+  };
+
+  const isPlayerInWishlist = (playerInfo) => {
+    return wishlist.some((p) => p[1] === playerInfo[1]);
+  };
+
+  ////
+
   return (
     <div className={styles.draft_board_container}>
       <div className={styles.available_players}>
-        <h3 className={styles.align}>Available Players</h3>
-        <div className={styles.button_div}>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("")}
-          >
-            All
-          </button>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("RB")}
-          >
-            RB
-          </button>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("WR")}
-          >
-            WR
-          </button>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("QB")}
-          >
-            QB
-          </button>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("TE")}
-          >
-            TE
-          </button>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("K")}
-          >
-            K
-          </button>
-          <button
-            className={styles.position_buttons}
-            onClick={() => handlePositionFilter("DEF")}
-          >
-            DEF
-          </button>
-        </div>
-        <input
-          type="text"
-          placeholder="Search player..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-          className={styles.search}
-        />
-
-        <ul className={styles.list}>
-          <li
+        <div className={styles.align} style={{ padding: "10px 10px" }}>
+          <div
+            onClick={() => {
+              setSeePlayers(true);
+              setSeeRosters(false);
+              setSeeWishlist(false);
+            }}
+            className={styles.categories}
             style={{
-              listStyleType: "none",
-              minWidth: 250,
+              borderLeft: "1px solid white",
+              color: !seePlayers ? "gray" : "white",
             }}
           >
+            <FaIcons.FaList />
+            <span>Available Players</span>
+          </div>
+          <div
+            onClick={() => {
+              setSeePlayers(false);
+              setSeeRosters(true);
+              setSeeWishlist(false);
+            }}
+            className={styles.categories}
+            style={{
+              color: !seeRoster ? "gray" : "white",
+            }}
+          >
+            <FaIcons.FaUsers />
+            <span>Rosters</span>
+          </div>
+          <div
+            onClick={() => {
+              setSeePlayers(false);
+              setSeeRosters(false);
+              setSeeWishlist(true);
+            }}
+            className={styles.categories}
+            style={{
+              color: !seeWishlist ? "gray" : "white",
+            }}
+          >
+            <FaIcons.FaHeart />
+            <span>Wishlist</span>
+          </div>
+        </div>
+        {seePlayers ? (
+          <div className={styles.available_players}>
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
+              style={{ borderBottom: "1px solid #f1f1f1" }}
+              className={styles.button_div}
             >
-              <div
-                className={styles.rank_vs_adp}
-                onClick={() => {
-                  setSortByRank(true);
-                  setSortByADP(false);
-                }}
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("")}
               >
-                No.
-              </div>
-              <div>Player</div>
-              <div
-                className={styles.rank_vs_adp}
-                onClick={() => {
-                  setSortByRank(false);
-                  setSortByADP(true);
-                }}
-                style={{ paddingRight: "1rem" }}
+                All
+              </button>
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("RB")}
               >
-                ADP
-              </div>
+                RB
+              </button>
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("WR")}
+              >
+                WR
+              </button>
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("QB")}
+              >
+                QB
+              </button>
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("TE")}
+              >
+                TE
+              </button>
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("K")}
+              >
+                K
+              </button>
+              <button
+                className={styles.position_buttons}
+                onClick={() => handlePositionFilter("DEF")}
+              >
+                DEF
+              </button>
             </div>
-          </li>
+            <input
+              type="text"
+              placeholder="Search player..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className={styles.search}
+            />
 
-          <div className={styles.scrollable}>
-            {loading ? (
-              <li style={{ height: 500 }}>
-                <WhistleLoader />
+            <ul className={styles.list}>
+              <li
+                style={{
+                  listStyleType: "none",
+                  minWidth: 250,
+                }}
+              >
+                <div
+                  style={{ borderTop: "1px solid #f1f1f1", padding: "10 0" }}
+                  className={styles.available_players_header}
+                >
+                  <div
+                    style={{ paddingLeft: "0.5rem" }}
+                    className={styles.rank_vs_adp}
+                    onClick={() => {
+                      setSortByRank(true);
+                      setSortByADP(false);
+                    }}
+                  >
+                    No.
+                  </div>
+                  <div>Player</div>
+                  <div
+                    className={styles.rank_vs_adp}
+                    onClick={() => {
+                      setSortByRank(false);
+                      setSortByADP(true);
+                    }}
+                    style={{ paddingRight: "1rem" }}
+                  >
+                    ADP
+                  </div>
+                </div>
               </li>
+
+              <div className={styles.scrollable}>
+                {loading ? (
+                  <li style={{ height: 500 }}>
+                    <WhistleLoader />
+                  </li>
+                ) : (
+                  <>
+                    {searchFilteredPlayers.map((player, index) => (
+                      <li
+                        key={index}
+                        onClick={() => {
+                          if (isDraftFinished) return;
+
+                          handlePlayerSelection(player[1]);
+                        }}
+                        className={
+                          selectedPlayer === player[1] ? styles.selected : ""
+                        }
+                        style={{
+                          listStyleType: "none",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "10px 0",
+                          }}
+                        >
+                          <div
+                            style={{
+                              paddingLeft: "0.5rem",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {player[0]}.
+                          </div>
+                          <div>
+                            {isPlayerInWishlist(player) ? (
+                              <AiIcons.AiFillHeart
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddToWishlist(player);
+                                }}
+                                style={{ color: "#ff0040" }}
+                              />
+                            ) : (
+                              <AiIcons.AiOutlineHeart
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddToWishlist(player);
+                                }}
+                                style={{ color: "#ff0040" }}
+                              />
+                            )}
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              minWidth: 150,
+                              cursor: "pointer",
+                            }}
+                          >
+                            <span>{player[1]}</span>
+
+                            <span style={{ fontSize: 11 }}>
+                              {player[2]} ({player[3]}) - Bye {player[5]}
+                            </span>
+                          </div>
+                          <span style={{ paddingRight: "0.5rem" }}>
+                            {player[4]}.
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </>
+                )}
+              </div>
+            </ul>
+
+            {!selectedPlayer ? (
+              <button
+                style={{
+                  margin: "10px 0",
+                  padding: "5px 10px",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 5,
+                  cursor: "not-allowed",
+                }}
+                onClick={handlePlayerDraft}
+                disabled={!selectedPlayer}
+              >
+                Draft Player
+              </button>
             ) : (
-              <>
-                {searchFilteredPlayers.map((player, index) => (
+              <button
+                style={{
+                  margin: "10px 0",
+                }}
+                className={styles.FF_button}
+                onClick={handlePlayerDraft}
+                disabled={!selectedPlayer}
+              >
+                Draft Player
+              </button>
+            )}
+          </div>
+        ) : null}
+
+        {seeRoster ? (
+          <div className={styles.available_players}>
+            <>
+              <select
+                value={selectedTeamIndex}
+                onChange={(e) => setSelectedTeamIndex(parseInt(e.target.value))}
+                className={styles.team_dropdown}
+              >
+                <option value={-1}>Select a team</option>
+                {teamNames.map((name, index) => (
+                  <option key={index} value={index}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+
+              {selectedTeamIndex !== -1 && (
+                <div className={styles.selected_team_players}>
+                  <h4>Players Drafted by {teamNames[selectedTeamIndex]}</h4>
+                  {positionSlots.map((position, index) => {
+                    const players = selectedTeamPlayers.filter(
+                      (p) => p.position === position
+                    );
+
+                    return (
+                      <div key={index}>
+                        <h5>{position}</h5>
+                        <ul className={styles.list}>
+                          {players.map((player, index) => (
+                            <li key={index}>
+                              {player.player} - Bye {player.bye}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          </div>
+        ) : null}
+
+        {seeWishlist ? (
+          <div className={styles.available_players}>
+            <h2>Wishlist</h2>
+            <ul>
+              <li
+                style={{
+                  listStyleType: "none",
+                  minWidth: 250,
+                }}
+              >
+                <div
+                  style={{ borderTop: "1px solid #f1f1f1", padding: "10 0" }}
+                  className={styles.available_players_header}
+                >
+                  <div
+                    style={{ paddingLeft: "0.5rem" }}
+                    className={styles.rank_vs_adp}
+                  >
+                    No.
+                  </div>
+                  <div>Player</div>
+                  <div
+                    className={styles.rank_vs_adp}
+                    style={{ paddingRight: "1rem" }}
+                  >
+                    ADP
+                  </div>
+                </div>
+              </li>
+              {wishlist
+                .sort((a, b) => a[0] - b[0]) // Sort wishlist by rank number
+                .map((player, index) => (
                   <li
                     key={index}
+                    style={{
+                      listStyleType: "none",
+                    }}
                     onClick={() => {
                       if (isDraftFinished) return;
 
@@ -347,9 +687,6 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                     className={
                       selectedPlayer === player[1] ? styles.selected : ""
                     }
-                    style={{
-                      listStyleType: "none",
-                    }}
                   >
                     <div
                       style={{
@@ -357,14 +694,35 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                         alignItems: "center",
                         justifyContent: "space-between",
                         padding: "10px 0",
+                        width: 280,
                       }}
                     >
-                      <div>{player[0]}.</div>
+                      <div style={{ paddingLeft: "0.5rem" }}>{player[0]}.</div>
+                      <div>
+                        {isPlayerInWishlist(player) ? (
+                          <AiIcons.AiFillHeart
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToWishlist(player);
+                            }}
+                            style={{ color: "#ff0040" }}
+                          />
+                        ) : (
+                          <AiIcons.AiOutlineHeart
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToWishlist(player);
+                            }}
+                            style={{ color: "#ff0040" }}
+                          />
+                        )}
+                      </div>
                       <div
                         style={{
                           display: "flex",
                           flexDirection: "column",
                           minWidth: 150,
+                          cursor: "pointer",
                         }}
                       >
                         <span>{player[1]}</span>
@@ -378,66 +736,55 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                     </div>
                   </li>
                 ))}
-              </>
+            </ul>
+            {!selectedPlayer ? (
+              <button
+                style={{
+                  margin: "10px 0",
+                  padding: "5px 10px",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 5,
+                  cursor: "not-allowed",
+                }}
+                onClick={handlePlayerDraft}
+                disabled={!selectedPlayer}
+              >
+                Draft Player
+              </button>
+            ) : (
+              <button
+                style={{
+                  margin: "10px 0",
+                }}
+                className={styles.FF_button}
+                onClick={handlePlayerDraft}
+                disabled={!selectedPlayer}
+              >
+                Draft Player
+              </button>
             )}
           </div>
-        </ul>
-
-        <button
-          style={{
-            margin: "10px 0",
-          }}
-          onClick={handlePlayerDraft}
-          disabled={!selectedPlayer}
-        >
-          Draft Player
-        </button>
-        <select
-          value={selectedTeamIndex}
-          onChange={(e) => setSelectedTeamIndex(parseInt(e.target.value))}
-          className={styles.team_dropdown}
-        >
-          <option value={-1}>Select a team</option>
-          {teamNames.map((name, index) => (
-            <option key={index} value={index}>
-              {name}
-            </option>
-          ))}
-        </select>
-        {selectedTeamIndex !== -1 && (
-          <div className={styles.selected_team_players}>
-            <h4>Players Drafted by {teamNames[selectedTeamIndex]}</h4>
-            {positionSlots.map((position, index) => {
-              const players = selectedTeamPlayers.filter(
-                (p) => p.position === position
-              );
-
-              return (
-                <div key={index}>
-                  <h5>{position}</h5>
-                  <ul className={styles.list}>
-                    {players.map((player, index) => (
-                      <li key={index}>
-                        {player.player} - Bye {player.bye}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
-        )}
+        ) : null}
       </div>
 
       <div className={styles.draft_board_table}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <span className={styles.on_the_clock}>
+            {isDraftFinished
+              ? "Draft is over!"
+              : `${teamNames[teamNameIndex]}'s ON THE CLOCK`}
+          </span>
+        </div>
         <table className={styles.draft_board_table}>
           <thead>
             <tr>
-              <th>
-                {isDraftFinished
-                  ? "Draft is over!"
-                  : `${teamNames[teamNameIndex]}'s Turn`}
-              </th>
               {teamNames.map((name, index) => (
                 <th
                   key={index}
@@ -456,12 +803,8 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
           <tbody>
             {Array.from({ length: numRounds }, (_, roundIndex) => (
               <tr key={roundIndex}>
-                <td className={styles.draft_board_pick}>
-                  Round {roundIndex + 1}
-                </td>
                 {teamPlayers.map((team, teamIndex) => {
                   const player = team[roundIndex];
-
                   const [rank, name, position, teamname, adp, bye] =
                     availablePlayers.find((p) => p[1] === player) || [];
 

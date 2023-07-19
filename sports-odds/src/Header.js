@@ -203,6 +203,11 @@ function Header() {
               Sports Trivia
             </Link>
           </li>
+          <li className={styles.li}>
+            <Link className={styles.link} href="/FF">
+              FF
+            </Link>
+          </li>
 
           {user ? (
             <div className={styles.login_or_profile}>

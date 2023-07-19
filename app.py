@@ -904,10 +904,12 @@ def scrape_Standing(sport):
         
     if sport == "mlb":
         url = "https://sports.yahoo.com/mlb/standings/?selectedTab=EXPANDED"
+    elif sport == "wnba":
+        url = "https://sports.yahoo.com/wnba/standings/?selectedTab=EXPANDED"
     elif sport == "nfl":
-        url = "https://sports.yahoo.com/nfl/standings/?selectedTab=PLAYOFFS"
+        url = "https://sports.yahoo.com/nfl/standings/?selectedTab=EXPANDED"
     elif sport == "nhl":
-        url = "https://sports.yahoo.com/nhl/standings/?selectedTab=CONFERENCE"
+        url = "https://sports.yahoo.com/nhl/standings/?selectedTab=EXPANDED"
     else:
         url = 'https://sports.yahoo.com/{}/standings/'.format(sport)
 
@@ -952,6 +954,8 @@ def scrape_Standing(sport):
         conference_data = {"conference": conference, "teams": standings}
         standings_data.append(conference_data)
 
+    
+    print(standings_data)
        
     return jsonify(standings_data)
  

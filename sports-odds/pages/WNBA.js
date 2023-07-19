@@ -77,6 +77,21 @@ function WNBA() {
     loadPageData();
   }, []);
 
+  const abbrev = {
+    "Atlanta Dream": "Atl",
+    "Dallas Wings": "Dal",
+    "Chicago Sky": "Chi",
+    "Connecticut Sun": "Con",
+    "Indiana Fever": "Ind",
+    "New York Liberty": "NY",
+    "Washington Mystics": "Wsh",
+    "Las Vegas Aces": "LV",
+    "Los Angeles Sparks": "LA",
+    "Minnesota Lynx": "Min",
+    "Phoenix Mercury": "Phx",
+    "Seattle Storms": "Sea",
+  };
+
   return (
     <div>
       <Header />

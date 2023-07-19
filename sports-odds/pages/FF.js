@@ -42,7 +42,11 @@ const FF = () => {
           onChange={(e) => setTempNumRounds(parseInt(e.target.value))}
         />
         <br />
-        <button className={styles.FF_button} onClick={handleButtonClick}>
+        <button
+          styles={{ marginLeft: 10 }}
+          className={styles.FF_button}
+          onClick={handleButtonClick}
+        >
           Update Draft Board
         </button>
       </div>
