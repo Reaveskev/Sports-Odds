@@ -1,0 +1,81 @@
+/* Styling for the overlay */
+.overlay {
+  position: fixed;
+  z-index: 6;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /* overflow: auto; */
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Styling for the player stats container */
+.stats_container {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  display: block;
+  font-size: 14px;
+  border-radius: 10px;
+  height: auto;
+  /* Vertical */
+  /* width: 334px; */
+  /* margin: 5% auto */
+
+  /* Horizontal */
+  width: 845px;
+  margin: 15% auto;
+  padding: 20px;
+}
+
+/* Styling for the close button */
+.close_btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Styling for the player name and position */
+.player_info {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+
+/* Styling for player name */
+.player_name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Styling for player position */
+.player_position {
+  font-size: 16px;
+}
+
+/* Styling for the stats and projections tables */
+.stats_table,
+.projections_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+/* Styling for table headers */
+.stats_table th,
+.projections_table th {
+  padding: 8px;
+  text-align: center;
+}
+
+/* Styling for table cells */
+.stats_table td,
+.projections_table td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Styling for the outlook text */
+.outlook_text {
+  margin-top: 10px;
+}

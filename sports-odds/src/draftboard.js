@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import styles from "@/styles/draftboard.module.css";
 import axios from "axios";
 import * as FaIcons from "react-icons/fa";
+import * as BiIcons from "react-icons/bi";
 import * as AiIcons from "react-icons/ai";
 import WhistleLoader from "@/src/Loading";
+import PlayerStats from "./PlayerStats";
 
 const DraftBoard = ({ numPlayers, numRounds }) => {
   const [teamNames, setTeamNames] = useState([]);
@@ -25,6 +27,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
   const [seeRoster, setSeeRosters] = useState(false);
   const [seeWishlist, setSeeWishlist] = useState(false);
   const [wishlist, setWishlist] = useState([]);
+  const [showStats, setShowStats] = useState(false);
 
   const positionSlots = ["QB", "RB", "WR", "TE", "K", "DST"];
 
@@ -43,40 +46,129 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
       case "rb":
         return data.slice(0, 8);
       default:
-        // For WR, TE
         return data.slice(0, 10);
     }
   };
 
-  ///
+  const generateCustomKeys = (position, statsLength, projectionsLength) => {
+    switch (position.toLowerCase()) {
+      case "qb":
+        return {
+          statsKeys: [
+            "Completion/Attempts",
+            "Passing Yards",
+            "Passing TD",
+            "Interception",
+            "Carries",
+            "Rushing Yards",
+            "Rushing TD",
+          ],
+          projectionsKeys: [
+            "Completion/Attempts",
+            "Passing Yards",
+            "Passing TD",
+            "Interception",
+            "Carries",
+            "Rushing Yards",
+            "Rushing TD",
+          ],
+        };
+      case "rb":
+        return {
+          statsKeys: [
+            "Carries",
+            "Rushing Yards",
+            "Average",
+            "Rushing TD",
+            "Receptions",
+            "Receiving Yards",
+            "Receiving TD",
+            "PPR Points",
+          ],
+          projectionsKeys: [
+            "Carries",
+            "Rushing Yards",
+            "Average",
+            "Rushing TD",
+            "Receptions",
+            "Receiving Yards",
+            "Receiving TD",
+            "PPR Points",
+          ],
+        };
+      case "k":
+        return {
+          statsKeys: ["1-39", "40-49", "50+", "TOT", "XP", "PPR Points"],
+          projectionsKeys: ["1-39", "40-49", "50+", "TOT", "XP", "PPR Points"],
+        };
+      case "def":
+        return {
+          statsKeys: ["SCK", "INT", "FR", "TD", "PA", "YA", "PPR Points"],
+          projectionsKeys: ["SCK", "INT", "FR", "TD", "PA", "YA", "PPR Points"],
+        };
+      default:
+        return {
+          statsKeys: [
+            "Targets",
+            "Receptions",
+            "Receiving Yards",
+            "Average",
+            "Receiving Td",
+            "Carries",
+            "Rushing Yard",
+            "Rushing TD",
+            "PPR Points",
+          ],
+          projectionsKeys: [
+            "Targets",
+            "Receptions",
+            "Receiving Yards",
+            "Average",
+            "Receiving Td",
+            "Carries",
+            "Rushing Yard",
+            "Rushing TD",
+            "PPR Points",
+          ],
+        };
+    }
+  };
 
   useEffect(() => {
     axios
       .get(url)
       .then((response) => {
         const data = response.data;
+        console.log(data);
 
-        // const fetchedPlayers = data.map(
-        //   ([rank, name, position, team, adp, bye]) => [
-        //     parseInt(rank),
-        //     name,
-        //     position,
-        //     team,
-        //     parseInt(adp),
-        //     bye,
-        //   ]
-        // );
         const formattedPlayers = data.map(
-          ([rank, name, position, team, adp, bye, ...statsAndProjections]) => {
+          ([
+            rank,
+            name,
+            position,
+            team,
+            adp,
+            bye,
+            image_url,
+            ...statsAndProjections
+          ]) => {
             let stats;
             let projections;
-            if (position === "RB" || position === "QB") {
-              statsAndProjections.splice(-2);
+            if (position === "RB") {
+              statsAndProjections.splice(-1);
               stats = getPlayerStatsByPosition(
                 position,
                 statsAndProjections.slice(0, 9)
               );
+
               projections = statsAndProjections.slice(8, -1); // Get projections from index 8 to second to last element
+            } else if (position === "QB") {
+              statsAndProjections.splice(-1);
+              stats = getPlayerStatsByPosition(
+                position,
+                statsAndProjections.slice(0, 9)
+              );
+              projections = statsAndProjections.slice(8, -1); // Get projections from index 9 to second to last element
             } else if (position === "WR" || position === "TE") {
               stats = getPlayerStatsByPosition(
                 position,
@@ -84,22 +176,38 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
               );
               projections = statsAndProjections.slice(9, -1); // Get projections from index 9 to second to last element
             } else if (position === "K") {
-              statsAndProjections.splice(-2);
+              statsAndProjections.splice(-1);
               stats = getPlayerStatsByPosition(
                 position,
                 statsAndProjections.slice(0, 6)
               );
               projections = statsAndProjections.slice(6, -1); // Get projections from index 9 to second to last element
             } else {
-              statsAndProjections.splice(-2);
+              statsAndProjections.splice(-1);
               stats = getPlayerStatsByPosition(
                 position,
-                statsAndProjections.slice(0, 9)
+                statsAndProjections.slice(0, 7)
               );
-              projections = statsAndProjections.slice(9, -1); // Get projections from index 9 to second to last element
+              projections = statsAndProjections.slice(7, -1); // Get projections from index 9 to second to last element
             }
 
             const outlook = statsAndProjections[statsAndProjections.length - 1]; // Get the last element as outlook
+
+            const customKeys = generateCustomKeys(position);
+
+            const formattedStats = Object.fromEntries(
+              stats.map((stat, index) => {
+                return [customKeys.statsKeys[index], stat];
+              })
+            );
+
+            // Create the projections object with custom keys
+            const formattedProjections = Object.fromEntries(
+              projections.map((projection, index) => [
+                customKeys.projectionsKeys[index],
+                projection,
+              ])
+            );
 
             return {
               rank: parseInt(rank),
@@ -108,26 +216,16 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
               team,
               adp: parseInt(adp),
               bye,
-              stats: Object.fromEntries(
-                stats.map((stat, index) => [`stat${index + 1}`, stat])
-              ),
-              projections: Object.fromEntries(
-                projections.map((projection, index) => [
-                  `projection${index + 1}`,
-                  projection,
-                ])
-              ),
+              image_url,
+              stats: formattedStats,
+              projections: formattedProjections,
               outlook,
             };
           }
         );
 
-        console.log(formattedPlayers);
-
-        ////////
         setLoading(false);
         setAvailablePlayers(formattedPlayers);
-        // setAvailablePlayers(fetchedPlayers);
       })
       .catch((error) => {
         console.error(error);
@@ -209,14 +307,25 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
     });
   };
 
-  const handlePlayerSelection = (playerName) => {
-    setSelectedPlayer(playerName);
+  const handlePlayerSelection = (player) => {
+    setSelectedPlayer(player);
   };
 
   const handlePlayerDraft = () => {
+    if (!selectedPlayer.name) {
+      // Handle the case where no player is selected
+      return;
+    }
+
     const selectedPlayerInfo = availablePlayers.find(
-      (p) => p[1] === selectedPlayer
+      (p) => p.name === selectedPlayer.name
     );
+
+    if (!selectedPlayerInfo) {
+      // Handle the case where the selected player is not found in availablePlayers
+      return;
+    }
+
     const updatedTeamPlayers = [...teamPlayers];
     const currentRoundIndex = Math.floor(currentPlayerIndex / numPlayers);
     const currentTeamIndex =
@@ -224,83 +333,83 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
         ? currentPlayerIndex % numPlayers
         : numPlayers - 1 - (currentPlayerIndex % numPlayers);
 
-    updatedTeamPlayers[currentTeamIndex][currentRoundIndex] = selectedPlayer;
+    updatedTeamPlayers[currentTeamIndex][currentRoundIndex] =
+      selectedPlayer.name;
     setTeamPlayers(updatedTeamPlayers);
 
     // Add the selected player and team index to draftedPlayers
     setDraftedPlayers((prevDraftedPlayers) => [
       ...prevDraftedPlayers,
       {
-        player: selectedPlayer,
-        position: selectedPlayerInfo[2],
+        player: selectedPlayerInfo, // Pass the player object instead of just the name
+        position: selectedPlayerInfo.position,
         teamIndex: currentTeamIndex,
-        bye: selectedPlayerInfo[5],
+        bye: selectedPlayerInfo.bye,
       },
     ]);
+
     // Remove the selected player from the wishlist
     setWishlist((prevWishlist) =>
-      prevWishlist.filter((p) => p[1] !== selectedPlayer)
+      prevWishlist.filter((p) => p.name !== selectedPlayer.name)
     );
+
     buttonPressed();
     handleNextTurn();
     setSelectedPlayer("");
   };
 
   const handleNextTurn = () => {
-    const currentRoundIndex = Math.floor(currentPlayerIndex / numPlayers);
-    const currentTeamIndex = currentPlayerIndex % numPlayers;
-    let nextPlayerIndex;
+    setCurrentPlayerIndex((prevIndex) => {
+      const currentRoundIndex = Math.floor(prevIndex / numPlayers);
+      const currentTeamIndex = currentRoundIndex % numPlayers;
+      let nextPlayerIndex;
 
-    if (currentTeamIndex === numPlayers - 1) {
-      // If it's the last team in the current round, increase the round index by 1
-      const nextRoundIndex = currentRoundIndex + 1;
+      if (currentTeamIndex === numPlayers - 1) {
+        // If it's the last team in the current round, increase the round index by 1
+        const nextRoundIndex = currentRoundIndex + 1;
 
-      setCurrentPlayerIndex(nextRoundIndex * numPlayers);
+        if (nextRoundIndex >= numRounds) {
+          setIsDraftFinished(true);
+          alert("Reached the end of the draft");
+          return prevIndex;
+          // Perform any necessary actions or handle end of draft logic here
+        }
 
-      if (nextRoundIndex >= numRounds) {
-        setIsDraftFinished(true);
-        alert("Reached the end of the draft 1");
-        return;
-        // Perform any necessary actions or handle end of draft logic here
+        nextPlayerIndex = nextRoundIndex * numPlayers;
+      } else {
+        // Move to the next team in the current round
+        nextPlayerIndex = prevIndex + 1;
       }
 
-      return;
-    }
-
-    // Move to the next team in the current round
-    nextPlayerIndex = currentPlayerIndex + 1;
-
-    setCurrentPlayerIndex(nextPlayerIndex % (numPlayers * numRounds));
-
-    if (nextPlayerIndex >= numPlayers * numRounds) {
-      alert("Reached the end of the draft 2");
-      // Perform any necessary actions or handle end of draft logic here
-    }
+      return nextPlayerIndex;
+    });
   };
 
   useEffect(() => {
     const filterAvailablePlayers = () => {
       const allPlayers = [
-        ...availablePlayers,
+        ...availablePlayers.map((player) => player.name),
         ...(draftedPlayers.length > 0
-          ? draftedPlayers.map((player) => player.player)
+          ? draftedPlayers.map((player) => player.name)
           : []),
       ];
 
       let sortedPlayers;
       if (sortByRank) {
-        sortedPlayers = allPlayers.sort((a, b) => a[0] - b[0]);
+        sortedPlayers = availablePlayers.sort((a, b) => a.rank - b.rank);
       } else if (sortByADP) {
-        sortedPlayers = allPlayers.sort((a, b) => a[4] - b[4]);
+        sortedPlayers = availablePlayers.sort((a, b) => a.adp - b.adp);
       } else {
-        sortedPlayers = allPlayers;
+        sortedPlayers = availablePlayers;
       }
 
       const filteredPlayers = sortedPlayers.filter(
         (player) =>
-          !teamPlayers.some((team) => team.includes(player[1])) &&
-          !draftedPlayers.includes(player[1]) &&
-          (positionFilter === "" || player[2] === positionFilter)
+          !teamPlayers.some((team) => team.includes(player.name)) &&
+          !draftedPlayers.some(
+            (draftedPlayer) => draftedPlayer.name === player.name
+          ) &&
+          (positionFilter === "" || player.position === positionFilter)
       );
 
       setFilteredPlayers(filteredPlayers);
@@ -325,16 +434,18 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
     setPositionFilter(position);
   };
 
-  const searchFilteredPlayers = filteredPlayers.filter((player) =>
-    player[1].toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const searchFilteredPlayers = filteredPlayers.filter((player) => {
+    const playerName = player.name.toLowerCase();
+    const query = searchQuery.toLowerCase();
 
+    return playerName.includes(query);
+  });
   ///
 
   const handleAddToWishlist = (playerInfo) => {
-    if (wishlist.some((p) => p[1] === playerInfo[1])) {
+    if (wishlist.some((p) => p.name === playerInfo.name)) {
       setWishlist((prevWishlist) =>
-        prevWishlist.filter((p) => p[1] !== playerInfo[1])
+        prevWishlist.filter((p) => p.name !== playerInfo.name)
       );
     } else {
       setWishlist((prevWishlist) => [...prevWishlist, playerInfo]);
@@ -342,10 +453,8 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
   };
 
   const isPlayerInWishlist = (playerInfo) => {
-    return wishlist.some((p) => p[1] === playerInfo[1]);
+    return wishlist.some((p) => p.name === playerInfo.name);
   };
-
-  ////
 
   return (
     <div className={styles.draft_board_container}>
@@ -500,10 +609,10 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                         onClick={() => {
                           if (isDraftFinished) return;
 
-                          handlePlayerSelection(player[1]);
+                          handlePlayerSelection(player);
                         }}
                         className={
-                          selectedPlayer === player[1] ? styles.selected : ""
+                          selectedPlayer === player ? styles.selected : ""
                         }
                         style={{
                           listStyleType: "none",
@@ -523,7 +632,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                               fontWeight: "bold",
                             }}
                           >
-                            {player[0]}.
+                            {player.rank}.
                           </div>
                           <div>
                             {isPlayerInWishlist(player) ? (
@@ -552,14 +661,22 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                               cursor: "pointer",
                             }}
                           >
-                            <span>{player[1]}</span>
-
+                            <span>{player.name}</span>
                             <span style={{ fontSize: 11 }}>
-                              {player[2]} ({player[3]}) - Bye {player[5]}
+                              {player.position} ({player.team}) - Bye{" "}
+                              {player.bye}
                             </span>
                           </div>
+                          <BiIcons.BiStats
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              setShowStats(true);
+                            }}
+                          />
                           <span style={{ paddingRight: "0.5rem" }}>
-                            {player[4]}.
+                            {player.adp}.
                           </span>
                         </div>
                       </li>
@@ -568,6 +685,13 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                 )}
               </div>
             </ul>
+
+            {showStats && (
+              <PlayerStats
+                player={selectedPlayer}
+                setShowStats={setShowStats}
+              />
+            )}
 
             {!selectedPlayer ? (
               <button
@@ -620,7 +744,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                   <h4>Players Drafted by {teamNames[selectedTeamIndex]}</h4>
                   {positionSlots.map((position, index) => {
                     const players = selectedTeamPlayers.filter(
-                      (p) => p.position === position
+                      (p) => p.player.position === position
                     );
 
                     return (
@@ -629,7 +753,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                         <ul className={styles.list}>
                           {players.map((player, index) => (
                             <li key={index}>
-                              {player.player} - Bye {player.bye}
+                              {player.player.name} - Bye {player.player.bye}
                             </li>
                           ))}
                         </ul>
@@ -672,7 +796,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                 </div>
               </li>
               {wishlist
-                .sort((a, b) => a[0] - b[0]) // Sort wishlist by rank number
+                .sort((a, b) => a.rank - b.rank) // Sort wishlist by rank number
                 .map((player, index) => (
                   <li
                     key={index}
@@ -682,11 +806,9 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                     onClick={() => {
                       if (isDraftFinished) return;
 
-                      handlePlayerSelection(player[1]);
+                      handlePlayerSelection(player);
                     }}
-                    className={
-                      selectedPlayer === player[1] ? styles.selected : ""
-                    }
+                    className={selectedPlayer === player ? styles.selected : ""}
                   >
                     <div
                       style={{
@@ -697,7 +819,9 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                         width: 280,
                       }}
                     >
-                      <div style={{ paddingLeft: "0.5rem" }}>{player[0]}.</div>
+                      <div style={{ paddingLeft: "0.5rem" }}>
+                        {player.rank}.
+                      </div>
                       <div>
                         {isPlayerInWishlist(player) ? (
                           <AiIcons.AiFillHeart
@@ -725,13 +849,13 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                           cursor: "pointer",
                         }}
                       >
-                        <span>{player[1]}</span>
+                        <span>{player.name}</span>
                         <span style={{ fontSize: 11 }}>
-                          {player[2]} ({player[3]}) - Bye {player[5]}
+                          {player.position} ({player.team}) - Bye {player.bye}
                         </span>
                       </div>
                       <span style={{ paddingRight: "0.5rem" }}>
-                        {player[4]}.
+                        {player.adp}.
                       </span>
                     </div>
                   </li>
@@ -805,22 +929,28 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
               <tr key={roundIndex}>
                 {teamPlayers.map((team, teamIndex) => {
                   const player = team[roundIndex];
-                  const [rank, name, position, teamname, adp, bye] =
-                    availablePlayers.find((p) => p[1] === player) || [];
+                  const selectedPlayerInfo = availablePlayers.find(
+                    (p) => p.name === player
+                  );
 
                   const cellStyle = {
                     backgroundColor:
-                      position === "RB"
+                      selectedPlayerInfo && selectedPlayerInfo.position === "RB"
                         ? "#0374e7"
-                        : position === "WR"
+                        : selectedPlayerInfo &&
+                          selectedPlayerInfo.position === "WR"
                         ? "#388556"
-                        : position === "QB"
+                        : selectedPlayerInfo &&
+                          selectedPlayerInfo.position === "QB"
                         ? "#7d69b3"
-                        : position === "TE"
+                        : selectedPlayerInfo &&
+                          selectedPlayerInfo.position === "TE"
                         ? "#d27548 "
-                        : position === "K"
+                        : selectedPlayerInfo &&
+                          selectedPlayerInfo.position === "K"
                         ? "#008298"
-                        : position === "DEF"
+                        : selectedPlayerInfo &&
+                          selectedPlayerInfo.position === "DEF"
                         ? "#767676"
                         : "lightgrey",
                   };
@@ -832,9 +962,13 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
                           className={styles.draft_board_pick_div}
                           style={cellStyle}
                         >
-                          <span>{name}</span>
                           <span>
-                            {teamname} - {position}
+                            {selectedPlayerInfo ? selectedPlayerInfo.name : ""}
+                          </span>
+                          <span>
+                            {selectedPlayerInfo
+                              ? `${selectedPlayerInfo.team} - ${selectedPlayerInfo.position}`
+                              : ""}
                           </span>
                         </div>
                       )}

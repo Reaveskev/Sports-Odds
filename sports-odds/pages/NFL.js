@@ -109,6 +109,7 @@ function NFL() {
 
         setNFLNews2(response4.data);
         setStandings(response5.data);
+        console.log(response5.data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -231,7 +232,9 @@ function NFL() {
               </button>
               <button
                 className={styles.mobile_tab}
-                style={{ backgroundColor: seeStandings ? "181818" : "222223" }}
+                style={{
+                  backgroundColor: seeStandings ? "181818" : "222223",
+                }}
                 onClick={() => {
                   setSeeNews(false);
                   setSeeOdds(false);
@@ -243,6 +246,7 @@ function NFL() {
             </>
           )}
         </div>
+
         {seeNews ? (
           <div className={styles.news}>
             <h1 className={styles.upcoming}>NFL News</h1>

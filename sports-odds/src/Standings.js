@@ -6,6 +6,7 @@ const Standings = ({ standings }) => {
     <div className={styles.standing_div}>
       <div className={styles.news}>
         <h1 className={styles.upcoming}>Standings</h1>
+
         <div className={styles.Standings}>
           {standings ? (
             <div>
@@ -24,7 +25,11 @@ const Standings = ({ standings }) => {
                       Team
                     </p>
                     <p
-                      style={{ width: 80, marginRight: 10, fontWeight: "bold" }}
+                      style={{
+                        width: 80,
+                        marginRight: 10,
+                        fontWeight: "bold",
+                      }}
                     >
                       Wins/Losses
                     </p>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "@/styles/bet.module.css";
 import { useAppContext } from "./GlobalContext";
-import * as AiIcon from "react-icons/Ai";
+import * as AiIcon from "react-icons/ai";
 
 const Bet = ({ setOpenBet }) => {
   const { betInfo, user, setUser, allBets, setAllBets } = useAppContext();
