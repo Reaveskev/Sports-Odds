@@ -62,6 +62,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
             "Carries",
             "Rushing Yards",
             "Rushing TD",
+            "PPR Points",
           ],
           projectionsKeys: [
             "Completion/Attempts",
@@ -71,6 +72,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
             "Carries",
             "Rushing Yards",
             "Rushing TD",
+            "PPR Points",
           ],
         };
       case "rb":
@@ -139,7 +141,6 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
       .get(url)
       .then((response) => {
         const data = response.data;
-        console.log(data);
 
         const formattedPlayers = data.map(
           ([
@@ -166,7 +167,7 @@ const DraftBoard = ({ numPlayers, numRounds }) => {
               statsAndProjections.splice(-1);
               stats = getPlayerStatsByPosition(
                 position,
-                statsAndProjections.slice(0, 9)
+                statsAndProjections.slice(0, 8)
               );
               projections = statsAndProjections.slice(8, -1); // Get projections from index 9 to second to last element
             } else if (position === "WR" || position === "TE") {

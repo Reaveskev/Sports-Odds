@@ -220,9 +220,313 @@ const Bet = ({ setOpenBet }) => {
     return setPotential(parlayPayout.toFixed(2));
   }
 
+  let header1, header2, header3;
+  if (moneyline) {
+    if (moneyline === betInfo[3]) {
+      header1 = `${betInfo[15]} ${moneyline}`;
+    } else {
+      header1 = `${betInfo[16]} ${moneyline}`;
+    }
+  }
+  if (pointSpread) {
+    if (pointSpread === betInfo[4]) {
+      header2 = `${betInfo[15]} ${pointSpread}`;
+    } else {
+      header2 = `${betInfo[16]} ${pointSpread}`;
+    }
+  }
+
+  if (totalPoints) {
+    if (totalPoints === betInfo[5]) {
+      header3 = `${betInfo[15]} ${totalPoints}`;
+    } else {
+      header3 = `${betInfo[16]} ${totalPoints}`;
+    }
+  }
+
   return (
+    // <div className={styles.bets_container}>
+    //   <div className={styles.div_container}>
+    //     <span onClick={() => setOpenBet(false)} style={{ color: "white" }}>
+    //       <AiIcon.AiFillCloseCircle
+    //         style={{ margin: 10, cursor: "pointer" }}
+    //         size={20}
+    //       />
+    //     </span>
+    //     {message ? (
+    //       <div
+    //         style={{
+    //           display: "flex",
+    //           justifyContent: "center",
+    //           alignItems: "center",
+    //         }}
+    //       >
+    //         <span style={{ color: "green" }}>{message}</span>
+    //       </div>
+    //     ) : null}
+    //     <div style={{ display: "flex", color: "white" }}>
+    //       <div style={{ padding: 15 }}>
+    //         <div
+    //           style={{
+    //             display: "flex",
+    //             justifyContent: "center",
+    //             alignItems: "center",
+    //             flexDirection: "column",
+    //           }}
+    //         >
+    //           <img srcSet={betInfo[0]}></img>
+
+    //           <div
+    //             style={{
+    //               padding: 5,
+    //               whiteSpace: "nowrap",
+    //             }}
+    //           >
+    //             {betInfo[1]}
+    //           </div>
+    //         </div>
+
+    //         <div
+    //           style={{
+    //             padding: 5,
+    //             borderRadius: 10,
+    //             width: 100,
+    //           }}
+    //         >
+    //           <input
+    //             onClick={() => {
+    //               if (moneyline === betInfo[3]) {
+    //                 setMoneyline("");
+    //                 setMoneyline_team("");
+    //               } else {
+    //                 setMoneyline(betInfo[3]);
+    //                 setMoneyline_team(test(betInfo[1]));
+    //               }
+    //             }}
+    //             checked={moneyline === betInfo[3]}
+    //             type="checkbox"
+    //             style={{ marginRight: "10px", cursor: "pointer" }}
+    //           />{" "}
+    //           {betInfo[3]}
+    //         </div>
+    //         <div
+    //           style={{
+    //             padding: 5,
+    //             borderRadius: 10,
+    //             width: 140,
+    //           }}
+    //         >
+    //           <input
+    //             style={{ marginRight: "10px", cursor: "pointer" }}
+    //             type="checkbox"
+    //             onClick={() => {
+    //               if (pointSpread === betInfo[4]) {
+    //                 setPointSpread("");
+    //               } else {
+    //                 setPointSpread(betInfo[4]);
+    //               }
+    //             }}
+    //             checked={pointSpread === betInfo[4]}
+    //           ></input>
+    //           {betInfo[4]}
+    //         </div>
+    //         <div
+    //           style={{
+    //             padding: 5,
+    //             borderRadius: 10,
+    //             width: 120,
+    //           }}
+    //         >
+    //           <input
+    //             style={{ marginRight: "10px", cursor: "pointer" }}
+    //             type="checkbox"
+    //             onClick={() => {
+    //               if (totalPoints === betInfo[5]) {
+    //                 setTotalPoints("");
+    //               } else {
+    //                 setTotalPoints(betInfo[5]);
+    //               }
+    //             }}
+    //             checked={totalPoints === betInfo[5]}
+    //           ></input>
+    //           {betInfo[5]}
+    //         </div>
+    //       </div>
+    //       <div style={{ padding: 15, color: "white" }}>
+    //         <div
+    //           style={{
+    //             display: "flex",
+    //             justifyContent: "center",
+    //             alignItems: "center",
+    //             flexDirection: "column",
+    //           }}
+    //         >
+    //           <img style={{}} srcSet={betInfo[6]}></img>
+    //           <div
+    //             style={{
+    //               padding: 5,
+    //             }}
+    //           >
+    //             {betInfo[7]}
+    //           </div>
+    //         </div>
+
+    //         <div
+    //           style={{
+    //             padding: 5,
+    //             borderRadius: 10,
+    //             width: 100,
+    //           }}
+    //         >
+    //           <input
+    //             style={{ marginRight: "10px", cursor: "pointer" }}
+    //             type="checkbox"
+    //             onClick={() => {
+    //               if (moneyline === betInfo[9]) {
+    //                 setMoneyline("");
+    //                 setMoneyline_team("");
+    //               } else {
+    //                 setMoneyline(betInfo[9]);
+    //                 setMoneyline_team(test(betInfo[7]));
+    //               }
+    //             }}
+    //             checked={moneyline === betInfo[9]}
+    //           ></input>
+    //           {betInfo[9]}
+    //         </div>
+    //         <div
+    //           style={{
+    //             padding: 5,
+    //             borderRadius: 10,
+    //             width: 135,
+    //           }}
+    //         >
+    //           <input
+    //             style={{ marginRight: "10px", cursor: "pointer" }}
+    //             type="checkbox"
+    //             onClick={() => {
+    //               if (pointSpread === betInfo[10]) {
+    //                 setPointSpread("");
+    //               } else {
+    //                 setPointSpread(betInfo[10]);
+    //               }
+    //             }}
+    //             checked={pointSpread === betInfo[10]}
+    //           ></input>
+    //           {betInfo[10]}
+    //         </div>
+    //         <div
+    //           style={{
+    //             padding: 5,
+    //             borderRadius: 10,
+    //             width: 120,
+    //           }}
+    //         >
+    //           <input
+    //             style={{ marginRight: "10px", cursor: "pointer" }}
+    //             type="checkbox"
+    //             onClick={() => {
+    //               if (totalPoints === betInfo[11]) {
+    //                 setTotalPoints("");
+    //               } else {
+    //                 setTotalPoints(betInfo[11]);
+    //               }
+    //             }}
+    //             checked={totalPoints === betInfo[11]}
+    //           ></input>
+    //           {betInfo[11]}
+    //         </div>
+    //       </div>
+    //     </div>
+    //     <span
+    //       style={{
+    //         color: "white",
+    //         padding: 10,
+    //         display: "flex",
+    //         justifyContent: "center",
+    //       }}
+    //     >
+    //       Your projections: {moneyline}
+    //       {pointSpread}
+    //       {totalPoints}
+    //     </span>
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         alignItems: "center",
+    //         justifyContent: "center",
+    //       }}
+    //     >
+    //       <span style={{ color: "white" }}>How much do you want to bet? $</span>
+    //       <input
+    //         className={styles.money_input}
+    //         onChange={handleBetAmountChange}
+    //         value={betAmount}
+    //         type="text"
+    //       ></input>
+    //     </div>
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         alignItems: "center",
+    //         justifyContent: "center",
+    //       }}
+    //     >
+    //       <button
+    //         className={styles.calc_button}
+    //         onClick={() =>
+    //           calculateParlayPayout(
+    //             betAmount,
+    //             moneyline,
+    //             pointSpread,
+    //             totalPoints
+    //           )
+    //         }
+    //       >
+    //         Calculate
+    //       </button>
+    //       <span style={{ color: "white" }}>Potential payout: ${potential}</span>
+    //     </div>
+    //     {potential ? (
+    //       <div
+    //         style={{
+    //           display: "flex",
+    //           alignItems: "center",
+    //           justifyContent: "center",
+    //         }}
+    //       >
+    //         {user ? (
+    //           <button
+    //             onClick={() => {
+    //               addBet(
+    //                 teams,
+    //                 moneyline,
+    //                 moneyline_team,
+    //                 pointSpread,
+    //                 totalPoints,
+    //                 potential,
+    //                 betAmount,
+    //                 gameDate,
+    //                 league,
+    //                 sport
+    //               );
+    //             }}
+    //             className={styles.addbutton}
+    //           >
+    //             Add to bets
+    //           </button>
+    //         ) : (
+    //           <span style={{ color: "white", paddingBottom: 10 }}>
+    //             Sign in to add bet to your account!
+    //           </span>
+    //         )}
+    //       </div>
+    //     ) : null}
+    //   </div>
+    // </div>
+
     <div className={styles.bets_container}>
-      <div className={styles.div_container}>
+      <div className={styles.div_container} style={{ width: 460 }}>
         <span onClick={() => setOpenBet(false)} style={{ color: "white" }}>
           <AiIcon.AiFillCloseCircle
             style={{ margin: 10, cursor: "pointer" }}
@@ -240,230 +544,186 @@ const Bet = ({ setOpenBet }) => {
             <span style={{ color: "green" }}>{message}</span>
           </div>
         ) : null}
-        <div style={{ display: "flex", color: "white" }}>
+        <div
+          style={{ display: "flex", color: "white", flexDirection: "column" }}
+        >
           <div style={{ padding: 15 }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <img srcSet={betInfo[0]}></img>
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Money</th>
+                  <th>Spread</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <img srcSet={betInfo[0]}></img>
 
-              <div
-                style={{
-                  padding: 5,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {betInfo[1]}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                width: 100,
-              }}
-            >
-              <input
-                onClick={() => {
-                  if (moneyline === betInfo[3]) {
-                    setMoneyline("");
-                    setMoneyline_team("");
-                  } else {
-                    setMoneyline(betInfo[3]);
-                    setMoneyline_team(test(betInfo[1]));
-                  }
-                }}
-                checked={moneyline === betInfo[3]}
-                type="checkbox"
-                style={{ marginRight: "10px", cursor: "pointer" }}
-              />{" "}
-              {betInfo[3]}
-            </div>
-            <div
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                width: 140,
-              }}
-            >
-              <input
-                style={{ marginRight: "10px", cursor: "pointer" }}
-                type="checkbox"
-                onClick={() => {
-                  if (pointSpread === betInfo[4]) {
-                    setPointSpread("");
-                  } else {
-                    setPointSpread(betInfo[4]);
-                  }
-                }}
-                checked={pointSpread === betInfo[4]}
-              ></input>
-              {betInfo[4]}
-            </div>
-            <div
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                width: 120,
-              }}
-            >
-              <input
-                style={{ marginRight: "10px", cursor: "pointer" }}
-                type="checkbox"
-                onClick={() => {
-                  if (totalPoints === betInfo[5]) {
-                    setTotalPoints("");
-                  } else {
-                    setTotalPoints(betInfo[5]);
-                  }
-                }}
-                checked={totalPoints === betInfo[5]}
-              ></input>
-              {betInfo[5]}
-            </div>
+                      <div
+                        style={{
+                          padding: 5,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {betInfo[1]}
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    onClick={() => {
+                      if (moneyline === betInfo[3]) {
+                        setMoneyline("");
+                        setMoneyline_team("");
+                      } else {
+                        setMoneyline(betInfo[3]);
+                        setMoneyline_team(test(betInfo[1]));
+                      }
+                    }}
+                  >
+                    <div
+                      className={styles.cells}
+                      style={{
+                        backgroundColor:
+                          moneyline === betInfo[3] ? "#393939" : null,
+                      }}
+                    >
+                      {betInfo[3]}
+                    </div>
+                  </td>
+                  <td
+                    onClick={() => {
+                      if (pointSpread === betInfo[4]) {
+                        setPointSpread("");
+                      } else {
+                        setPointSpread(betInfo[4]);
+                      }
+                    }}
+                  >
+                    <div
+                      className={styles.cells}
+                      style={{
+                        backgroundColor:
+                          pointSpread === betInfo[4] ? "#393939" : null,
+                      }}
+                    >
+                      {betInfo[4]}
+                    </div>
+                  </td>
+                  <td
+                    onClick={() => {
+                      if (totalPoints === betInfo[5]) {
+                        setTotalPoints("");
+                      } else {
+                        setTotalPoints(betInfo[5]);
+                      }
+                    }}
+                  >
+                    <div
+                      className={styles.cells}
+                      style={{
+                        backgroundColor:
+                          totalPoints === betInfo[5] ? "#393939" : null,
+                      }}
+                    >
+                      {betInfo[5]}
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <img srcSet={betInfo[6]}></img>
+                      <div
+                        style={{
+                          padding: 5,
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {betInfo[7]}
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    onClick={() => {
+                      if (moneyline === betInfo[9]) {
+                        setMoneyline("");
+                        setMoneyline_team("");
+                      } else {
+                        setMoneyline(betInfo[9]);
+                        setMoneyline_team(test(betInfo[7]));
+                      }
+                    }}
+                  >
+                    <div
+                      className={styles.cells}
+                      style={{
+                        backgroundColor:
+                          moneyline === betInfo[9] ? "#393939" : null,
+                      }}
+                    >
+                      {betInfo[9]}
+                    </div>
+                  </td>
+                  <td
+                    onClick={() => {
+                      if (pointSpread === betInfo[10]) {
+                        setPointSpread("");
+                      } else {
+                        setPointSpread(betInfo[10]);
+                      }
+                    }}
+                  >
+                    <div
+                      className={styles.cells}
+                      style={{
+                        backgroundColor:
+                          pointSpread === betInfo[10] ? "#393939" : null,
+                      }}
+                    >
+                      {betInfo[10]}
+                    </div>
+                  </td>
+                  <td
+                    onClick={() => {
+                      if (totalPoints === betInfo[11]) {
+                        setTotalPoints("");
+                      } else {
+                        setTotalPoints(betInfo[11]);
+                      }
+                    }}
+                  >
+                    <div
+                      className={styles.cells}
+                      style={{
+                        backgroundColor:
+                          totalPoints === betInfo[11] ? "#393939" : null,
+                      }}
+                    >
+                      {betInfo[11]}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div style={{ padding: 15, color: "white" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-              }}
-            >
-              <img style={{}} srcSet={betInfo[6]}></img>
-              <div
-                style={{
-                  padding: 5,
-                }}
-              >
-                {betInfo[7]}
-              </div>
-            </div>
-
-            <div
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                width: 100,
-              }}
-            >
-              <input
-                style={{ marginRight: "10px", cursor: "pointer" }}
-                type="checkbox"
-                onClick={() => {
-                  if (moneyline === betInfo[9]) {
-                    setMoneyline("");
-                    setMoneyline_team("");
-                  } else {
-                    setMoneyline(betInfo[9]);
-                    setMoneyline_team(test(betInfo[7]));
-                  }
-                }}
-                checked={moneyline === betInfo[9]}
-              ></input>
-              {betInfo[9]}
-            </div>
-            <div
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                width: 135,
-              }}
-            >
-              <input
-                style={{ marginRight: "10px", cursor: "pointer" }}
-                type="checkbox"
-                onClick={() => {
-                  if (pointSpread === betInfo[10]) {
-                    setPointSpread("");
-                  } else {
-                    setPointSpread(betInfo[10]);
-                  }
-                }}
-                checked={pointSpread === betInfo[10]}
-              ></input>
-              {betInfo[10]}
-            </div>
-            <div
-              style={{
-                padding: 5,
-                borderRadius: 10,
-                width: 120,
-              }}
-            >
-              <input
-                style={{ marginRight: "10px", cursor: "pointer" }}
-                type="checkbox"
-                onClick={() => {
-                  if (totalPoints === betInfo[11]) {
-                    setTotalPoints("");
-                  } else {
-                    setTotalPoints(betInfo[11]);
-                  }
-                }}
-                checked={totalPoints === betInfo[11]}
-              ></input>
-              {betInfo[11]}
-            </div>
-          </div>
-        </div>
-        <span
-          style={{
-            color: "white",
-            padding: 10,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          Your projections: {moneyline}
-          {pointSpread}
-          {totalPoints}
-        </span>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <span style={{ color: "white" }}>How much do you want to bet? $</span>
-          <input
-            className={styles.money_input}
-            onChange={handleBetAmountChange}
-            value={betAmount}
-            type="text"
-          ></input>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <button
-            className={styles.calc_button}
-            onClick={() =>
-              calculateParlayPayout(
-                betAmount,
-                moneyline,
-                pointSpread,
-                totalPoints
-              )
-            }
-          >
-            Calculate
-          </button>
-          <span style={{ color: "white" }}>Potential payout: ${potential}</span>
-        </div>
-        {potential ? (
           <div
             style={{
               display: "flex",
@@ -471,33 +731,87 @@ const Bet = ({ setOpenBet }) => {
               justifyContent: "center",
             }}
           >
-            {user ? (
-              <button
-                onClick={() => {
-                  addBet(
-                    teams,
-                    moneyline,
-                    moneyline_team,
-                    pointSpread,
-                    totalPoints,
-                    potential,
-                    betAmount,
-                    gameDate,
-                    league,
-                    sport
-                  );
-                }}
-                className={styles.addbutton}
-              >
-                Add to bets
-              </button>
-            ) : (
-              <span style={{ color: "white", paddingBottom: 10 }}>
-                Sign in to add bet to your account!
-              </span>
-            )}
+            <span style={{ color: "white" }}>
+              How much do you want to bet? $
+            </span>
+            <input
+              className={styles.money_input}
+              onChange={handleBetAmountChange}
+              value={betAmount}
+              type="text"
+            ></input>
           </div>
-        ) : null}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <button
+              className={styles.calc_button}
+              onClick={() =>
+                calculateParlayPayout(
+                  betAmount,
+                  moneyline,
+                  pointSpread,
+                  totalPoints
+                )
+              }
+            >
+              Calculate
+            </button>
+          </div>
+          {potential ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <span
+                style={{
+                  color: "white",
+                  padding: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                Your projections: {header1} {header2} {header3}
+              </span>
+              <span style={{ color: "white", padding: 10 }}>
+                Potential payout: ${potential}
+              </span>
+              {user ? (
+                <button
+                  onClick={() => {
+                    addBet(
+                      teams,
+                      moneyline,
+                      moneyline_team,
+                      pointSpread,
+                      totalPoints,
+                      potential,
+                      betAmount,
+                      gameDate,
+                      league,
+                      sport
+                    );
+                  }}
+                  className={styles.addbutton}
+                >
+                  Add to bets
+                </button>
+              ) : (
+                <span style={{ color: "white", paddingBottom: 10 }}>
+                  Sign in to add bet to your account!
+                </span>
+              )}
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );

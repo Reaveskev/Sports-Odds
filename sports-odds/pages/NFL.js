@@ -109,7 +109,7 @@ function NFL() {
 
         setNFLNews2(response4.data);
         setStandings(response5.data);
-        console.log(response5.data);
+
         setLoading(false);
       } catch (error) {
         console.error(error);

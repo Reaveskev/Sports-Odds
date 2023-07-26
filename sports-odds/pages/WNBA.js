@@ -89,7 +89,7 @@ function WNBA() {
     "Los Angeles Sparks": "LA",
     "Minnesota Lynx": "Min",
     "Phoenix Mercury": "Phx",
-    "Seattle Storms": "Sea",
+    "Seattle Storm": "Sea",
   };
 
   return (
@@ -120,7 +120,7 @@ function WNBA() {
           <div className={styles.test}>
             <div
               style={{
-                width: offseason ? "100%" : "60%",
+                width: offseason ? "100%" : "50%",
                 float: offseason ? "none" : "left",
               }}
             >

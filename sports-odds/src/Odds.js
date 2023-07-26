@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
-import * as AiIcon from "react-icons/Ai";
+import * as AiIcon from "react-icons/ai";
 import { useAppContext } from "./GlobalContext";
 import Bet from "./Bet";
 
@@ -189,6 +189,8 @@ const Odds = ({
                                     game.home.total_points,
                                     league,
                                     sport,
+                                    away_team,
+                                    home_team,
                                   ]);
                                   setOpenBet(!openBet);
                                 }}
@@ -328,6 +330,8 @@ const Odds = ({
                                     game.home.start_time,
                                     league,
                                     sport,
+                                    away_team,
+                                    home_team,
                                   ]);
                                   setOpenBet(!openBet);
                                 }}
