@@ -560,7 +560,7 @@ def scrape_Odds(league):
 
   
     driver.get(url)
-    wait = WebDriverWait(driver, .5)
+    wait = WebDriverWait(driver, .1)
     #  wait = WebDriverWait(driver, 5)
     
 
@@ -575,14 +575,16 @@ def scrape_Odds(league):
     except:
         final_span = None
 
-    
+    if league != "wnba":
+        if date_span is None and final_span is None:
+            Upcoming = {}  
+            Inprogress = {}  
+            Final = {}  
+            print("Both elements not found")
+            return jsonify(Upcoming, Inprogress, Final)
 
-    if date_span is None and final_span is None:
-        Upcoming = {}  
-        Inprogress = {}  
-        Final = {}  
-        print("Both elements not found")
-        return jsonify(Upcoming, Inprogress, Final)
+
+    
 
  
     html = driver.page_source 
