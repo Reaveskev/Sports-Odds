@@ -579,8 +579,8 @@ def scrape_Odds(league):
         Upcoming = {}  
         Inprogress = {}  
         Final = {}  
-        print("One or both elements not found")
-        return (Upcoming, Inprogress, Final)
+        print("Both elements not found")
+        return jsonify(Upcoming, Inprogress, Final)
 
  
     html = driver.page_source 
@@ -902,7 +902,7 @@ def scrape_Odds(league):
     Inprogress["Inprogress"] = inprogress_games
     Final = {}
     Final["Final"] = final_games
-    print(Upcoming,Inprogress,Final)
+    
 
     return jsonify(Upcoming,Inprogress,Final)
 
