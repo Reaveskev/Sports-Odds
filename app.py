@@ -571,9 +571,11 @@ def scrape_Odds(league):
         date_span = None
 
     try:
-        final_span = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="C(#6d7278) Fz(14px) smartphone_Fz(12px)"]')))
+        final_span = wait.until(EC.presence_of_element_located((By.XPATH, '//div[@class="Fxg(1)"]')))
     except:
         final_span = None
+
+    
 
     if date_span is None and final_span is None:
         Upcoming = {}  
