@@ -560,7 +560,7 @@ def scrape_Odds(league):
 
   
     driver.get(url)
-    wait = WebDriverWait(driver, .1)
+    wait = WebDriverWait(driver, .5)
     #  wait = WebDriverWait(driver, 5)
     
 
