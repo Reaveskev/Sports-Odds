@@ -903,7 +903,7 @@ def scrape_Odds(league):
     Final = {}
     Final["Final"] = final_games
     
-
+    print(Upcoming,Inprogress,Final)
     return jsonify(Upcoming,Inprogress,Final)
 
 
@@ -966,7 +966,6 @@ def scrape_Standing(sport):
         standings_data.append(conference_data)
 
     
-    print(standings_data)
        
     return jsonify(standings_data)
  
