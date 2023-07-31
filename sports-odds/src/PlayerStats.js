@@ -3,7 +3,6 @@ import styles from "@/styles/stats.module.css";
 import * as AiIcon from "react-icons/ai";
 
 const PlayerStats = ({ player, setShowStats }) => {
-  console.log(player);
   const { name, position, stats, projections, outlook, bye, team, image_url } =
     player;
 

@@ -566,12 +566,21 @@ def scrape_Odds(league):
 
   
     try:
-        parent_elem = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
+        date_span = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="Fz(14px) smartphone_Fz(12px) C(#828c93)"]')))
     except:
-        Upcoming = {}
-        Inprogress = {}
-        Final = {}
-        return jsonify(Upcoming,Inprogress,Final)
+        date_span = None
+
+    try:
+        final_span = wait.until(EC.presence_of_element_located((By.XPATH, '//span[@class="C(#6d7278) Fz(14px) smartphone_Fz(12px)"]')))
+    except:
+        final_span = None
+
+    if date_span is None and final_span is None:
+        Upcoming = {}  
+        Inprogress = {}  
+        Final = {}  
+        print("One or both elements not found")
+        return (Upcoming, Inprogress, Final)
 
  
     html = driver.page_source 
@@ -886,12 +895,14 @@ def scrape_Odds(league):
        
 
     # driver.quit()
+  
     Upcoming = {}
     Upcoming["Upcoming"] = upcoming_games
     Inprogress = {}
     Inprogress["Inprogress"] = inprogress_games
     Final = {}
     Final["Final"] = final_games
+    print(Upcoming,Inprogress,Final)
 
     return jsonify(Upcoming,Inprogress,Final)
 
