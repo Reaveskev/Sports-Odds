@@ -39,7 +39,7 @@ function NFL() {
     "Denver Broncos": "DEN",
     "Detroit Lions": "DET",
     "Green Bay Packers": "GB",
-    " Houston Texans": "HOU",
+    "Houston Texans": "HOU",
     "Indianapolis Colts": "IND",
     "Jacksonville Jaguars": "JAX",
     "Kansas City Chiefs": "KC",
@@ -147,7 +147,7 @@ function NFL() {
             <div
               className={styles.new_div}
               style={{
-                width: offseason ? "100%" : "60%",
+                width: offseason ? "100%" : "50%",
                 float: offseason ? "none" : "left",
               }}
             >

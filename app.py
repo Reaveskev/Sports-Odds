@@ -557,6 +557,7 @@ def scrape_Odds(league):
         return jsonify({'error': 'Input a valid sports league'}), 400
 
     url = 'https://sports.yahoo.com/{}/odds/'.format(league)
+    print(url)
 
   
     driver.get(url)
@@ -575,13 +576,13 @@ def scrape_Odds(league):
     except:
         final_span = None
 
-    if league != "wnba":
-        if date_span is None and final_span is None:
-            Upcoming = {}  
-            Inprogress = {}  
-            Final = {}  
-            print("Both elements not found")
-            return jsonify(Upcoming, Inprogress, Final)
+    
+    if date_span is None and final_span is None:
+        Upcoming = {}  
+        Inprogress = {}  
+        Final = {}  
+        print("Both elements not found")
+        return jsonify(Upcoming, Inprogress, Final)
 
 
     
@@ -627,86 +628,186 @@ def scrape_Odds(league):
     inprogress_div = soup.findAll('div', class_=lambda c: c and 'IN_PROGRESS' in c)
     pregame_div = soup.findAll('div', class_=lambda c: c and 'PREGAME' in c)
 
-    for x in final_div:
-        final_teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
-        final_score = x.findAll("span",{"class":"Fw(800) D(n) D(ib)!--medPhone Fl(end) Maw(30px) Pend(12px)"} )
-        final_odds = x.findAll("span", {"class":"Lh(19px)"} )
-        final_away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
-        final_home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
-        
-        final_away_team_logo = []
-        final_home_team_logo = []
-        final_team_1_money_line = []
-        final_team_1_point_spread = []
-        final_team_1_total_points = []
-        final_teams_list = []
-        final_score_list = []
-        final_all_team_logos = []
-        final_home_odds = []
-        final_away_odds = []
+    if league == "nfl":
+        for x in final_div[::-1][:16]:
+            final_teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
+            final_score = x.findAll("span",{"class":"Fw(800) D(n) D(ib)!--medPhone Fl(end) Maw(30px) Pend(12px)"} )
+            final_odds = x.findAll("span", {"class":"Lh(19px)"} )
+            final_away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
+            final_home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+
+            final_away_team_logo = []
+            final_home_team_logo = []
+            final_team_1_money_line = []
+            final_team_1_point_spread = []
+            final_team_1_total_points = []
+            final_teams_list = []
+            final_score_list = []
+            final_all_team_logos = []
+            final_home_odds = []
+            final_away_odds = []
 
 
-        for div_tag in final_away_div_tags:
-            img_tag = div_tag.find('img')
-            img_src = img_tag['src']
-            final_away_team_logo.append(img_src)
-    
-        for div_tag in final_home_div_tags:
-            img_tag = div_tag.find('img')
-            img_src = img_tag['src']
-            final_home_team_logo.append(img_src)
-
-        
-
-        for i in range(len(final_away_team_logo)):
-            final_all_team_logos.append(final_away_team_logo[i])
-            final_all_team_logos.append(final_home_team_logo[i])
+            for div_tag in final_away_div_tags:
+                img_tag = div_tag.find('img')
+                if img_tag is None:
+                    img_src = "No Image"
+                else:
+                    img_src = img_tag.get('src', "No Image")
+                final_away_team_logo.append(img_src)
 
 
-        count = 0
-        for soup in final_odds:
-            count += 1
-            for span in soup.find_all('span'):
-                if count == 1:
-                    if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
-                        final_team_1_money_line.append("True " + span.text)
-                    else:
-                        final_team_1_money_line.append(span.text)
-                elif count == 2:
-                    if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
-                        final_team_1_point_spread.append("True " + span.text)
-                    else:
-                        final_team_1_point_spread.append(span.text)
-                elif count == 3:
-                    count = 0
-                    if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
-                        final_team_1_total_points.append("True " + span.text)
-                    else:
-                        final_team_1_total_points.append(span.text)
-        
-        for team, record in zip(final_teams, final_score ):
-            final_teams_list.append(team.text)
-            final_score_list.append(record.text)
-
-        
+            for div_tag in final_home_div_tags:
+                img_tag = div_tag.find('img')
+                if img_tag is None:
+                    img_src = "No Image"
+                else:
+                    img_src = img_tag.get('src', "No Image")
+                final_home_team_logo.append(img_src)
 
 
-        counter = 0
-        for l, t, s, m1, p1, t1 in zip(final_all_team_logos, final_teams_list, final_score_list, final_team_1_money_line, final_team_1_point_spread, final_team_1_total_points):
-            if((counter % 2) == 0):
-                final_away_odds.append([l, t, s, m1, p1, t1])
-                counter += 1
-            else:
-                final_home_odds.append([l, t, s, m1, p1, t1])
-                counter += 1
 
-        
-        for i in range(len(final_away_odds)):
-            game = {}
-            game['home'] = {"team" : final_home_odds[i][1], "logo": final_home_odds[i][0], "score":  final_home_odds[i][2], "moneyline":  final_home_odds[i][3], 'point_spread': final_home_odds[i][4],  'total_points': final_home_odds[i][5]  }
-            game['away'] = {"team" : final_away_odds[i][1], "logo": final_away_odds[i][0], "score":  final_away_odds[i][2], "moneyline":  final_away_odds[i][3], 'point_spread': final_away_odds[i][4],  'total_points': final_away_odds[i][5] }
-       
-            final_games.append(game)
+            for i in range(len(final_away_team_logo)):
+                final_all_team_logos.append(final_away_team_logo[i])
+                final_all_team_logos.append(final_home_team_logo[i])
+
+
+            count = 0
+            for soup in final_odds:
+                count += 1
+                for span in soup.find_all('span'):
+                    if count == 1:
+                        if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                            final_team_1_money_line.append("True " + span.text)
+                        else:
+                            final_team_1_money_line.append(span.text)
+                    elif count == 2:
+                        if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                            final_team_1_point_spread.append("True " + span.text)
+                        else:
+                            final_team_1_point_spread.append(span.text)
+                    elif count == 3:
+                        count = 0
+                        if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                            final_team_1_total_points.append("True " + span.text)
+                        else:
+                            final_team_1_total_points.append(span.text)
+                            
+
+            for team, record in zip(final_teams, final_score ):
+                final_teams_list.append(team.text)
+                final_score_list.append(record.text)
+
+
+
+
+            counter = 0
+            for l, t, s, m1, p1, t1 in zip(final_all_team_logos, final_teams_list, final_score_list, final_team_1_money_line, final_team_1_point_spread, final_team_1_total_points):
+                if((counter % 2) == 0):
+                    final_away_odds.append([l, t, s, m1, p1, t1])
+                    counter += 1
+                else:
+                    final_home_odds.append([l, t, s, m1, p1, t1])
+                    counter += 1
+
+
+            for i in range(len(final_away_odds)):
+                game = {}
+                game['home'] = {"team" : final_home_odds[i][1], "logo": final_home_odds[i][0], "score":  final_home_odds[i][2], "moneyline":  final_home_odds[i][3], 'point_spread': final_home_odds[i][4],  'total_points': final_home_odds[i][5]  }
+                game['away'] = {"team" : final_away_odds[i][1], "logo": final_away_odds[i][0], "score":  final_away_odds[i][2], "moneyline":  final_away_odds[i][3], 'point_spread': final_away_odds[i][4],  'total_points': final_away_odds[i][5] }
+
+                final_games.append(game)
+
+    else:
+        for x in final_div:
+            final_teams = x.findAll("span",{"class":"Fw(600) Pend(4px) Ell D(ib) Maw(190px) Va(m)"} )
+            final_score = x.findAll("span",{"class":"Fw(800) D(n) D(ib)!--medPhone Fl(end) Maw(30px) Pend(12px)"} )
+            final_odds = x.findAll("span", {"class":"Lh(19px)"} )
+            final_away_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-away-team"} )
+            final_home_div_tags  = x.findAll("div", {"class":"Fz(14px) Lh(30px) C($c-fuji-grey-m) sixpack-home-team"} )
+
+            final_away_team_logo = []
+            final_home_team_logo = []
+            final_team_1_money_line = []
+            final_team_1_point_spread = []
+            final_team_1_total_points = []
+            final_teams_list = []
+            final_score_list = []
+            final_all_team_logos = []
+            final_home_odds = []
+            final_away_odds = []
+
+
+            for div_tag in final_away_div_tags:
+                img_tag = div_tag.find('img')
+                if img_tag is None:
+                    img_src = "No Image"
+                else:
+                    img_src = img_tag.get('src', "No Image")
+                final_away_team_logo.append(img_src)
+
+
+            for div_tag in final_home_div_tags:
+                img_tag = div_tag.find('img')
+                if img_tag is None:
+                    img_src = "No Image"
+                else:
+                    img_src = img_tag.get('src', "No Image")
+                final_home_team_logo.append(img_src)
+
+
+
+            for i in range(len(final_away_team_logo)):
+                final_all_team_logos.append(final_away_team_logo[i])
+                final_all_team_logos.append(final_home_team_logo[i])
+
+
+            count = 0
+            for soup in final_odds:
+                count += 1
+                for span in soup.find_all('span'):
+                    if count == 1:
+                        if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                            final_team_1_money_line.append("True " + span.text)
+                        else:
+                            final_team_1_money_line.append(span.text)
+                    elif count == 2:
+                        if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                            final_team_1_point_spread.append("True " + span.text)
+                        else:
+                            final_team_1_point_spread.append(span.text)
+                    elif count == 3:
+                        count = 0
+                        if span.find_previous_sibling('img', {'alt': 'correct'}) and 'correct' in span.find_previous_sibling('img', {'alt': 'correct'}).get('alt'):
+                            final_team_1_total_points.append("True " + span.text)
+                            print(span.text)
+                        else:
+                            final_team_1_total_points.append(span.text)
+                            print(span.text)
+
+            for team, record in zip(final_teams, final_score ):
+                final_teams_list.append(team.text)
+                final_score_list.append(record.text)
+
+
+
+
+            counter = 0
+            for l, t, s, m1, p1, t1 in zip(final_all_team_logos, final_teams_list, final_score_list, final_team_1_money_line, final_team_1_point_spread, final_team_1_total_points):
+                if((counter % 2) == 0):
+                    final_away_odds.append([l, t, s, m1, p1, t1])
+                    counter += 1
+                else:
+                    final_home_odds.append([l, t, s, m1, p1, t1])
+                    counter += 1
+
+
+            for i in range(len(final_away_odds)):
+                game = {}
+                game['home'] = {"team" : final_home_odds[i][1], "logo": final_home_odds[i][0], "score":  final_home_odds[i][2], "moneyline":  final_home_odds[i][3], 'point_spread': final_home_odds[i][4],  'total_points': final_home_odds[i][5]  }
+                game['away'] = {"team" : final_away_odds[i][1], "logo": final_away_odds[i][0], "score":  final_away_odds[i][2], "moneyline":  final_away_odds[i][3], 'point_spread': final_away_odds[i][4],  'total_points': final_away_odds[i][5] }
+
+                final_games.append(game)
 
     #####################
     
@@ -741,15 +842,27 @@ def scrape_Odds(league):
         
     
 
-        for div_tag in inprogress_away_div_tags:
+        for div_tag in final_away_div_tags:
             img_tag = div_tag.find('img')
-            img_src = img_tag['src']
-            inprogress_away_team_logo.append(img_src)
+            if img_tag is None:
+                img_src = "No Image"
+            else:
+                img_src = img_tag.get('src', "No Image")
+            final_away_team_logo.append(img_src)
     
-        for div_tag in inprogress_home_div_tags:
+        # for div_tag in final_home_div_tags:
+        #     img_tag = div_tag.find('img')
+            # img_src = img_tag['src']
+            # final_home_team_logo.append(img_src)
+            # final_away_team_logo.append(img_src)
+        
+        for div_tag in final_home_div_tags:
             img_tag = div_tag.find('img')
-            img_src = img_tag['src']
-            inprogress_home_team_logo.append(img_src)
+            if img_tag is None:
+                img_src = "No Image"
+            else:
+                img_src = img_tag.get('src', "No Image")
+            final_home_team_logo.append(img_src)
 
         
 
@@ -844,15 +957,27 @@ def scrape_Odds(league):
         
 
 
-        for div_tag in upcoming_away_div_tags:
+        for div_tag in final_away_div_tags:
             img_tag = div_tag.find('img')
-            img_src = img_tag['src']
-            upcoming_away_team_logo.append(img_src)
-
-        for div_tag in upcoming_home_div_tags:
+            if img_tag is None:
+                img_src = "No Image"
+            else:
+                img_src = img_tag.get('src', "No Image")
+            final_away_team_logo.append(img_src)
+    
+        # for div_tag in final_home_div_tags:
+        #     img_tag = div_tag.find('img')
+            # img_src = img_tag['src']
+            # final_home_team_logo.append(img_src)
+            # final_away_team_logo.append(img_src)
+        
+        for div_tag in final_home_div_tags:
             img_tag = div_tag.find('img')
-            img_src = img_tag['src']
-            upcoming_home_team_logo.append(img_src)
+            if img_tag is None:
+                img_src = "No Image"
+            else:
+                img_src = img_tag.get('src', "No Image")
+            final_home_team_logo.append(img_src)
 
         for i in range(len(upcoming_away_team_logo)):
             upcoming_all_team_logos.append(upcoming_away_team_logo[i])
@@ -907,7 +1032,6 @@ def scrape_Odds(league):
     Final = {}
     Final["Final"] = final_games
     
-    print(Upcoming,Inprogress,Final)
     return jsonify(Upcoming,Inprogress,Final)
 
 
