@@ -1088,7 +1088,6 @@ def scrape_Standing(sport):
        
     return jsonify(standings_data)
 
-scrape_Odds("wnba")
  
 
 
