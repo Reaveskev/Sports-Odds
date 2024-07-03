@@ -80,6 +80,7 @@ function NBA() {
           ]);
 
         if (response1.data.game_groups[0] === undefined) {
+          console.log("Scoreboard", response1.data.game_groups[0]);
           setoffseason(true);
         } else if (
           response1.data.game_groups[0].name === "In Progress" &&

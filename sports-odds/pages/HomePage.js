@@ -35,8 +35,14 @@ const HomePage = () => {
         let gamesArr = [];
 
         data.forEach((item) => {
-          if (item.games) {
+          console.log("HomePage", item);
+          if (item && item.games) {
+            console.log("HomePage line 40", item.games);
             gamesArr.push(...item.games);
+          } else {
+            console.error(
+              "data is undefined or does not contain games property"
+            );
           }
         });
 

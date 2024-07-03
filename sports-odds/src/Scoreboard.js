@@ -5,7 +5,7 @@ const Scoreboard = ({ inprogress, upcoming, completed }) => {
   return (
     <div className={styles.scoreboard}>
       <>
-        {inprogress.games !== undefined ? (
+        {inprogress?.games ? (
           <>
             {inprogress.games.map((games) => {
               return (
@@ -49,7 +49,7 @@ const Scoreboard = ({ inprogress, upcoming, completed }) => {
             })}
           </>
         ) : null}
-        {completed.games !== undefined ? (
+        {completed?.games ? (
           <>
             {completed.games.map((games) => {
               return (
@@ -93,7 +93,7 @@ const Scoreboard = ({ inprogress, upcoming, completed }) => {
             })}
           </>
         ) : null}
-        {upcoming.games !== undefined ? (
+        {upcoming?.games ? (
           <>
             {upcoming.games.map((games) => {
               return (
