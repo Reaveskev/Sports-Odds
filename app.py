@@ -581,7 +581,7 @@ def scrape_Odds(league):
         Upcoming = {}  
         Inprogress = {}  
         Final = {}  
-        print("Both elements not found")
+        print("All elements not found")
         return jsonify(Upcoming, Inprogress, Final)
 
 
@@ -627,6 +627,7 @@ def scrape_Odds(league):
     final_div = soup.findAll('div', class_=lambda c: c and 'FINAL' in c)
     inprogress_div = soup.findAll('div', class_=lambda c: c and 'IN_PROGRESS' in c)
     pregame_div = soup.findAll('div', class_=lambda c: c and 'PREGAME' in c)
+
 
     if league == "nfl":
         for x in final_div[::-1][:16]:
@@ -842,27 +843,22 @@ def scrape_Odds(league):
         
     
 
-        for div_tag in final_away_div_tags:
+        for div_tag in inprogress_away_div_tags:
             img_tag = div_tag.find('img')
             if img_tag is None:
                 img_src = "No Image"
             else:
                 img_src = img_tag.get('src', "No Image")
-            final_away_team_logo.append(img_src)
+            inprogress_away_team_logo.append(img_src)
     
-        # for div_tag in final_home_div_tags:
-        #     img_tag = div_tag.find('img')
-            # img_src = img_tag['src']
-            # final_home_team_logo.append(img_src)
-            # final_away_team_logo.append(img_src)
         
-        for div_tag in final_home_div_tags:
+        for div_tag in inprogress_home_div_tags:
             img_tag = div_tag.find('img')
             if img_tag is None:
                 img_src = "No Image"
             else:
                 img_src = img_tag.get('src', "No Image")
-            final_home_team_logo.append(img_src)
+            inprogress_home_team_logo.append(img_src)
 
         
 
@@ -957,27 +953,22 @@ def scrape_Odds(league):
         
 
 
-        for div_tag in final_away_div_tags:
+        for div_tag in upcoming_away_div_tags:
             img_tag = div_tag.find('img')
             if img_tag is None:
                 img_src = "No Image"
             else:
                 img_src = img_tag.get('src', "No Image")
-            final_away_team_logo.append(img_src)
+            upcoming_away_team_logo.append(img_src)
     
-        # for div_tag in final_home_div_tags:
-        #     img_tag = div_tag.find('img')
-            # img_src = img_tag['src']
-            # final_home_team_logo.append(img_src)
-            # final_away_team_logo.append(img_src)
         
-        for div_tag in final_home_div_tags:
+        for div_tag in upcoming_home_div_tags:
             img_tag = div_tag.find('img')
             if img_tag is None:
                 img_src = "No Image"
             else:
                 img_src = img_tag.get('src', "No Image")
-            final_home_team_logo.append(img_src)
+            upcoming_home_team_logo.append(img_src)
 
         for i in range(len(upcoming_away_team_logo)):
             upcoming_all_team_logos.append(upcoming_away_team_logo[i])
@@ -1096,6 +1087,8 @@ def scrape_Standing(sport):
     
        
     return jsonify(standings_data)
+
+scrape_Odds("wnba")
  
 
 
