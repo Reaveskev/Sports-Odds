@@ -436,6 +436,7 @@ def scrape_featured_Odd():
     featured_odds = soup.findAll("div",{"class":"ys-featured-odds-odds-container D(f) Jc(sb) Flw(w) Pos(r) Mx(-5px)"} )
 
     featured_games = []
+   
 
     for x in featured_odds:
         title = x.findAll("div",{"class":"Mb(12px) Mx(20px) Mt(20px) YahooSans-Semibold Fz(12px) smartphone_Mx(0)"} )
@@ -544,8 +545,9 @@ def scrape_featured_Odd():
             
             
             featured_games.append(ingames)
-    
+   
     return jsonify(featured_games)
+
 
 
 

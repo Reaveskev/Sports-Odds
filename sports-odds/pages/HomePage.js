@@ -48,6 +48,7 @@ const HomePage = () => {
         setInprogress(gamesObj);
 
         setFeaturedSportsOdds(response2.data);
+        console.log(response2.data);
         setLoading(false);
       } catch (error) {
         console.error(error);
