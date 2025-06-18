@@ -22,6 +22,7 @@ cors = CORS(app, support_credentials=True)
 # Browser Driver
 
 # Local do these 
+# To run local run "Flask run" in terminal
 # options = Options()
 # options.add_argument("--headless")
 # options.add_argument("--disable-dev-shm-usage")
@@ -1056,7 +1057,7 @@ def scrape_Standing(sport):
     standings_div = soup.findAll('table', {"class":'W(100%) Mb(20px)'})
     
     for x in standings_div:
-        conference = x.find("th",{"class":"Py(6px) Px(4px) Ta(end) Ta(start)!"} ).text
+        conference = x.find("th",{"class":"Whs(nw) Miw(28px) Py(6px) Px(4px) Ta(end) Miw(110px)! Ta(start)!"} ).text
         tbody =  x.find("tbody")
         rows = tbody.find_all('tr')
    

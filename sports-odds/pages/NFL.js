@@ -77,6 +77,9 @@ function NFL() {
             axios.get(
               "https://sports-odds.herokuapp.com/api/Sport_Standings/nfl"
             ),
+            // axios.get("http:/127.0.0.1:5000/api/Odds/nfl"),
+            // axios.get("http:/127.0.0.1:5000/api/Sport_News/nfl"),
+            // axios.get("http://127.0.0.1:5000/api/Sport_Standings/nfl"),
           ]);
 
         if (response1.data.game_groups[0] === undefined) {
@@ -108,6 +111,7 @@ function NFL() {
         setFinalSportsOdds(response3.data[2].Final);
 
         setNFLNews2(response4.data);
+
         setStandings(response5.data);
 
         setLoading(false);
