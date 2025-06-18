@@ -6,6 +6,7 @@ from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
 import mysql.connector
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -36,7 +37,10 @@ chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-dev-shm-usage")
 chrome_options.add_argument("--no-sandbox")
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+chrome_path = os.environ.get("CHROMEDRIVER_PATH")
+service = Service(executable_path=chrome_path)
+driver = webdriver.Chrome(service=service, options=chrome_options)
+# driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 
 # MySql ####################
 
@@ -55,6 +59,8 @@ app.config['DROPBOX_ACCESS_TOKEN'] = os.environ.get('DROPBOX_ACCESS_TOKEN')
 # app.config['MYSQL_DB'] = "sports_odds"
 # app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # app.config['SECRET_KEY'] = 'mysecretkey'
+# pypiwin32==223
+# pywin32==305
 
 
 
