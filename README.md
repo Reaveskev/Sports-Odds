@@ -1,15 +1,9 @@
-
 <h1 align="center">
   <br>
   <a href="https://sports-odds.herokuapp.com/"><img src="https://github.com/Reaveskev/Sports-Odds/blob/main/sports-odds/public/Sports%20Odds-1.png" alt="SportsOdds" width="300"></a>
   <br>
     <a href="https://sports-odds.herokuapp.com/"><img src="https://github.com/Reaveskev/Sports-Odds/blob/main/sports-odds/public/Sport_odds_preview.png" alt="preview" width="400" height="300"></a>
 </h1>
-
-
-
-
-
 
 <p align="center">
   <a href="#summary">Summary</a> •
@@ -19,21 +13,21 @@
 </p>
 
 ## Summary
+
 The website provides up-to-date sports news, game odds, current standings, and a platform for users to create accounts and bet on games using fake money. It sources this information from multiple APIs and also scrapes pages to ensure users have access to the latest information. Users can create an account to participate in the platform's betting features and enjoy a risk-free betting experience. Users will have access to the latest news, odds and potential payouts without having an account.
-
-
 
 ## Key Features
 
-* See Live Scores
-* Sports News
+- See Live Scores
+- Sports News
   - See latest news for the NFL, NBA, WNBA, MLB, NHL, and some more.
-* Current Standings
+- Current Standings
   - See the current standings for sports in season.
-* See Sport odds
+- See Sport odds
   - Place bets with fake money on money line, spread and total points.
-  
- ## Technologies
+
+## Technologies
+
 ![javascript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
 ![python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![next](https://img.shields.io/badge/Next-000000?style=for-the-badge&logo=nextdotjs&logoColor=FFFFFF)
@@ -46,8 +40,21 @@ The website provides up-to-date sports news, game odds, current standings, and a
 ![npm](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 ![pip](https://img.shields.io/badge/Pip-ffaa00?style=for-the-badge&logo=pip&logoColor=white)
 
-
 ## Disclaimer
+
 Sports Odds is an independent website that provides sports news, game odds, and a platform for users to participate in simulated sports betting with fake money. We are not affiliated with any professional sports leagues or organizations, and the information provided on our website is for informational purposes only.
 
+Needed Fixes
 
+- Replace the broken scoreboard source
+- Build one reusable scoreboard/data helper
+- Refocus the app into a sports dashboard
+- Remove/hide login, profile, betting, trivia, draft board
+- Refactor league pages into one reusable `SportPage`
+- Simplify homepage
+- Clean header/nav
+- Replace float layouts with grid/flex
+- Create reusable card/button/spacing styles
+- Clean up backend structure
+- Update README and redeploy
+-
