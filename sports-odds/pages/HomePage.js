@@ -22,11 +22,12 @@ const HomePage = () => {
       const day = String(today.getDate()).padStart(2, "0");
       const formattedDate = `${year}-${month}-${day}`;
       try {
-        const [response1, response2] = await Promise.all([
+        // const [response1, response2] = await Promise.all([
+        const [response1] = await Promise.all([
           axios.get(
-            `https://statmilk.bleacherreport.com/api/scores/schedules?date=${formattedDate}&appversion=500.0&context=`
+            `https://statmilk.bleacherreport.com/api/scores/schedules?date=${formattedDate}&appversion=500.0&context=`,
           ),
-          axios.get("https://sports-odds.herokuapp.com/api/featured"),
+          // axios.get("https://sports-odds.herokuapp.com/api/featured"),
           // axios.get("http://127.0.0.1:5000/api/featured"),
         ]);
 
@@ -39,7 +40,7 @@ const HomePage = () => {
             gamesArr.push(...item.games);
           } else {
             console.error(
-              "data is undefined or does not contain games property"
+              "data is undefined or does not contain games property",
             );
           }
         });
@@ -47,8 +48,8 @@ const HomePage = () => {
         let gamesObj = { games: gamesArr };
         setInprogress(gamesObj);
 
-        setFeaturedSportsOdds(response2.data);
-        console.log(response2.data);
+        // setFeaturedSportsOdds(response2.data);
+        // console.log(response2.data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -79,9 +80,9 @@ const HomePage = () => {
             </div>
           </div>
 
-          {featuredSportsOdds ? (
+          {/* {featuredSportsOdds ? (
             <Odds featuredSportsOdds={featuredSportsOdds} />
-          ) : null}
+          ) : null} */}
         </>
       )}
     </div>

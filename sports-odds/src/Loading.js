@@ -7,7 +7,8 @@ const WhistleLoader = () => {
       <img
         className={styles.whistle}
         alt="whistle"
-        src="/out/Sports_Odds.png"
+        // src="/out/Sports_Odds.png"
+        src="../Sports_Odds.png"
       />
       <p className={styles.text}>Loading...</p>
     </div>

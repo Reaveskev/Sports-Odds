@@ -64,23 +64,22 @@ function NFL() {
   useEffect(() => {
     async function loadPageData() {
       try {
-        const [response1, response2, response3, response4, response5] =
-          await Promise.all([
-            axios.get(
-              "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-            ),
-            axios.get(
-              "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news"
-            ),
-            axios.get("https://sports-odds.herokuapp.com/api/Odds/nfl"),
-            axios.get("https://sports-odds.herokuapp.com/api/Sport_News/nfl"),
-            axios.get(
-              "https://sports-odds.herokuapp.com/api/Sport_Standings/nfl"
-            ),
-            // axios.get("http:/127.0.0.1:5000/api/Odds/nfl"),
-            // axios.get("http:/127.0.0.1:5000/api/Sport_News/nfl"),
-            // axios.get("http://127.0.0.1:5000/api/Sport_Standings/nfl"),
-          ]);
+        const [response1, response3, response4, response5] = await Promise.all([
+          axios.get(
+            "https://statmilk.bleacherreport.com/api/scores/carousel?league=NFL&team=none&carousel_context=league&tz=-25200&appversion=500.0",
+          ),
+          // axios.get(
+          //   "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news",
+          // ),
+          // axios.get("https://sports-odds.herokuapp.com/api/Odds/nfl"),
+          // axios.get("https://sports-odds.herokuapp.com/api/Sport_News/nfl"),
+          // axios.get(
+          //   "https://sports-odds.herokuapp.com/api/Sport_Standings/nfl",
+          // ),
+          // axios.get("http:/127.0.0.1:5000/api/Odds/nfl"),
+          axios.get("http:/127.0.0.1:5000/api/Sport_News/nfl"),
+          axios.get("http://127.0.0.1:5000/api/Sport_Standings/nfl"),
+        ]);
 
         if (response1.data.game_groups[0] === undefined) {
           setoffseason(true);

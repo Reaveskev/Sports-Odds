@@ -24,7 +24,7 @@ const nextConfig = {
   // },
   exportPathMap: async function (
     defaultPathMap,
-    { dev, dir, outDir, distDir, buildId }
+    { dev, dir, outDir, distDir, buildId },
   ) {
     return {
       "/": { page: "/" },
@@ -36,10 +36,10 @@ const nextConfig = {
       "/MLB": { page: "/MLB" },
       "/MCBB": { page: "/MCBB" },
       "/WCBB": { page: "/WCBB" },
-      "/login": { page: "/login" },
-      "/profile": { page: "/profile" },
-      "/SportsTrivia": { page: "/SportsTrivia" },
-      "/FF": { page: "/FF" },
+      // "/login": { page: "/login" },
+      // "/profile": { page: "/profile" },
+      // "/SportsTrivia": { page: "/SportsTrivia" },
+      // "/FF": { page: "/FF" },
     };
   },
 };

@@ -8,26 +8,31 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, setUser } = useAppContext();
 
-  const handleLogout = () => {
-    let url = "https://sports-odds.herokuapp.com/api/logout";
-    // let url = "http://127.0.0.1:5000/api/logout";
-    try {
-      axios.post(url).then((res) => {
-        if (res.status === 200) {
-          setUser(null);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleLogout = () => {
+  //   let url = "https://sports-odds.herokuapp.com/api/logout";
+  //   // let url = "http://127.0.0.1:5000/api/logout";
+  //   try {
+  //     axios.post(url).then((res) => {
+  //       if (res.status === 200) {
+  //         setUser(null);
+  //       }
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
       <div className={styles.navbar}>
         <div style={{ marginLeft: 10 }}>
           <Link href="/">
-            <img alt="" className={styles.logo} src="/out/Sports Odds-1.png" />
+            <img
+              alt=""
+              className={styles.logo}
+              // src="/out/Sports Odds-1.png"
+              src="../Sports Odds-1.png"
+            />
           </Link>
         </div>
 
@@ -88,7 +93,7 @@ function Header() {
             ) : null}
           </div>
         </li>
-        <li className={styles.li}>
+        {/* <li className={styles.li}>
           <Link className={styles.link} href="/SportsTrivia">
             Sports Trivia
           </Link>
@@ -97,9 +102,9 @@ function Header() {
           <Link className={styles.link} href="/FF">
             FF
           </Link>
-        </li>
+        </li> */}
 
-        {user ? (
+        {/* {user ? (
           <div className={styles.login_or_profile}>
             <li className={styles.li}>
               <Link className={styles.link} href="/profile">
@@ -125,7 +130,7 @@ function Header() {
               </Link>
             </li>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Mobile display */}
@@ -198,7 +203,7 @@ function Header() {
               ) : null}
             </div>
           </li>
-          <li className={styles.li}>
+          {/* <li className={styles.li}>
             <Link className={styles.link} href="/SportsTrivia">
               Sports Trivia
             </Link>
@@ -207,9 +212,9 @@ function Header() {
             <Link className={styles.link} href="/FF">
               FF
             </Link>
-          </li>
+          </li> */}
 
-          {user ? (
+          {/* {user ? (
             <div className={styles.login_or_profile}>
               <li className={styles.li}>
                 <Link className={styles.link} href="/profile">
@@ -235,7 +240,7 @@ function Header() {
                 </Link>
               </li>
             </div>
-          )}
+          )} */}
         </div>
       ) : null}
     </>

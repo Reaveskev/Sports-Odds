@@ -16,9 +16,9 @@ function NBA() {
   const [NBANews, setNBANews] = useState([]);
   const [NBANews2, setNBANews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
-  const [upcomingSportsOdds, setUpcomingSportsOdds] = useState([]);
-  const [finalSportsOdds, setFinalSportsOdds] = useState([]);
-  const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
+  // const [upcomingSportsOdds, setUpcomingSportsOdds] = useState([]);
+  // const [finalSportsOdds, setFinalSportsOdds] = useState([]);
+  // const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
   const [standings, setStandings] = useState([]);
   const [seeNews, setSeeNews] = useState(true);
   const [seeOdds, setSeeOdds] = useState(false);
@@ -59,54 +59,79 @@ function NBA() {
   };
 
   useEffect(() => {
+    const upcomingGameArr = [];
+    const inProgressGameArr = [];
+    const completedGameArr = [];
+
     async function loadPageData() {
       try {
-        const [response1, response2, response3, response4, response5] =
-          await Promise.all([
-            axios.get(
-              "https://statmilk.bleacherreport.com/api/scores/carousel?league=NBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
-            ),
-            axios.get(
-              "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news"
-            ),
-            axios.get("https://sports-odds.herokuapp.com/api/Odds/nba"),
-            axios.get("https://sports-odds.herokuapp.com/api/Sport_News/nba"),
-            axios.get(
-              "https://sports-odds.herokuapp.com/api/Sport_Standings/nba"
-            ),
-            // axios.get("http://127.0.0.1:5000/api/Odds/nba"),
-            // axios.get("http://127.0.0.1:5000/api/Sport_News/nba"),
-            // axios.get("http://127.0.0.1:5000/api/Sport_Standings/nba"),
-          ]);
+        const [response1, response2, response4, response5] = await Promise.all([
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+          ),
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news",
+          ),
+          // axios.get("https://sports-odds.herokuapp.com/api/Odds/nba"),
+          // axios.get("https://sports-odds.herokuapp.com/api/Sport_News/nba"),
+          // axios.get(
+          //   "https://sports-odds.herokuapp.com/api/Sport_Standings/nba"
+          // ),
+          // axios.get("http://127.0.0.1:5000/api/Odds/nba"),
+          axios.get("http://127.0.0.1:5000/api/Sport_News/nba"),
+          axios.get("http://127.0.0.1:5000/api/Sport_Standings/nba"),
+        ]);
 
-        if (response1.data.game_groups[0] === undefined) {
-          console.log("Scoreboard", response1.data.game_groups[0]);
-          setoffseason(true);
-        } else if (
-          response1.data.game_groups[0].name === "In Progress" &&
-          response1.data.game_groups[1].name === "Completed"
-        ) {
-          setInprogress(response1.data.game_groups[0]);
-          setCompleted(response1.data.game_groups[1]);
-          setUpcoming(response1.data.game_groups[2]);
-        } else if (response1.data.game_groups[0].name === "Completed") {
-          setCompleted(response1.data.game_groups[0]);
-          setUpcoming(response1.data.game_groups[1]);
-        } else if (
-          response1.data.game_groups[0].name === "In Progress" &&
-          response1.data.game_groups[1].name === "Upcoming"
-        ) {
-          setInprogress(response1.data.game_groups[0]);
-          setUpcoming(response1.data.game_groups[1]);
-        } else {
-          setUpcoming(response1.data.game_groups[0]);
+        for (let i = 0; i < response1.data.events.length; i++) {
+          let event = response1.data.events[i];
+          let competition = event.competitions[0];
+          let competitors = competition.competitors;
+          const home = competitors[0];
+          const away = competitors[1];
+          let status = event.status;
+
+          const game = {
+            id: event.id,
+            team_one: {
+              name: home.team.name,
+              logo: home.team.logo || "",
+              score: home.score,
+              record: home.records[0].summary || "",
+              abbrev: home.team.abbreviation,
+            },
+            team_two: {
+              name: away.team.name,
+              logo: away.team.logo,
+              score: away.score,
+              record: away.records[0].summary || "",
+              abbrev: away.team.abbreviation,
+            },
+
+            game_progress: {
+              detail: status.type.detail,
+              description: status.type.description,
+              completed: status.type.completed,
+              period: status.period,
+              clock: status.displayClock,
+              status: status.type.state,
+            },
+            shortName: event.shortName,
+            odds: competition.odds ? competition.odds[0].details : null,
+          };
+
+          if (status.type.state === "pre") {
+            upcomingGameArr.push(game);
+          } else if (status.type.state === "in") {
+            inProgressGameArr.push(game);
+          } else if (status.type.state === "post") {
+            completedGameArr.push(game);
+          }
         }
 
+        setUpcoming(upcomingGameArr);
+        setInprogress(inProgressGameArr);
+        setCompleted(completedGameArr);
         setNBANews(response2.data.articles);
-
-        setUpcomingSportsOdds(response3.data[0].Upcoming);
-        setInprogressSportsOdds(response3.data[1].Inprogress);
-        setFinalSportsOdds(response3.data[2].Final);
 
         setNBANews2(response4.data);
         setStandings(response5.data);
@@ -191,7 +216,7 @@ function NBA() {
             </div>
           </div>
 
-          {offseason ? null : (
+          {/* {offseason ? null : (
             <div className={styles.test}>
               <Odds
                 inprogressSportsOdds={inprogressSportsOdds}
@@ -202,7 +227,7 @@ function NBA() {
                 league={"nba"}
               />
             </div>
-          )}
+          )} */}
         </>
       )}
       {/* Mobile display */}
@@ -287,7 +312,7 @@ function NBA() {
           </div>
         ) : null}
 
-        {seeOdds ? (
+        {/* {seeOdds ? (
           <Odds
             inprogressSportsOdds={inprogressSportsOdds}
             finalSportsOdds={finalSportsOdds}
@@ -296,7 +321,7 @@ function NBA() {
             sport={"basketball"}
             league={"nba"}
           />
-        ) : null}
+        ) : null} */}
 
         {seeStandings ? <Standings standings={standings} /> : null}
       </div>
