@@ -1,74 +1,44 @@
 import React from "react";
-import styles from "@/styles/NBA.module.css";
+import styles from "@/styles/Standings.module.css";
 
 const Standings = ({ standings }) => {
   return (
     <div className={styles.standing_div}>
       <div className={styles.news}>
-        <h1 className={styles.upcoming}>Standings</h1>
+        <h1 className={styles.sectionTitle}>Standings</h1>
 
-        <div className={styles.Standings}>
-          {standings ? (
-            <div>
-              {standings.map((conference, i) => (
-                <div style={{ width: "auto" }} key={i}>
-                  <h2>{conference.conference}</h2>
-                  <div className={styles.standings_title}>
-                    <p style={{ width: 35 }}></p>
-                    <p
-                      style={{
-                        width: 100,
-                        marginRight: 15,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Team
-                    </p>
-                    <p
-                      style={{
-                        width: 80,
-                        marginRight: 10,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Wins/Losses
-                    </p>
+        <div className={styles.standingsContainer}>
+          {standings?.map((conference, i) => (
+            <div className={styles.conferenceCard} key={i}>
+              <h2 className={styles.conferenceTitle}>
+                {conference.conference}
+              </h2>
+
+              <div className={styles.standingsHeader}>
+                <span className={styles.headerSpacer}></span>
+                <span className={styles.headerTeam}>Team</span>
+                <span className={styles.headerRecord}>W / L</span>
+              </div>
+
+              <div className={styles.teamList}>
+                {conference.teams.map((team, j) => (
+                  <div className={styles.teamRow} key={j}>
+                    <img
+                      className={styles.standingsLogo}
+                      src={team.logo}
+                      alt={team.team_name}
+                    />
+                    <span className={styles.standingsTeamName}>
+                      {team.team_name}
+                    </span>
+                    <span className={styles.standingsRecord}>
+                      {team.wins}-{team.losses}
+                    </span>
                   </div>
-                  <ul>
-                    {conference.teams.map((team, j) => (
-                      <li
-                        style={{ paddingBottom: 5 }}
-                        className={styles.name_logo}
-                        key={j}
-                      >
-                        <img
-                          className={styles.odds_logo}
-                          src={team.logo}
-                          alt={team.team_name}
-                        />
-                        <span
-                          style={{
-                            marginRight: 15,
-                            width: 100,
-                          }}
-                        >
-                          {team.team_name}
-                        </span>
-                        <span
-                          style={{
-                            marginRight: 15,
-                            width: 80,
-                          }}
-                        >
-                          W: {team.wins}/ L: {team.losses}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          ) : null}
+          ))}
         </div>
       </div>
     </div>

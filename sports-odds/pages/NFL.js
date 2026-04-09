@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-import Odds from "@/src/Odds";
+import Odds from "@/archive/Odds";
 // import { useAppContext } from "@/src/GlobalContext";
 import WhistleLoader from "@/src/Loading";
 import Standings from "@/src/Standings";

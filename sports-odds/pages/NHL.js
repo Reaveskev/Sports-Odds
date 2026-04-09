@@ -6,7 +6,7 @@ import Header from "@/src/Header";
 import WhistleLoader from "@/src/Loading";
 import Standings from "@/src/Standings";
 import Scoreboard from "@/src/Scoreboard";
-import Odds from "@/src/Odds";
+import Odds from "@/archive/Odds";
 
 function NHL() {
   const [loading, setLoading] = useState(true);
@@ -65,19 +65,19 @@ function NHL() {
     async function loadPageData() {
       try {
         const response1 = await axios.get(
-          "https://statmilk.bleacherreport.com/api/scores/carousel?league=NHL&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+          "https://statmilk.bleacherreport.com/api/scores/carousel?league=NHL&team=none&carousel_context=league&tz=-25200&appversion=500.0",
         );
         const response2 = await axios.get(
-          "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news"
+          "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news",
         );
         const response3 = await axios.get(
-          "https://sports-odds.herokuapp.com/api/Odds/nhl"
+          "https://sports-odds.herokuapp.com/api/Odds/nhl",
         );
         const response4 = await axios.get(
-          "https://sports-odds.herokuapp.com/api/Sport_News/nhl"
+          "https://sports-odds.herokuapp.com/api/Sport_News/nhl",
         );
         const response5 = await axios.get(
-          "https://sports-odds.herokuapp.com/api/Sport_Standings/nhl"
+          "https://sports-odds.herokuapp.com/api/Sport_Standings/nhl",
         );
         if (response1.data.game_groups[0] === undefined) {
           setoffseason(true);

@@ -1,118 +1,3 @@
-.games {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 0.3rem 0 0.5rem 0.5rem;
-  width: 200px;
-  height: 84px;
-  /* margin: 3px; */
-  color: white;
-  text-decoration: none;
-  border-right: 1px solid #bbb;
-  border-left: 1px solid #bbb;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.teamContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-right: 10px;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.logo {
-  width: 25px;
-  height: 25px;
-}
-
-.time,
-.date {
-  font-size: 10px;
-}
-
-.logoDiv {
-  display: flex;
-  align-items: center;
-}
-.teamName {
-  flex: 1;
-  margin-left: 8px;
-  margin-right: 8px;
-  font-size: 12px;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.record {
-  padding-right: 15px;
-}
-
-/* .scoreboard::-webkit-scrollbar {
-  height: 0.5rem;
-}
-
-.scoreboard::-webkit-scrollbar-track {
-  background: #1e1e24;
-}
-
-.scoreboard::-webkit-scrollbar-thumb {
-  background: rgb(69, 68, 68);
-}
-
-.scoreboard {
-  background-color: rgb(34, 34, 35);
-  overflow: auto;
-  display: flex;
-  white-space: nowrap;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.sectionHeader {
-  font-size: 18px;
-  font-weight: 600;
-  color: white;
-  padding: 10px 12px 6px 12px;
-  min-width: 100%;
-} */
-
-/* NEW */
-.scoreboard {
-  background-color: rgb(34, 34, 35);
-  display: flex;
-  flex-direction: column;
-}
-
-.scoreboardSection {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-.scoreboardRow {
-  display: flex;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.scoreboardRow::-webkit-scrollbar {
-  height: 0.5rem;
-}
-
-.scoreboardRow::-webkit-scrollbar-track {
-  background: #1e1e24;
-}
-
-.scoreboardRow::-webkit-scrollbar-thumb {
-  background: rgb(69, 68, 68);
-}
-
-.sectionHeader {
-  font-size: 18px;
-  font-weight: 600;
-  color: white;
-  padding: 10px 12px 6px 12px;
-}
-
 .news {
   display: flex;
   flex-direction: column;
@@ -127,22 +12,22 @@
 .newInfo {
   background-color: rgb(34, 34, 35);
   box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
-  height: auto;
+  /* height: auto; */
   color: white;
-  width: auto;
+  /* width: auto; */
   display: flex;
   flex-flow: column nowrap;
   place-content: center space-between;
   top: 0px;
   min-height: 450px;
-  width: 670px;
+  /* width: 670px; */
   border-radius: 12px;
   padding: 24px;
   align-items: baseline;
   margin-bottom: 20px;
   text-align: left;
   overflow-wrap: break-word;
-  inline-size: 670px;
+  /* inline-size: 670px; */
 }
 
 .welcome {
@@ -175,33 +60,6 @@
   align-items: center;
 }
 
-.odds {
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  border-radius: 12px;
-  color: white;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.featured_odds {
-  width: auto;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  border-radius: 12px;
-  color: white;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
 .featured_info {
   background-color: #222223;
   box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
@@ -219,118 +77,17 @@
     sans-serif;
 }
 
-.odds_div {
-  display: flex;
-  justify-content: center;
-  color: lightgray;
-}
-
-.upcoming {
+/* .upcoming {
   margin: 30px 0 20px 0;
   padding-top: 10px;
   color: white;
-}
+} */
 
-.team_info {
-  background-color: rgb(34, 34, 35);
-  box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
-  border-radius: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
+.sectionTitle {
+  margin: 0 0 18px 0;
+  font-size: 24px;
+  font-weight: 700;
   color: white;
-  display: flex;
-  flex-direction: column;
-  width: auto;
-  height: auto;
-  text-align: center;
-  font-family: "Source Sans Pro", sans-serif;
-}
-
-.team_format {
-  margin-bottom: 10px;
-  color: white;
-  display: flex;
-  align-items: center;
-}
-
-.team_header {
-  padding-top: 10px;
-  margin-bottom: 10px;
-  color: white;
-  display: flex;
-  align-items: center;
-}
-
-.team_info h4 {
-  margin-top: 0;
-}
-
-.team_info p:first-of-type {
-  min-width: auto;
-}
-
-.team_info p {
-  min-width: auto;
-}
-
-.name_record {
-  min-width: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.odds_logo {
-  width: 35px;
-  height: 35px;
-  margin-right: 5px;
-}
-
-.name_logo {
-  display: flex;
-  padding-left: 10px;
-  flex-direction: row;
-  align-items: center;
-}
-
-.standing_div {
-  width: 25%;
-  float: left;
-  padding-left: 5%;
-}
-
-.odds_container {
-  width: 25%;
-  float: left;
-  padding-right: 5%;
-  white-space: nowrap;
-}
-
-.Standings {
-  background-color: #222223;
-  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
-  border-radius: 10px;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  width: auto;
-  height: auto;
-  text-align: center;
-  font-family:
-    Source Sans Pro,
-    sans-serif;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.standings_title {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  overflow: hidden;
-  white-space: nowrap;
 }
 
 .mobile_sports {
@@ -379,30 +136,10 @@
     font-size: x-large;
   }
 
-  .odds {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  .name_logo {
-    padding-left: 5px;
-  }
-
-  .test {
-    display: none;
-  }
-
-  .odds_container {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-  }
-
-  .standing_div,
-  .new_div,
-  .odds_container {
+  /* .new_div {
     width: 100% !important;
     float: none !important;
-  }
+  } */
 }
 
 /* Medium screens (tablets, 768px and below) */
@@ -420,17 +157,11 @@
     width: 100%;
   }
 
-  .new_div,
-  .odds_container,
-  .standing_div {
+  .new_div {
     width: 100% !important;
     float: left !important;
     padding-right: 0 !important;
     padding-left: 0 !important;
-  }
-
-  .test {
-    display: none;
   }
 
   .mobile_sports {
@@ -464,17 +195,11 @@
     width: 100%;
   }
 
-  .new_div,
-  .odds_container,
   .standing_div {
     width: 100% !important;
     float: left !important;
     padding-right: 0 !important;
     padding-left: 0 !important;
-  }
-
-  .test {
-    display: none;
   }
 
   .mobile_sports {
@@ -500,5 +225,38 @@
 
   .mobile_tab:active {
     background-color: #181818;
+  }
+}
+
+/* NEW */
+.mainContent {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 32px;
+  max-width: 1320px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+  align-items: start;
+}
+
+.leftColumn {
+  width: 100%;
+  position: sticky;
+  top: 20px;
+}
+
+.rightColumn {
+  width: 100%;
+}
+
+.newsTitle {
+  font-size: 22px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .mainContent {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,0 +1,111 @@
+.standingsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.conferenceCard {
+  background-color: #262627;
+  border-radius: 12px;
+  padding: 18px;
+  color: white;
+  width: 100%;
+  border: 1px solid #2f2f2f;
+}
+
+.conferenceTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+}
+
+.standingsHeader {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+  font-size: 12px;
+  color: #b8b8b8;
+  font-weight: 600;
+}
+
+.headerSpacer {
+  width: 30px;
+  flex-shrink: 0;
+}
+
+.headerTeam {
+  flex: 1;
+}
+
+.headerRecord {
+  width: 70px;
+  text-align: right;
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+}
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  padding: 10px 4px;
+  border-bottom: 1px solid #2f2f2f;
+}
+
+.teamRow:last-child {
+  border-bottom: none;
+}
+
+.teamRow:hover {
+  background-color: #2f2f30;
+  border-radius: 6px;
+}
+
+.standingsLogo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.standingsTeamName {
+  flex: 1;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.standingsRecord {
+  width: 72px;
+  text-align: right;
+  color: #b8b8b8;
+  font-size: 14px;
+}
+
+.standing_div {
+  width: 100%;
+}
+
+.Standings {
+  background-color: #222223;
+  box-shadow: 0 0 10px 0 rgba(39, 49, 65, 0.1);
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  text-align: center;
+  font-family:
+    Source Sans Pro,
+    sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+}

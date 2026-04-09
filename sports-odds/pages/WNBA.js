@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
-import Odds from "@/src/Odds";
+import Odds from "@/archive/Odds";
 import Standings from "@/src/Standings";
 // import { useAppContext } from "@/src/GlobalContext";
 import Scoreboard from "@/src/Scoreboard";
@@ -30,14 +30,14 @@ function WNBA() {
       try {
         const [response1, response2, response3, response4] = await Promise.all([
           axios.get(
-            "https://statmilk.bleacherreport.com/api/scores/carousel?league=WNBA&team=none&carousel_context=league&tz=-25200&appversion=500.0"
+            "https://statmilk.bleacherreport.com/api/scores/carousel?league=WNBA&team=none&carousel_context=league&tz=-25200&appversion=500.0",
           ),
           axios.get(
-            "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/news"
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/news",
           ),
           axios.get("https://sports-odds.herokuapp.com/api/Odds/wnba"),
           axios.get(
-            "https://sports-odds.herokuapp.com/api/Sport_Standings/wnba"
+            "https://sports-odds.herokuapp.com/api/Sport_Standings/wnba",
           ),
         ]);
 

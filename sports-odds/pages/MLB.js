@@ -3,10 +3,8 @@ import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 import WhistleLoader from "@/src/Loading";
-// import { useAppContext } from "@/src/GlobalContext";
 import Scoreboard from "@/src/Scoreboard";
 import Standings from "@/src/Standings";
-import Odds from "@/src/Odds";
 
 function MLB() {
   const [loading, setLoading] = useState(true);
@@ -16,15 +14,9 @@ function MLB() {
   const [MLBNews, setMLBNews] = useState([]);
   const [MLBNews2, setMLBNews2] = useState([]);
   const [offseason, setoffseason] = useState(false);
-  const [upcomingSportsOdds, setUpcomingSportsOdds] = useState([]);
-  const [finalSportsOdds, setFinalSportsOdds] = useState([]);
-  const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
   const [standings, setStandings] = useState([]);
   const [seeNews, setSeeNews] = useState(true);
-  const [seeOdds, setSeeOdds] = useState(false);
   const [seeStandings, setSeeStandings] = useState(false);
-  // const [openBet, setOpenBet] = useState(false);
-  // const { setBetInfo, betInfo } = useAppContext();
 
   const abbrev = {
     "Arizona Diamondbacks": "ARI",
@@ -60,51 +52,78 @@ function MLB() {
   };
 
   useEffect(() => {
+    const upcomingGameArr = [];
+    const inProgressGameArr = [];
+    const completedGameArr = [];
+
     async function loadPageData() {
       try {
-        const [response1, response2, response3, response4, response5] =
-          await Promise.all([
-            axios.get(
-              "https://statmilk.bleacherreport.com/api/scores/carousel?league=MLB&team=none&carousel_context=league&tz=-25200&appversion=500.0",
-            ),
-            axios.get(
-              "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news",
-            ),
-            axios.get("https://sports-odds.herokuapp.com/api/Odds/mlb"),
-            axios.get("https://sports-odds.herokuapp.com/api/Sport_News/mlb"),
-            axios.get(
-              "https://sports-odds.herokuapp.com/api/Sport_Standings/mlb",
-            ),
-          ]);
+        const [response1, response2, response4, response5] = await Promise.all([
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard",
+          ),
+          axios.get(
+            "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news",
+          ),
+          // axios.get("https://sports-odds.herokuapp.com/api/Sport_News/mlb"),
+          // axios.get(
+          //   "https://sports-odds.herokuapp.com/api/Sport_Standings/mlb",
+          // ),
+          axios.get("http://127.0.0.1:5000/api/Sport_News/mlb"),
+          axios.get("http://127.0.0.1:5000/api/Sport_Standings/mlb"),
+        ]);
 
-        if (response1.data.game_groups[0] === undefined) {
-          setoffseason(true);
-        } else if (
-          response1.data.game_groups[0].name === "In Progress" &&
-          response1.data.game_groups[1].name === "Completed"
-        ) {
-          setInprogress(response1.data.game_groups[0]);
-          setCompleted(response1.data.game_groups[1]);
-          setUpcoming(response1.data.game_groups[2]);
-        } else if (response1.data.game_groups[0].name === "Completed") {
-          setCompleted(response1.data.game_groups[0]);
-          setUpcoming(response1.data.game_groups[1]);
-        } else if (
-          response1.data.game_groups[0].name === "In Progress" &&
-          response1.data.game_groups[1].name === "Upcoming"
-        ) {
-          setInprogress(response1.data.game_groups[0]);
-          setUpcoming(response1.data.game_groups[1]);
-        } else {
-          setUpcoming(response1.data.game_groups[0]);
+        for (let i = 0; i < response1.data.events.length; i++) {
+          let event = response1.data.events[i];
+          let competition = event.competitions[0];
+          let competitors = competition.competitors;
+          const home = competitors[0];
+          const away = competitors[1];
+          let status = event.status;
+
+          const game = {
+            id: event.id,
+            team_one: {
+              name: home.team.name,
+              logo: home.team.logo || "",
+              score: home.score,
+              record: home.records[0].summary || "",
+              abbrev: home.team.abbreviation,
+            },
+            team_two: {
+              name: away.team.name,
+              logo: away.team.logo,
+              score: away.score,
+              record: away.records[0].summary || "",
+              abbrev: away.team.abbreviation,
+            },
+
+            game_progress: {
+              detail: status.type.detail,
+              description: status.type.description,
+              completed: status.type.completed,
+              period: status.period,
+              clock: status.displayClock,
+              status: status.type.state,
+            },
+            shortName: event.shortName,
+            odds: competition.odds ? competition.odds[0].details : null,
+          };
+
+          if (status.type.state === "pre") {
+            upcomingGameArr.push(game);
+          } else if (status.type.state === "in") {
+            inProgressGameArr.push(game);
+          } else if (status.type.state === "post") {
+            completedGameArr.push(game);
+          }
         }
 
+        setUpcoming(upcomingGameArr);
+        setInprogress(inProgressGameArr);
+        setCompleted(completedGameArr);
+
         setMLBNews(response2.data.articles);
-
-        setUpcomingSportsOdds(response3.data[0].Upcoming);
-        setInprogressSportsOdds(response3.data[1].Inprogress);
-        setFinalSportsOdds(response3.data[2].Final);
-
         setMLBNews2(response4.data);
         setStandings(response5.data);
         setLoading(false);
@@ -185,18 +204,6 @@ function MLB() {
               </div>
             </div>
           </div>
-          {offseason ? null : (
-            <div className={styles.test}>
-              <Odds
-                inprogressSportsOdds={inprogressSportsOdds}
-                finalSportsOdds={finalSportsOdds}
-                upcomingSportsOdds={upcomingSportsOdds}
-                abbrev={abbrev}
-                sport={"baseball"}
-                league={"mlb"}
-              />
-            </div>
-          )}
         </>
       )}
       {/* Mobile display */}
@@ -207,7 +214,6 @@ function MLB() {
             style={{ backgroundColor: seeNews ? "181818" : "222223" }}
             onClick={() => {
               setSeeNews(true);
-              setSeeOdds(false);
               setSeeStandings(false);
             }}
           >
@@ -217,10 +223,9 @@ function MLB() {
             <>
               <button
                 className={styles.mobile_tab}
-                style={{ backgroundColor: seeOdds ? "181818" : "222223" }}
+                style={{ backgroundColor: "222223" }}
                 onClick={() => {
                   setSeeNews(false);
-                  setSeeOdds(true);
                   setSeeStandings(false);
                 }}
               >
@@ -231,7 +236,6 @@ function MLB() {
                 style={{ backgroundColor: seeStandings ? "181818" : "222223" }}
                 onClick={() => {
                   setSeeNews(false);
-                  setSeeOdds(false);
                   setSeeStandings(true);
                 }}
               >
@@ -276,17 +280,6 @@ function MLB() {
               );
             })}
           </div>
-        ) : null}
-
-        {seeOdds ? (
-          <Odds
-            inprogressSportsOdds={inprogressSportsOdds}
-            finalSportsOdds={finalSportsOdds}
-            upcomingSportsOdds={upcomingSportsOdds}
-            abbrev={abbrev}
-            sport={"baseball"}
-            league={"mlb"}
-          />
         ) : null}
 
         {seeStandings ? <Standings standings={standings} /> : null}

@@ -1,0 +1,111 @@
+.scoreboard {
+  background-color: rgb(34, 34, 35);
+
+  margin-bottom: 16px;
+  border-bottom: 1px solid #2c2c2d;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.scoreboardRow {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 8px;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+.scoreboardRow::-webkit-scrollbar {
+  height: 0.5rem;
+}
+
+.scoreboardRow::-webkit-scrollbar-track {
+  background: #1e1e24;
+}
+
+.scoreboardRow::-webkit-scrollbar-thumb {
+  background: rgb(69, 68, 68);
+}
+
+.sectionHeader {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  padding: 10px 12px 8px 10px;
+  border-left: 3px solid #d4a500;
+}
+
+.record {
+  padding-right: 10px;
+  color: #b8b8b8;
+  font-size: 11px;
+}
+
+.games {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 10px;
+  width: 220px;
+  height: 92px;
+  color: white;
+  text-decoration: none;
+  background-color: #262627;
+  border-radius: 8px;
+  border-left: 1px solid #bbb;
+  border-right: 1px solid #bbb;
+  flex-shrink: 0;
+}
+
+.teamContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.time,
+.date {
+  font-size: 11px;
+  color: #c9c9c9;
+}
+
+.logoDiv {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+.teamName {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.score {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  min-width: 22px;
+  text-align: right;
+  margin-left: auto;
+}
+
+.inlineSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 0 16px;
+  font-size: 16;
+  font-weight: 700;
+  color: white;
+  border-left: 3px solid #d4a500;
+  background-color: #222223;
+  flex-shrink: 0;
+}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import WhistleLoader from "@/src/Loading";
 import Scoreboard from "@/src/Scoreboard";
 import styles from "@/styles/NBA.module.css";
-import Odds from "@/src/Odds";
+import Odds from "@/archive/Odds";
 import axios from "axios";
 
 const HomePage = () => {
@@ -48,8 +48,6 @@ const HomePage = () => {
         let gamesObj = { games: gamesArr };
         setInprogress(gamesObj);
 
-        // setFeaturedSportsOdds(response2.data);
-        // console.log(response2.data);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -79,10 +77,6 @@ const HomePage = () => {
               <p>{welcome}</p>
             </div>
           </div>
-
-          {/* {featuredSportsOdds ? (
-            <Odds featuredSportsOdds={featuredSportsOdds} />
-          ) : null} */}
         </>
       )}
     </div>
