@@ -12,7 +12,7 @@ function NewsCard({ news }) {
         />
       </a>
       <header className={styles.newsTitle}>{news.headline}</header>
-      <p>{news.description}</p>
+      <p className={styles.newsDescription}>{news.description}</p>
     </div>
   );
 }

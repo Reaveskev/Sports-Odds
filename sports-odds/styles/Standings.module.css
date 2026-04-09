@@ -18,6 +18,7 @@
   font-size: 20px;
   font-weight: 700;
   margin: 0 0 12px 0;
+  text-align: center;
 }
 
 .standingsHeader {
@@ -108,4 +109,23 @@
     sans-serif;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.sectionTitle {
+  margin: 0 0 18px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+
+.divisionBlock {
+  margin-top: 14px;
+}
+
+.divisionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #d0d0d0;
 }

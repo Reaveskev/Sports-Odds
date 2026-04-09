@@ -1,33 +1,31 @@
 .news {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
   color: white;
   margin-top: 20px;
   font-family: "Source Sans Pro", sans-serif;
+  align-items: stretch;
 }
 
 .newInfo {
   background-color: rgb(34, 34, 35);
-  box-shadow: 0px 0px 10px 0px rgba(39, 49, 65, 0.1);
-  /* height: auto; */
+  box-shadow: 0px 0px 10px rgba(39, 49, 65, 0.1);
   color: white;
-  /* width: auto; */
   display: flex;
-  flex-flow: column nowrap;
-  place-content: center space-between;
-  top: 0px;
-  min-height: 450px;
-  /* width: 670px; */
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  min-height: 420px;
   border-radius: 12px;
-  padding: 24px;
-  align-items: baseline;
-  margin-bottom: 20px;
+  padding: 20px;
   text-align: left;
-  overflow-wrap: break-word;
-  /* inline-size: 670px; */
+  transition: 0.2s ease;
+}
+
+.newInfo:hover {
+  transform: translateY(-3px);
+  transition: 0.2s ease;
 }
 
 .welcome {
@@ -44,8 +42,10 @@
   width: 100%;
 }
 .Pic {
-  height: 325px;
+  height: 250px;
   width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .newsHeader {
@@ -77,17 +77,12 @@
     sans-serif;
 }
 
-/* .upcoming {
-  margin: 30px 0 20px 0;
-  padding-top: 10px;
-  color: white;
-} */
-
 .sectionTitle {
   margin: 0 0 18px 0;
   font-size: 24px;
   font-weight: 700;
   color: white;
+  text-align: center;
 }
 
 .mobile_sports {
@@ -135,11 +130,6 @@
   .newsHeader {
     font-size: x-large;
   }
-
-  /* .new_div {
-    width: 100% !important;
-    float: none !important;
-  } */
 }
 
 /* Medium screens (tablets, 768px and below) */
@@ -147,10 +137,6 @@
   .welcome {
     inline-size: 100%;
     padding: 16px;
-  }
-
-  .newInfo {
-    width: 90%;
   }
 
   .Pic {
@@ -231,7 +217,7 @@
 /* NEW */
 .mainContent {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 340px minmax(0, 1fr);
   gap: 32px;
   max-width: 1320px;
   margin: 24px auto 0;
@@ -241,8 +227,6 @@
 
 .leftColumn {
   width: 100%;
-  position: sticky;
-  top: 20px;
 }
 
 .rightColumn {
@@ -250,13 +234,35 @@
 }
 
 .newsTitle {
-  font-size: 22px;
-  margin-top: 12px;
-  margin-bottom: 8px;
+  font-size: 20px;
+  margin: 12px 0 8px;
+  font-weight: 600;
+  display: -webkit-box;
+  line-height: 1.25;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.newsDescription {
+  font-size: 14px;
+  color: #cfcfcf;
+  display: -webkit-box;
+  line-height: 1.4;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 @media only screen and (max-width: 1024px) {
   .mainContent {
     grid-template-columns: 1fr;
+  }
+  .news {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionTitle {
+    text-align: center;
   }
 }

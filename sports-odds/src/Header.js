@@ -1,248 +1,148 @@
 import { useState } from "react";
-import axios from "axios";
 import styles from "./Header.module.css";
 import Link from "next/link";
-import { useAppContext } from "./GlobalContext";
-function Header() {
-  const [seeMore, setSeeMore] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { user, setUser } = useAppContext();
 
-  // const handleLogout = () => {
-  //   let url = "https://sports-odds.herokuapp.com/api/logout";
-  //   // let url = "http://127.0.0.1:5000/api/logout";
-  //   try {
-  //     axios.post(url).then((res) => {
-  //       if (res.status === 200) {
-  //         setUser(null);
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+const leagueLinks = [
+  { href: "/NFL", label: "NFL" },
+  { href: "/NBA", label: "NBA" },
+  { href: "/WNBA", label: "WNBA" },
+  { href: "/MLB", label: "MLB" },
+  { href: "/NHL", label: "NHL" },
+];
+
+const ncaaLinks = [
+  { href: "/MCBB", label: "MCBB" },
+  { href: "/WCBB", label: "WCBB" },
+  { href: "/CFB", label: "CFB" },
+];
+
+function Header() {
+  const [desktopNCAAOpen, setDesktopNCAAOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileNCAAOpen, setMobileNCAAOpen] = useState(false);
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileNCAAOpen(false);
+  };
 
   return (
     <>
-      <div className={styles.navbar}>
-        <div style={{ marginLeft: 10 }}>
-          <Link href="/">
-            <img
-              alt=""
-              className={styles.logo}
-              // src="/out/Sports Odds-1.png"
-              src="../Sports Odds-1.png"
-            />
-          </Link>
-        </div>
+      <header className={styles.header}>
+        <div className={styles.navbar}>
+          <div className={styles.logoWrapper}>
+            <Link href="/">
+              <img
+                alt="Sports Odds logo"
+                className={styles.logo}
+                src="/Sports Odds-1.png"
+              />
+            </Link>
+          </div>
 
-        <li className={styles.li}>
-          <Link className={styles.link} href="/NFL">
-            NFL
-          </Link>
-        </li>
-        <li className={styles.li}>
-          <Link className={styles.link} href="/NBA">
-            NBA
-          </Link>
-        </li>
-        <li className={styles.li}>
-          <Link className={styles.link} href="/WNBA">
-            WNBA
-          </Link>
-        </li>
-        <li className={styles.li}>
-          <Link className={styles.link} href="/MLB">
-            MLB
-          </Link>
-        </li>
-        <li className={styles.li}>
-          <Link className={styles.link} href="/NHL">
-            NHL
-          </Link>
-        </li>
-        <li className={styles.li}>
-          <div
-            onMouseEnter={() => {
-              setSeeMore(true);
-            }}
-            onMouseLeave={() => {
-              setSeeMore(false);
-            }}
-            className={styles.link}
-          >
-            NCAA
-            {seeMore ? (
-              <div className={styles.seeMore}>
-                <li className={styles.seeMoreli}>
-                  <Link className={styles.seeMoreLink} href="/MCBB">
-                    MCBB
+          <nav className={styles.desktopNav} aria-label="Main navigation">
+            <ul className={styles.navList}>
+              {leagueLinks.map((link) => (
+                <li className={styles.li} key={link.href}>
+                  <Link className={styles.link} href={link.href}>
+                    {link.label}
                   </Link>
                 </li>
-                <li className={styles.seeMoreli}>
-                  <Link className={styles.seeMoreLink} href="/WCBB">
-                    WCBB
-                  </Link>
-                </li>
-                <li className={styles.seeMoreli}>
-                  <Link className={styles.seeMoreLink} href="/CFB">
-                    CFB
-                  </Link>
-                </li>
-              </div>
-            ) : null}
-          </div>
-        </li>
-        {/* <li className={styles.li}>
-          <Link className={styles.link} href="/SportsTrivia">
-            Sports Trivia
-          </Link>
-        </li>
-        <li className={styles.li}>
-          <Link className={styles.link} href="/FF">
-            FF
-          </Link>
-        </li> */}
+              ))}
 
-        {/* {user ? (
-          <div className={styles.login_or_profile}>
-            <li className={styles.li}>
-              <Link className={styles.link} href="/profile">
-                Profile
-              </Link>
-            </li>
-            <li
-              onClick={() => {
-                handleLogout();
-              }}
-              className={styles.li}
-            >
-              <Link className={styles.link} href="/">
-                Logout
-              </Link>
-            </li>
-          </div>
-        ) : (
-          <div className={styles.login_or_profile}>
-            <li className={styles.li}>
-              <Link className={styles.link} href="/login">
-                Login
-              </Link>
-            </li>
-          </div>
-        )} */}
-      </div>
-
-      {/* Mobile display */}
-      <div className={styles.mobile_navbar}>
-        <div style={{ marginLeft: 10 }}>
-          <Link href="/">
-            <img alt="" className={styles.logo} src="/out/Sports Odds-1.png" />
-          </Link>
-        </div>
-        <span
-          onClick={() => setMenuOpen(!menuOpen)}
-          className={styles.hamburger}
-        >
-          ☰
-        </span>
-      </div>
-      {menuOpen ? (
-        <div className={styles.mobile_li}>
-          <li className={styles.li}>
-            <Link className={styles.link} href="/NFL">
-              NFL
-            </Link>
-          </li>
-          <li className={styles.li}>
-            <Link className={styles.link} href="/NBA">
-              NBA
-            </Link>
-          </li>
-          <li className={styles.li}>
-            <Link className={styles.link} href="/WNBA">
-              WNBA
-            </Link>
-          </li>
-          <li className={styles.li}>
-            <Link className={styles.link} href="/MLB">
-              MLB
-            </Link>
-          </li>
-          <li className={styles.li}>
-            <Link className={styles.link} href="/NHL">
-              NHL
-            </Link>
-          </li>
-          <li className={styles.li}>
-            <div
-              onClick={() => {
-                setSeeMore(!seeMore);
-              }}
-              className={styles.link}
-            >
-              NCAA
-              {seeMore ? (
-                <div className={styles.seeMore}>
-                  <li className={styles.seeMoreli}>
-                    <Link className={styles.seeMoreLink} href="/MCBB">
-                      MCBB
-                    </Link>
-                  </li>
-                  <li className={styles.seeMoreli}>
-                    <Link className={styles.seeMoreLink} href="/WCBB">
-                      WCBB
-                    </Link>
-                  </li>
-                  <li className={styles.seeMoreli}>
-                    <Link className={styles.seeMoreLink} href="/CFB">
-                      CFB
-                    </Link>
-                  </li>
-                </div>
-              ) : null}
-            </div>
-          </li>
-          {/* <li className={styles.li}>
-            <Link className={styles.link} href="/SportsTrivia">
-              Sports Trivia
-            </Link>
-          </li>
-          <li className={styles.li}>
-            <Link className={styles.link} href="/FF">
-              FF
-            </Link>
-          </li> */}
-
-          {/* {user ? (
-            <div className={styles.login_or_profile}>
-              <li className={styles.li}>
-                <Link className={styles.link} href="/profile">
-                  Profile
-                </Link>
-              </li>
               <li
-                onClick={() => {
-                  handleLogout();
-                }}
                 className={styles.li}
+                onMouseEnter={() => setDesktopNCAAOpen(true)}
+                onMouseLeave={() => setDesktopNCAAOpen(false)}
               >
-                <Link className={styles.link} href="/">
-                  Logout
-                </Link>
+                <button type="button" className={styles.navButton}>
+                  NCAA
+                </button>
+
+                {desktopNCAAOpen && (
+                  <ul className={styles.seeMore}>
+                    {ncaaLinks.map((link) => (
+                      <li className={styles.seeMoreli} key={link.href}>
+                        <Link className={styles.seeMoreLink} href={link.href}>
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
-            </div>
-          ) : (
-            <div className={styles.login_or_profile}>
-              <li className={styles.li}>
-                <Link className={styles.link} href="/login">
-                  Login
-                </Link>
-              </li>
-            </div>
-          )} */}
+            </ul>
+          </nav>
+          <div className={styles.navSpacer}></div>
         </div>
-      ) : null}
+
+        <div className={styles.mobile_navbar}>
+          <div className={styles.logoWrapper}>
+            <Link href="/">
+              <img
+                alt="Sports Odds logo"
+                className={styles.logo}
+                src="/Sports Odds-1.png"
+              />
+            </Link>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className={styles.hamburger}
+            aria-label="Toggle navigation menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            ☰
+          </button>
+        </div>
+
+        {mobileMenuOpen && (
+          <nav className={styles.mobileMenu} aria-label="Mobile navigation">
+            <ul className={styles.mobileNavList}>
+              {leagueLinks.map((link) => (
+                <li className={styles.li} key={link.href}>
+                  <Link
+                    className={styles.link}
+                    href={link.href}
+                    onClick={closeMobileMenu}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+
+              <li className={styles.li}>
+                <button
+                  type="button"
+                  onClick={() => setMobileNCAAOpen((prev) => !prev)}
+                  className={styles.navButton}
+                  aria-expanded={mobileNCAAOpen}
+                >
+                  NCAA
+                </button>
+
+                {mobileNCAAOpen && (
+                  <ul className={styles.seeMore}>
+                    {ncaaLinks.map((link) => (
+                      <li className={styles.seeMoreli} key={link.href}>
+                        <Link
+                          className={styles.seeMoreLink}
+                          href={link.href}
+                          onClick={closeMobileMenu}
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            </ul>
+          </nav>
+        )}
+      </header>
     </>
   );
 }

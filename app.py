@@ -1056,7 +1056,7 @@ def scrape_News(sport):
 #     sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
 #     if sport not in sports:
 #         return jsonify({'error': 'Input a valid sports league'}), 400
-        
+
 #     if sport == "mlb":
 #         url = "https://sports.yahoo.com/mlb/standings/?selectedTab=EXPANDED"
 #     elif sport == "wnba":
@@ -1066,131 +1066,69 @@ def scrape_News(sport):
 #     elif sport == "nhl":
 #         url = "https://sports.yahoo.com/nhl/standings/?selectedTab=EXPANDED"
 #     else:
-#         url = 'https://sports.yahoo.com/{}/standings/'.format(sport)
+#         url = f"https://sports.yahoo.com/{sport}/standings/"
 
-    
-#     page_to_scrape = requests.get(url)
+#     headers = {
+#         "User-Agent": "Mozilla/5.0"
+#     }
 
+#     page_to_scrape = requests.get(url, headers=headers)
 #     soup = BeautifulSoup(page_to_scrape.text, "html.parser")
 
 #     standings_data = []
-#     standings_div = soup.findAll('table', {"class":'W(100%) Mb(20px)'})
-    
-#     for x in standings_div:
-#         conference = x.find("th",{"class":"Whs(nw) Miw(28px) Py(6px) Px(4px) Ta(end) Miw(110px)! Ta(start)!"} ).text
-#         tbody =  x.find("tbody")
-#         rows = tbody.find_all('tr')
-   
+
+#     tables = soup.find_all("table")
+#     print("Tables found:", len(tables))
+
+#     for table in tables:
+#         conference_header = table.find("th", {"data-id": "team"})
+#         if not conference_header:
+#             continue
+
+#         conference = conference_header.get_text(strip=True)
+
+#         team_rows = table.find_all("tr", attrs={"rowindex": True})
+#         if not team_rows:
+#             continue
+
 #         standings = []
-        
-#         for row in rows:
-#             spans = row.findAll("span")
-#             if spans[0].find("img")['src'] != 'https://s.yimg.com/g/images/spaceball.gif':
-#                 img = spans[0].find("img")["src"]
-#             else:
-#                 img = spans[0].find("img")["style"]
-#             img_url = img.split('background-image:url(')[-1].split(')')[0]
-            
-#             team_name = spans[1].text
-#             td = row.findAll("td")
-#             if sport == "nhl":
-#                 wins = td[1].text
-#                 losses = td[2].text
-#             else:
-#                 wins = td[0].text
-#                 losses = td[1].text
-#             team_info = {"logo": img_url,
-#                          "team_name": team_name,
-#                          "wins": wins,
-#                          "losses": losses,
-#                          }
+
+#         for row in team_rows:
+#             cells = row.find_all("td")
+#             if len(cells) < 3:
+#                 continue
+
+#             first_cell = cells[0]
+
+#             # Team name
+#             team_link = first_cell.find("a")
+#             team_name = team_link.get_text(strip=True) if team_link else ""
+
+#             # Logo
+#             img_tag = first_cell.find("img")
+#             logo = img_tag["src"] if img_tag and img_tag.get("src") else ""
+
+#             # Wins/Losses
+#             wins = cells[1].get_text(strip=True)
+#             losses = cells[2].get_text(strip=True)
+
+#             team_info = {
+#                 "logo": logo,
+#                 "team_name": team_name,
+#                 "wins": wins,
+#                 "losses": losses,
+#             }
+
 #             standings.append(team_info)
-            
-#         conference_data = {"conference": conference, "teams": standings}
-#         standings_data.append(conference_data)
 
-    
-       
+#         if standings:
+#             conference_data = {
+#                 "conference": conference,
+#                 "teams": standings
+#             }
+#             standings_data.append(conference_data)
+
 #     return jsonify(standings_data)
-@app.route('/api/Sport_Standings/<sport>')
-def scrape_Standing(sport):
-    sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
-    if sport not in sports:
-        return jsonify({'error': 'Input a valid sports league'}), 400
-
-    if sport == "mlb":
-        url = "https://sports.yahoo.com/mlb/standings/?selectedTab=EXPANDED"
-    elif sport == "wnba":
-        url = "https://sports.yahoo.com/wnba/standings/?selectedTab=EXPANDED"
-    elif sport == "nfl":
-        url = "https://sports.yahoo.com/nfl/standings/?selectedTab=EXPANDED"
-    elif sport == "nhl":
-        url = "https://sports.yahoo.com/nhl/standings/?selectedTab=EXPANDED"
-    else:
-        url = f"https://sports.yahoo.com/{sport}/standings/"
-
-    headers = {
-        "User-Agent": "Mozilla/5.0"
-    }
-
-    page_to_scrape = requests.get(url, headers=headers)
-    soup = BeautifulSoup(page_to_scrape.text, "html.parser")
-
-    standings_data = []
-
-    tables = soup.find_all("table")
-    print("Tables found:", len(tables))
-
-    for table in tables:
-        conference_header = table.find("th", {"data-id": "team"})
-        if not conference_header:
-            continue
-
-        conference = conference_header.get_text(strip=True)
-
-        team_rows = table.find_all("tr", attrs={"rowindex": True})
-        if not team_rows:
-            continue
-
-        standings = []
-
-        for row in team_rows:
-            cells = row.find_all("td")
-            if len(cells) < 3:
-                continue
-
-            first_cell = cells[0]
-
-            # Team name
-            team_link = first_cell.find("a")
-            team_name = team_link.get_text(strip=True) if team_link else ""
-
-            # Logo
-            img_tag = first_cell.find("img")
-            logo = img_tag["src"] if img_tag and img_tag.get("src") else ""
-
-            # Wins/Losses
-            # In the new Yahoo structure, td[1] = W, td[2] = L
-            wins = cells[1].get_text(strip=True)
-            losses = cells[2].get_text(strip=True)
-
-            team_info = {
-                "logo": logo,
-                "team_name": team_name,
-                "wins": wins,
-                "losses": losses,
-            }
-
-            standings.append(team_info)
-
-        if standings:
-            conference_data = {
-                "conference": conference,
-                "teams": standings
-            }
-            standings_data.append(conference_data)
-
-    return jsonify(standings_data)
 
  
 
