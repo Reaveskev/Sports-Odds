@@ -34,6 +34,8 @@ function WNBA() {
 
   const updatedStandings = normalizeEspnWnbaStandings(standings);
 
+  console.log("Upcoming Games :", upcoming);
+
   return (
     <div>
       <Header />

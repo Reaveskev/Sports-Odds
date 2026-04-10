@@ -68,33 +68,9 @@ export function combineNewsSources(espnArticles = [], customArticles = []) {
   return [...normalizeEspnNews(espnArticles), ...customArticles];
 }
 
-export function normalizeEspnMlbStandings(data) {
-  const leagues = data?.children || [];
+export function getRandomGames(games, count = 3) {
+  if (!games || games.length === 0) return [];
 
-  return leagues.map((league) => {
-    const entries = league?.standings?.entries || [];
-
-    const teams = entries.map((entry) => {
-      const team = entry?.team || {};
-      const stats = entry?.stats || [];
-
-      const wins =
-        stats.find((stat) => stat.type === "wins")?.displayValue || "0";
-
-      const losses =
-        stats.find((stat) => stat.type === "losses")?.displayValue || "0";
-
-      return {
-        logo: team?.logos?.[0]?.href || "",
-        team_name: team?.displayName || "",
-        wins,
-        losses,
-      };
-    });
-
-    return {
-      conference: league?.name || "",
-      teams,
-    };
-  });
+  const shuffled = [...games].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
 }

@@ -46,3 +46,186 @@
     transform: rotate(0deg) scale(1);
   }
 }
+
+/* New Home */
+.homeContainer {
+  max-width: 1320px;
+  margin: 24px auto;
+  padding: 20px 40px;
+  color: white;
+}
+
+.featuredGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.featuredMain,
+.sideCard {
+  background: rgba(34, 34, 35, 0.95);
+  backdrop-filter: blur(6px);
+}
+
+.featuredSide {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.featuredGameCard {
+  background: #2a2a2b;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease;
+}
+
+.featuredGameCard:hover {
+  transform: translateY(-2px);
+}
+
+.sideCard {
+  background: #222223;
+  border-radius: 14px;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  flex: 1;
+  padding: 16px;
+}
+
+.sideCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.sideLink {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sideImage {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-bottom: 1px solid #333;
+}
+
+.sideContent {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sideTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sideDescription {
+  font-size: 13px;
+  color: #b8b8b8;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.winningScore {
+  color: #f5c518;
+}
+
+.featuredMain {
+  background: #222223;
+  border-radius: 14px;
+  padding: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: auto;
+  align-self: start;
+}
+
+.featuredTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.featuredLeague {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f5c518;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.featuredStatus {
+  font-size: 13px;
+  font-weight: 600;
+  color: #cfcfcf;
+}
+
+.featuredTeams {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.featuredTeam {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2a2a2b;
+  padding: 12px 14px;
+  border-radius: 10px;
+  gap: 8px;
+}
+
+.featuredTeamText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.featuredTeamName {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.featuredRecord {
+  font-size: 12px;
+  color: #b8b8b8;
+}
+
+.featuredLogo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-right: 12px;
+}
+
+.featuredScore {
+  font-size: 28px;
+  font-weight: 700;
+  min-width: 30px;
+  text-align: right;
+}

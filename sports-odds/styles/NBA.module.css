@@ -266,3 +266,41 @@
     text-align: center;
   }
 }
+
+/* College Filter */
+.filterBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.filterLabel {
+  font-weight: 600;
+  font-size: 14px;
+  color: #cfcfcf;
+}
+
+.filterSelect {
+  background-color: #222223;
+  color: white;
+  border: 1px solid #3a3a3c;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filterSelect:hover {
+  border-color: #f5c518;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #f5c518;
+  box-shadow: 0 0 0 2px rgba(245, 197, 24, 0.2);
+}

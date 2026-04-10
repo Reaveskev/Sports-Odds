@@ -322,10 +322,151 @@ export function normalizeEspnWnbaStandings(data) {
       conference: conference?.name || "",
       divisions: [
         {
-          division: "Conference",
+          division: "",
           teams: sortTeamsByRecord(teams),
         },
       ],
     };
   });
+}
+
+function getRecordFromSummary(stats = []) {
+  const totalRecord =
+    stats.find((stat) => stat.type === "total")?.summary ||
+    stats.find((stat) => stat.name === "overall")?.summary ||
+    "0-0";
+
+  const [wins = "0", losses = "0"] = totalRecord.split("-");
+
+  return { wins, losses };
+}
+
+export function normalizeEspnCfbStandings(data) {
+  const conferences = data?.children || [];
+
+  return conferences.map((conference) => {
+    const entries = conference?.standings?.entries || [];
+
+    const teams = entries.map((entry) => {
+      const team = entry?.team || {};
+      const stats = entry?.stats || [];
+
+      const record = getRecordFromSummary(stats);
+
+      return {
+        logo: team?.logos?.[0]?.href || "",
+        team_name: team?.displayName || "",
+        abbrev: team?.abbreviation || "",
+        wins: record.wins,
+        losses: record.losses,
+      };
+    });
+
+    return {
+      conference: conference?.name || "",
+      divisions: [
+        {
+          division: "",
+          teams: sortTeamsByRecord(teams),
+        },
+      ],
+    };
+  });
+}
+
+export function normalizeFeaturedEspnGame(event, league = "") {
+  const competition = event?.competitions?.[0];
+  const competitors = competition?.competitors || [];
+
+  const home =
+    competitors.find((team) => team.homeAway === "home") ||
+    competitors[0] ||
+    {};
+  const away =
+    competitors.find((team) => team.homeAway === "away") ||
+    competitors[1] ||
+    {};
+
+  const status = event?.status || {};
+  const state = status?.type?.state || "";
+
+  return {
+    id: `${league}-${event?.id || Math.random()}`,
+    league,
+    team_one: {
+      name: away?.team?.displayName || away?.team?.name || "",
+      logo: away?.team?.logo || "",
+      score: away?.score || "",
+      record: away?.records?.[0]?.summary || "",
+      abbrev: away?.team?.abbreviation || "",
+    },
+    team_two: {
+      name: home?.team?.displayName || home?.team?.name || "",
+      logo: home?.team?.logo || "",
+      score: home?.score || "",
+      record: home?.records?.[0]?.summary || "",
+      abbrev: home?.team?.abbreviation || "",
+    },
+    game_progress: {
+      detail: status?.type?.detail || "",
+      description: status?.type?.description || "",
+      completed: status?.type?.completed || false,
+      period: status?.period || 0,
+      clock: status?.displayClock || "",
+      status: state,
+    },
+    shortName: event?.shortName || "",
+    odds: competition?.odds?.[0]?.details || null,
+    date: event?.date || "",
+  };
+}
+
+function getFeaturedPriority(game) {
+  if (game.game_progress.status === "in") return 1;
+  if (game.game_progress.status === "pre") return 2;
+  if (game.game_progress.status === "post") return 3;
+  return 4;
+}
+
+export function sortFeaturedGames(games = []) {
+  return [...games].sort((a, b) => {
+    const priorityDiff = getFeaturedPriority(a) - getFeaturedPriority(b);
+    if (priorityDiff !== 0) return priorityDiff;
+
+    // upcoming -> earliest first
+    if (a.game_progress.status === "pre" && b.game_progress.status === "pre") {
+      return new Date(a.date) - new Date(b.date);
+    }
+
+    // completed -> most recent first
+    if (
+      a.game_progress.status === "post" &&
+      b.game_progress.status === "post"
+    ) {
+      return new Date(b.date) - new Date(a.date);
+    }
+
+    // live -> later period first
+    if (a.game_progress.status === "in" && b.game_progress.status === "in") {
+      return (b.game_progress.period || 0) - (a.game_progress.period || 0);
+    }
+
+    return 0;
+  });
+}
+
+export function getFeaturedGames(eventsByLeague = [], limit = 12) {
+  const normalizedGames = eventsByLeague.flatMap(({ league, events }) =>
+    (events || []).map((event) => normalizeFeaturedEspnGame(event, league)),
+  );
+
+  return sortFeaturedGames(normalizedGames).slice(0, limit);
+}
+
+export function splitGamesByStatus(games = []) {
+  return {
+    inprogress: games.filter((game) => game.game_progress.status === "in"),
+    upcoming: games.filter((game) => game.game_progress.status === "pre"),
+    completed: games.filter((game) => game.game_progress.status === "post"),
+  };
 }

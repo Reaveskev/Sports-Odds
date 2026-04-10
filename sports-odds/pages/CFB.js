@@ -1,140 +1,156 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import styles from "@/styles/NBA.module.css";
 import Header from "@/src/Header";
 import WhistleLoader from "@/src/Loading";
+import Scoreboard from "@/src/Scoreboard";
+import Standings from "@/src/Standings";
+import NewsCard from "@/src/helpers/NewsCard";
+import useSportsPageData from "@/src/helpers/useSportsPageData";
+import { normalizeEspnCfbStandings } from "@/src/helpers/standingHelpers";
 
-const CFB = () => {
-  const [CFBnews, setCFBnews] = useState([]);
-  const [CFBnews2, setCFBnews2] = useState([]);
-  const [loading, setLoading] = useState([true]);
-  const [upcomingSportsOdds, setUpcomingSportsOdds] = useState([]);
-  const [finalSportsOdds, setFinalSportsOdds] = useState([]);
-  const [inprogressSportsOdds, setInprogressSportsOdds] = useState([]);
+function CFB() {
+  const [seeNews, setSeeNews] = useState(true);
+  const [seeStandings, setSeeStandings] = useState(false);
+  const [selectedConference, setSelectedConference] = useState("All");
 
-  useEffect(() => {
-    async function loadPageData() {
-      try {
-        const response1 = await axios.get(
-          "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news"
+  const {
+    loading,
+    upcoming,
+    inprogress,
+    completed,
+    news,
+    standings,
+    offseason,
+  } = useSportsPageData({
+    scoreboardUrl:
+      "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard",
+    espnNewsUrl:
+      "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news",
+    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/ncaa-football",
+    standingsUrl:
+      "https://site.api.espn.com/apis/v2/sports/football/college-football/standings",
+    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/ncaa-football",
+  });
+
+  const updatedStandings = normalizeEspnCfbStandings(standings);
+
+  const conferencesOptions = [
+    "All",
+    ...updatedStandings.map((conference) => conference.conference),
+  ];
+
+  const filteredStandings =
+    selectedConference === "All"
+      ? updatedStandings
+      : updatedStandings.filter(
+          (conference) => conference.conference === selectedConference,
         );
-        const response2 = await axios.get(
-          "https://sports-odds.herokuapp.com/api/Odds/college-football"
+
+  const selectedConferenceTeams = new Set(
+    updatedStandings
+      .filter(
+        (conference) =>
+          selectedConference === "All" ||
+          conference.conference === selectedConference,
+      )
+      .flatMap((conference) =>
+        conference.teams
+          ? conference.teams.map((team) => team.abbrev)
+          : conference.divisions.flatMap((division) =>
+              division.teams.map((team) => team.abbrev),
+            ),
+      ),
+  );
+
+  const filteredUpcoming =
+    selectedConference === "All"
+      ? upcoming
+      : upcoming.filter(
+          (game) =>
+            selectedConferenceTeams.has(game.team_one.abbrev) ||
+            selectedConferenceTeams.has(game.team_two.abbrev),
         );
-        const response3 = await axios.get(
-          "https://sports-odds.herokuapp.com/api/Sport_News/ncaa-football"
+
+  const filteredInprogress =
+    selectedConference === "All"
+      ? inprogress
+      : inprogress.filter(
+          (game) =>
+            selectedConferenceTeams.has(game.team_one.abbrev) ||
+            selectedConferenceTeams.has(game.team_two.abbrev),
         );
 
-        setCFBnews(response1.data.articles);
-
-        // setUpcomingSportsOdds(response2.data[0].Upcoming);
-        // setInprogressSportsOdds(response2.data[1].Inprogress);
-        // setFinalSportsOdds(response2.data[2].Final);
-        setCFBnews2(response3.data);
-
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    loadPageData();
-  }, []);
+  const filteredCompleted =
+    selectedConference === "All"
+      ? completed
+      : completed.filter(
+          (game) =>
+            selectedConferenceTeams.has(game.team_one.abbrev) ||
+            selectedConferenceTeams.has(game.team_two.abbrev),
+        );
 
   return (
     <div>
       <Header />
+
       {loading ? (
-        <div style={{ height: "100vh", important: true }}>
+        <div style={{ height: "100vh" }}>
           <WhistleLoader />
         </div>
       ) : (
         <>
-          <div className={styles.offseason}>
-            <p>It is currently the offseason.</p>
-          </div>
-          <div className={styles.test}>
-            <div className={styles.news}>
-              <h1 className={styles.upcoming}>CFB News</h1>
+          {!offseason ? (
+            <Scoreboard
+              inprogress={filteredInprogress}
+              upcoming={filteredUpcoming}
+              completed={filteredCompleted}
+            />
+          ) : (
+            <div className={styles.offseason}>
+              <p>It is currently the offseason.</p>
+            </div>
+          )}
 
-              {CFBnews.map((news) => {
-                return (
-                  <div className={styles.newInfo} key={news.headline}>
-                    <a href={news.links.web.href} className={styles.new_a}>
-                      <img
-                        className={styles.Pic}
-                        height={325}
-                        alt=""
-                        src={news.images[0].url}
-                      />
-                    </a>
-                    <header style={{ fontSize: 22 }}>{news.headline}</header>
-                    <p>{news.description}</p>
-                  </div>
-                );
-              })}
+          <div className={styles.mainContent}>
+            {!offseason && (
+              <div className={styles.leftColumn}>
+                <div className={styles.filterBar}>
+                  <label
+                    htmlFor="conferenceFilter"
+                    className={styles.filterLabel}
+                  >
+                    Conference:
+                  </label>
+                  <select
+                    id="conferenceFilter"
+                    value={selectedConference}
+                    onChange={(e) => setSelectedConference(e.target.value)}
+                    className={styles.filterSelect}
+                  >
+                    {conferencesOptions.map((conference) => (
+                      <option key={conference} value={conference}>
+                        {conference}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <Standings standings={filteredStandings} />
+              </div>
+            )}
 
-              {CFBnews2.map((news) => {
-                return (
-                  <div className={styles.newInfo} key={news.headline}>
-                    <a href={news.links} className={styles.new_a}>
-                      <img
-                        className={styles.Pic}
-                        height={325}
-                        alt=""
-                        src={news.image}
-                      />
-                    </a>
-                    <header style={{ fontSize: 22 }}>{news.headline}</header>
-                    <p>{news.description}</p>
-                  </div>
-                );
-              })}
+            <div className={styles.rightColumn}>
+              <h1 className={styles.sectionTitle}>CFB News</h1>
+              <div className={styles.news}>
+                {news.map((item) => (
+                  <NewsCard key={item.headline} news={item} />
+                ))}
+              </div>
             </div>
           </div>
         </>
       )}
-      {/* Mobile display */}
-      <div className={styles.mobile_sports}>
-        <div className={styles.new_div}>
-          <div className={styles.news}>
-            <h1 className={styles.upcoming}>CFB News</h1>
-            {CFBnews.map((news) => {
-              return (
-                <div className={styles.newInfo} key={news.headline}>
-                  <a href={news.links.web.href} className={styles.new_a}>
-                    <img
-                      className={styles.Pic}
-                      height={325}
-                      alt=""
-                      src={news.images[0].url}
-                    />
-                  </a>
-                  <header style={{ fontSize: 22 }}>{news.headline}</header>
-                  <p>{news.description}</p>
-                </div>
-              );
-            })}
-            {CFBnews2.map((news) => {
-              return (
-                <div className={styles.newInfo} key={news.headline}>
-                  <a href={news.links} className={styles.new_a}>
-                    <img
-                      className={styles.Pic}
-                      height={325}
-                      alt=""
-                      src={news.image}
-                    />
-                  </a>
-                  <header style={{ fontSize: 22 }}>{news.headline}</header>
-                  <p>{news.description}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
     </div>
   );
-};
+}
 
 export default CFB;

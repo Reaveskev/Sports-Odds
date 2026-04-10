@@ -369,7 +369,7 @@ def catch_all(path):
 
 @app.route('/api/Sport_News/<sport>')
 def scrape_News(sport):
-    sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer"]
+    sports = ["mlb", "nhl", "ncaa-basketball", "nba", "nfl", "ncaa-football", "wnba", "soccer", "womens-college-basketball"]
     if sport not in sports:
         return jsonify({'error': 'Input a valid sports league'}), 400
         
@@ -387,7 +387,7 @@ def scrape_News(sport):
 
     news_list = []
 
-    for card in article_cards[:8]:
+    for card in article_cards[:10]:
         link_tag = card.find("a", href=True)
         headline_tag = card.find("h3", {"data-testid": "text--article-headline"})
         img_tag = card.find("img")
