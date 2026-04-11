@@ -25,11 +25,10 @@ function NFL() {
       "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/football/nfl/news",
-    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/nfl",
+    // customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/nfl",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/football/nfl/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nfl",
-    // standingsUrl: "https://sports-odds.herokuapp.com/api/Sport_Standings/nfl",
+    customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nfl",
   });
 
   const updatedStandings = normalizeEspnNflStandingsByDivision(standings);

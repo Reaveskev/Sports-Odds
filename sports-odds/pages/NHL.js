@@ -25,11 +25,10 @@ function NHL() {
       "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/news",
-    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/nhl",
+    // customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/nhl",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/hockey/nhl/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nhl",
-    // standingsUrl: "https://sports-odds.herokuapp.com/api/Sport_Standings/nhl",
+    customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nhl",
   });
 
   const updatedStandings = normalizeEspnNhlStandingsByDivision(standings);

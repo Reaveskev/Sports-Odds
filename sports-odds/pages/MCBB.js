@@ -26,10 +26,11 @@ function MCBB() {
       "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/news",
-    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/ncaa-basketball",
+    // customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/ncaa-basketball",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/basketball/mens-college-basketball/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/ncaa-basketball",
+    customNewsUrl:
+      "https://sports-odds.herokuapp.com/api/Sport_News/ncaa-basketball",
   });
 
   const updatedStandings = normalizeEspnCfbStandings(standings);

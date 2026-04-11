@@ -90,6 +90,8 @@ const HomePage = () => {
 
   const [sideCardOne, sideCardTwo] = getRandomItems(articlesWithImages, 2);
 
+  console.log(sideCardOne, sideCardTwo);
+
   return (
     <div>
       <Header />

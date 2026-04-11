@@ -26,11 +26,12 @@ function WCBB() {
       "https://site.api.espn.com/apis/site/v2/sports/basketball/womens-college-basketball/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/basketball/womens-college-basketball/news",
-    customNewsUrl:
-      "http://127.0.0.1:5000/api/Sport_News/womens-college-basketball",
+    // customNewsUrl:
+    //   "http://127.0.0.1:5000/api/Sport_News/womens-college-basketball",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/basketball/womens-college-basketball/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/womens-college-basketball",
+    customNewsUrl:
+      "https://sports-odds.herokuapp.com/api/Sport_News/womens-college-basketball",
   });
 
   const updatedStandings = normalizeEspnCfbStandings(standings);

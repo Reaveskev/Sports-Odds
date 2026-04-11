@@ -25,10 +25,10 @@ function MLB() {
       "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/news",
-    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/mlb",
+    // customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/mlb",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/baseball/mlb/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nba",
+    customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nba",
   });
 
   const updatedStandings = normalizeEspnMlbStandingsByDivision(standings);

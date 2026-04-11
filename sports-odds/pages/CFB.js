@@ -26,10 +26,11 @@ function CFB() {
       "https://site.api.espn.com/apis/site/v2/sports/football/college-football/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/football/college-football/news",
-    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/ncaa-football",
+    // customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/ncaa-football",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/football/college-football/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/ncaa-football",
+    customNewsUrl:
+      "https://sports-odds.herokuapp.com/api/Sport_News/ncaa-football",
   });
 
   const updatedStandings = normalizeEspnCfbStandings(standings);

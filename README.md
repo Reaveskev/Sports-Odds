@@ -14,17 +14,29 @@
 
 ## Summary
 
-The website provides up-to-date sports news, game odds, current standings, and a platform for users to create accounts and bet on games using fake money. It sources this information from multiple APIs and also scrapes pages to ensure users have access to the latest information. Users can create an account to participate in the platform's betting features and enjoy a risk-free betting experience. Users will have access to the latest news, odds and potential payouts without having an account.
+Sports Dashboard is a full-stack web application that delivers real-time sports data, including live scores, standings, and news across multiple leagues. The platform aggregates data from external APIs and supplemental web scraping to ensure users always have access to up-to-date information. The application is designed to provide a clean, modern sports experience similar to platforms like ESPN or Bleacher Report, with an emphasis on usability, performance, and responsive design.
 
 ## Key Features
 
-- See Live Scores
-- Sports News
-  - See latest news for the NFL, NBA, WNBA, MLB, NHL, and some more.
-- Current Standings
-  - See the current standings for sports in season.
-- See Sport odds
-  - Place bets with fake money on money line, spread and total points.
+- **Live Scoreboard**
+  - View live, upcoming, and completed games across multiple leagues
+  - Horizontally scrollable scoreboard with categorized sections (Live, Upcoming, Final)
+
+- **Featured Games**
+  - Dynamically highlights key matchups
+  - Displays team logos, full names, records, and scores
+
+- **Sports News**
+  - Aggregated from multiple sources
+  - Filtered to prioritize articles with images for a better user experience
+
+- **Standings**
+  - Conference and division-based standings
+  - Sorted by wins and losses for accuracy
+  - Supports multiple leagues (NFL, NBA, MLB, NHL, WNBA, NCAA)
+
+- **League Filtering**
+  - Filter standings and data by conference/division (especially for NCAA)
 
 ## Technologies
 
@@ -35,26 +47,10 @@ The website provides up-to-date sports news, game odds, current standings, and a
 ![flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 ![selenium](https://img.shields.io/badge/-selenium-%43B02A?style=for-the-badge&logo=selenium&logoColor=white)
-![dropbox](https://img.shields.io/badge/Dropbox-%233B4D98.svg?style=for-the-badge&logo=Dropbox&logoColor=white)
 ![github](https://img.shields.io/badge/Github_Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white)
 ![npm](https://img.shields.io/badge/NPM-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 ![pip](https://img.shields.io/badge/Pip-ffaa00?style=for-the-badge&logo=pip&logoColor=white)
 
 ## Disclaimer
 
-Sports Odds is an independent website that provides sports news, game odds, and a platform for users to participate in simulated sports betting with fake money. We are not affiliated with any professional sports leagues or organizations, and the information provided on our website is for informational purposes only.
-
-Needed Fixes
-
-- Replace the broken scoreboard source
-- Build one reusable scoreboard/data helper
-- Refocus the app into a sports dashboard
-- Remove/hide login, profile, betting, trivia, draft board
-- Refactor league pages into one reusable `SportPage`
-- Simplify homepage
-- Clean header/nav
-- Replace float layouts with grid/flex
-- Create reusable card/button/spacing styles
-- Clean up backend structure
-- Update README and redeploy
--
+This project is an independent application created for educational and demonstration purposes. It provides sports data from publicly available sources and is not affiliated with any professional sports leagues or organizations.

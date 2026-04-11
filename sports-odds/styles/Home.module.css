@@ -229,3 +229,70 @@
   min-width: 30px;
   text-align: right;
 }
+
+@media (max-width: 1024px) {
+  .homeContainer {
+    padding: 16px 20px;
+  }
+
+  .featuredGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .featuredSide {
+    height: auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .homeContainer {
+    padding: 12px;
+  }
+
+  .featuredMain {
+    padding: 18px;
+  }
+
+  .featuredGameCard {
+    padding: 14px;
+  }
+
+  .featuredTeam {
+    padding: 10px 12px;
+  }
+
+  .featuredLogo {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+  }
+
+  .featuredTeamName {
+    font-size: 14px;
+  }
+
+  .featuredScore {
+    font-size: 22px;
+  }
+
+  .sideCard {
+    padding: 0;
+  }
+
+  .sideImage {
+    height: 150px;
+  }
+
+  .sideContent {
+    padding: 12px;
+  }
+
+  .sideTitle {
+    font-size: 15px;
+  }
+
+  .sideDescription {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+}

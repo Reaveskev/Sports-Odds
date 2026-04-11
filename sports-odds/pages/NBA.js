@@ -25,11 +25,10 @@ function NBA() {
       "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
     espnNewsUrl:
       "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/news",
-    customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/nba",
+    // customNewsUrl: "http://127.0.0.1:5000/api/Sport_News/nba",
     standingsUrl:
       "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings",
-    //  customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nba",
-    // standingsUrl: "https://sports-odds.herokuapp.com/api/Sport_Standings/nba",
+    customNewsUrl: "https://sports-odds.herokuapp.com/api/Sport_News/nba",
   });
 
   const updatedStandings = normalizeEspnNbaStandingsByDivision(standings);

@@ -5,6 +5,13 @@
   font-family: "Source Sans Pro", sans-serif;
 }
 
+html,
 body {
-  padding-top: 50px;
+  max-width: 100%;
+  overflow-x: hidden;
+  background-color: #181818;
+}
+
+body {
+  padding-top: 60px;
 }

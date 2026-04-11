@@ -129,3 +129,36 @@
   margin: 0 0 8px 0;
   color: #d0d0d0;
 }
+
+@media (max-width: 700px) {
+  .conferenceCard {
+    padding: 14px;
+  }
+
+  .conferenceTitle {
+    font-size: 18px;
+  }
+
+  .divisionTitle {
+    font-size: 15px;
+  }
+
+  .standingsTeamName {
+    font-size: 14px;
+  }
+
+  .standingsRecord {
+    width: 60px;
+    font-size: 13px;
+  }
+
+  .headerRecord {
+    width: 60px;
+  }
+
+  .standingsLogo {
+    width: 22px;
+    height: 22px;
+    margin-right: 8px;
+  }
+}

@@ -71,7 +71,3 @@ const Scoreboard = ({ inprogress, upcoming, completed }) => {
 };
 
 export default Scoreboard;
-
-// removed duplicated JSX
-// used a reusable rendering function
-// switched to clean array mapping

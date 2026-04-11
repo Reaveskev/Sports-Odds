@@ -1,9 +1,7 @@
 .scoreboard {
   background-color: rgb(34, 34, 35);
-
   margin-bottom: 16px;
   border-bottom: 1px solid #2c2c2d;
-  font-family: "Source Sans Pro", sans-serif;
 }
 
 .scoreboardRow {
@@ -15,6 +13,7 @@
   gap: 8px;
   padding: 8px;
   white-space: nowrap;
+  scroll-behavior: smooth;
 }
 
 .scoreboardRow::-webkit-scrollbar {
@@ -29,27 +28,13 @@
   background: rgb(69, 68, 68);
 }
 
-.sectionHeader {
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
-  padding: 10px 12px 8px 10px;
-  border-left: 3px solid #d4a500;
-}
-
-.record {
-  padding-right: 10px;
-  color: #b8b8b8;
-  font-size: 11px;
-}
-
 .games {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 8px 10px;
   width: 220px;
-  height: 92px;
+  min-height: 92px;
   color: white;
   text-decoration: none;
   background-color: #262627;
@@ -71,20 +56,14 @@
   object-fit: contain;
 }
 
-.time,
-.date {
-  font-size: 11px;
-  color: #c9c9c9;
-}
-
-.logoDiv {
-  display: flex;
-  align-items: center;
-  margin-right: 4px;
-}
 .teamName {
   font-size: 13px;
   font-weight: 600;
+}
+
+.record {
+  color: #b8b8b8;
+  font-size: 11px;
 }
 
 .score {
@@ -96,16 +75,44 @@
   margin-left: auto;
 }
 
+.time,
+.date {
+  font-size: 11px;
+  color: #c9c9c9;
+}
+
 .inlineSectionHeader {
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 90px;
   padding: 0 16px;
-  font-size: 16;
+  font-size: 16px;
   font-weight: 700;
   color: white;
   border-left: 3px solid #d4a500;
   background-color: #222223;
   flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .games {
+    width: 190px;
+    min-height: 88px;
+    padding: 8px;
+  }
+
+  .teamName {
+    font-size: 12px;
+  }
+
+  .score {
+    font-size: 15px;
+  }
+
+  .inlineSectionHeader {
+    min-width: 72px;
+    padding: 0 10px;
+    font-size: 14px;
+  }
 }
