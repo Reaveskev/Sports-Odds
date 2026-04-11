@@ -4,16 +4,16 @@ from flask import Flask, jsonify, send_from_directory, request, session
 from flask_cors import CORS
 from flask_mysqldb import MySQL
 from bs4 import BeautifulSoup
-import mysql.connector
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+# import mysql.connector
+# from selenium import webdriver
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
 import requests
 import os
-import dropbox
+# import dropbox
 
 app = Flask(__name__, static_folder='./sports-odds/out')
 
@@ -31,15 +31,15 @@ cors = CORS(app, support_credentials=True)
 # driver = webdriver.Chrome(options=options)
 
 
-
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--no-sandbox")
-chrome_path = os.environ.get("CHROMEDRIVER_PATH")
-service = Service(executable_path=chrome_path)
-driver = webdriver.Chrome(service=service, options=chrome_options)
+# def get_driver():
+#     chrome_options = webdriver.ChromeOptions()
+#     chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+#     chrome_options.add_argument("--headless")
+#     chrome_options.add_argument("--disable-dev-shm-usage")
+#     chrome_options.add_argument("--no-sandbox")
+#     chrome_path = os.environ.get("CHROMEDRIVER_PATH")
+#     service = Service(executable_path=chrome_path)
+#     driver = webdriver.Chrome(service=service, options=chrome_options)
 
 
 # MySql ####################
